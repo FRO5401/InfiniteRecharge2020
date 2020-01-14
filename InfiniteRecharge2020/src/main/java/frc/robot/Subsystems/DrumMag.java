@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
+//import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -58,17 +58,7 @@ public class DrumMag extends Subsystem {
     ballLimit5 = new DigitalInput(RobotMap.REVOLVER_STOP_5);
 
     magazineSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    // 10
-    // is
-    // a
-    // timeout
-    // that
-    // waits
-    // for
-    // successful
-    // conection
-    // to
-    // sensor
+    // 10 is a timeout that waits for successful conection to sensor
     magazineSRX.setSensorPhase(true);
 
     magazineSRX.configAllowableClosedloopError(slotIndex, RobotMap.MAGAZINE_THRESHOLD_FOR_PID,
@@ -90,16 +80,7 @@ public class DrumMag extends Subsystem {
   @Override
   public void initDefaultCommand() {
   }
-
-  /*
-   *** Probably won't use //Override Methods public void overrideMagazine(double
-   * joystickSpeed){ magazinePidEnabled = false; joystickSpeed *= (-1 *
-   * RobotMap.MAGAZINE_SPEED_SENSITIVITY);
-   * magazineSRX.set(ControlMode.PercentOutput, joystickSpeed); }
-   * 
-   * public void overrideStopped(){ magazineSRX.setNeutralMode(NeutralMode.Brake);
-   * magazineSRX.set(ControlMode.PercentOutput, 0); magazinePidEnabled = false; }
-   */
+   
 
   // magazine Stopped with PID/Interrupted
   public void magazineStop() {
@@ -167,9 +148,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Slot 5 Status", getSlotOccuppied(5));
     SmartDashboard.putNumber("Current Angle (Raw)", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getMagAngle() / 72);
-    // Slot that would be facing either infeed or shooter.
-    // /72 because total angle of circle is 360, and there
-    // are 5 slots
+    // Slot that would be facing either infeed or shooter. /72 because total angle of circle is 360, and there are 5 slots
 
   }
 }

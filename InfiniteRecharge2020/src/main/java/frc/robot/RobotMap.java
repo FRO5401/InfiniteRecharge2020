@@ -38,14 +38,11 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // Elevator
-  public static final int TIMEOUT_LIMIT_IN_Ms = 10;
-  public static final int ELEVATOR_THRESHOLD_FOR_PID = 0;
-  public static final double ELEVATOR_SPEED_SENSITIVITY = .4;
-
   // Magazine
+  public static final int TIMEOUT_LIMIT_IN_Ms = 10;
   public static final double MAGAZINE_ANGLE_PER_PULSE = 0;
   public static final int MAGAZINE_THRESHOLD_FOR_PID = 0;
+  public static final double MAGAZINE_SPEED_SENSITIVITY = .5;
 
   // Limits
   public static final int REVOLVER_STOP_1 = 0;
@@ -91,7 +88,7 @@ public class RobotMap {
   public static final int CARRIAGE_TALON_CHANNEL = 2;
   public static final int C_STOP_T = 7;
 
-  // Elevator
+  // Magazine
   public static final int MAGAZINE_TALON_CHANNEL = 0;
 
   /*** Solenoids (Single and Double) ***/
