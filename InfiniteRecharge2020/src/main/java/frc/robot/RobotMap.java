@@ -26,11 +26,6 @@ public class RobotMap {
 
   /*** Constants ***/
   // OI
-  public static final double AXIS_THRESHOLD = 0.25;
-  public static final int ELEVATOR_BUTTON_SHIFT_HIGH = 1;
-  public static final int ELEVATOR_BUTTON_SHIFT_LOW = 2;
-  public static final int ELEVATOR_BUTTON_COLLAPSE = 3;
-  public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
   public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // These are for practice bot, skewed a lot
@@ -43,14 +38,21 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // CarriageInfeed
-  public static final double CARRIAGE_FEEDER_SPEED = .4;
-  public static final double CARRIAGE_ANGLE_PER_PULSE = 0;
-
   // Elevator
   public static final int TIMEOUT_LIMIT_IN_Ms = 10;
   public static final int ELEVATOR_THRESHOLD_FOR_PID = 0;
   public static final double ELEVATOR_SPEED_SENSITIVITY = .4;
+
+  // Magazine
+  public static final double MAGAZINE_ANGLE_PER_PULSE = 0;
+  public static final int MAGAZINE_THRESHOLD_FOR_PID = 0;
+
+  // Limits
+  public static final int REVOLVER_STOP_1 = 0;
+  public static final int REVOLVER_STOP_2 = 0;
+  public static final int REVOLVER_STOP_3 = 0;
+  public static final int REVOLVER_STOP_4 = 0;
+  public static final int REVOLVER_STOP_5 = 0;
 
   /*** Operator Interfaces ***/
   // Controllers
@@ -90,8 +92,7 @@ public class RobotMap {
   public static final int C_STOP_T = 7;
 
   // Elevator
-  public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
-  public static final int ELEVATOR_TALON_SLAVE_CHANNEL = 1;
+  public static final int MAGAZINE_TALON_CHANNEL = 0;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
