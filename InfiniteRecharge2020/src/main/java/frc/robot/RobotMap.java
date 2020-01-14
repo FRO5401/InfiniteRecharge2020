@@ -117,10 +117,14 @@ public class RobotMap {
   public static final int HATCH_EXTENDER = 2;
   
   // Infeed
-  public static final int ARM_SOLENOID_ONE = 1;
-  public static final int ARM_SOLENOID_TWO = 2;
-  public static final int ARM_SOLENOID_THREE = 3;
-  public static final int ARM_SOLENOID_FOUR = 4;
+  public static final int ARM_SOLENOID_ONE_FORWARD = 0;
+  public static final int ARM_SOLENOID_TWO_FORWARD = 1;
+  public static final int ARM_SOLENOID_THREE_FORWARD = 2;
+  public static final int ARM_SOLENOID_FOUR_FORWARD = 3;
+  public static final int ARM_SOLENOID_ONE_REVERSE = 4;
+  public static final int ARM_SOLENOID_TWO_REVERSE = 5;
+  public static final int ARM_SOLENOID_THREE_REVERSE = 6;
+  public static final int ARM_SOLENOID_FOUR_REVERSE = 7;
 
   /*** Sensors ***/
   // Encoders
