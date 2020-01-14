@@ -32,9 +32,6 @@ public class DrumMag extends Subsystem {
   private boolean magazinePidEnabled;
   private int loopIndex, slotIndex;
 
-  // Position of Magazine
-  private double magAngle;
-
   private double magazine_kF = 0;
   private double magazine_kP = 0;
   private double magazine_kI = 0;
@@ -147,8 +144,13 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Slot 4 Status", getSlotOccuppied(4));
     SmartDashboard.putBoolean("Slot 5 Status", getSlotOccuppied(5));
     SmartDashboard.putNumber("Current Angle (Raw)", getMagAngle());
-    SmartDashboard.putNumber("Current Slot", getMagAngle() / 72);
-    // Slot that would be facing either infeed or shooter. /72 because total angle of circle is 360, and there are 5 slots
+    SmartDashboard.putNumber("Current Slot", (getMagAngle() / 72) +1);
+    /* 
+      Slot that would be facing either infeed or shooter. 
+      **If on integer from 1-5, will be facing infeed
+      **If one 0.5 value, will be facing shooter
+    Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
 
+    */
   }
 }
