@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.Commands.*;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -65,6 +68,11 @@ public class Turret extends Subsystem {
     turretTalon.config_kD(slotIndex, TURRET_kD, TIMEOUT_LIMIT_MS);   
   }
 
+  public void turretSetTalonNeutralMode(NeutralMode neutralMode){
+    turretTalon.setNeutralMode(neutralMode);
+    SmartDashboard.putString("Neutral Mode", neutralMode.toString());
+  }
+
   public void resetTurretPosition(){
       turretTalon.set(ControlMode.Position, resetPosition);
     }
@@ -81,12 +89,27 @@ public class Turret extends Subsystem {
       turretMotor.set(0);
   }
 
-  
+  public boolean getLimitLeft() {
+    return !turretLimitLeft.get();
+  }
+
+  public boolean getLimitRight() {
+    return !turretLimitRight.get();
+  }
+
+
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new TurretTurn());
+  }
+
+  public void reportTurretInfeedSensors(){
+    SmartDashboard.putBoolean("Top Limit Infeed", getLimitLeft());
+    SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());
+    SmartDashboard.putNumber("Turret Direction", turretMotor.getSpeed());
   }
 }
 
