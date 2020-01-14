@@ -93,6 +93,12 @@ public class RobotMap {
   public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
   public static final int ELEVATOR_TALON_SLAVE_CHANNEL = 1;
 
+
+  // Infeed Mechanism
+  public static final int LEMON_SQUEEZER = 0;
+  public static final int DRUM_MAG_MOVER = 1;
+
+
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
   // Solenoids have just one constant.
@@ -109,6 +115,12 @@ public class RobotMap {
 
   // Hatch Mechanism
   public static final int HATCH_EXTENDER = 2;
+  
+  // Infeed
+  public static final int ARM_SOLENOID_ONE = 1;
+  public static final int ARM_SOLENOID_TWO = 2;
+  public static final int ARM_SOLENOID_THREE = 3;
+  public static final int ARM_SOLENOID_FOUR = 4;
 
   /*** Sensors ***/
   // Encoders
