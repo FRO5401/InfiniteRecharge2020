@@ -16,7 +16,7 @@ import frc.robot.RobotMap;
  * An example command.  You can replace me with your own command.
  */
 public class TurretTurn extends Command {
-  boolean resetButton;
+
   boolean limitRight;
   boolean limitLeft;
   double turnRight;
@@ -35,7 +35,7 @@ public class TurretTurn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
+    boolean resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
 
   }
 
