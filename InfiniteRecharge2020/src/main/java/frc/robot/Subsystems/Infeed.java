@@ -55,8 +55,9 @@ public class Infeed extends Subsystem {
 
     public void moveToInfeedPosition() {
         
-        //Fake variable and method for unknown drum mag subsystem - DNA (Do Not Activate)
+        //Fake variables and methods for unknown drum mag subsystem - DNA (Do Not Activate)
         drumMagMover.move(drumMagAngle);
+        lemonSqueezer.move(drumMagAngle);
     }
 
     @Override
