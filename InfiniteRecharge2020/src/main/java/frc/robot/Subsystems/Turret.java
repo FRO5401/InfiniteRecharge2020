@@ -25,26 +25,26 @@ public class Turret extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  //Creates variables for PID, threshold, centerpoint on camera, and angle setpoints
   private int loopIndex, slotIndex;
-
-  
   private final double CENTERPOINT = 0;
   private double TURRET_kF = 0;
   private double TURRET_kP = 0;
   private double TURRET_kI = 0;
   private double TURRET_kD = 0;
-
   private double turretAngle = 45; 
   private double resetAngle = 0;
-
   private int TIMEOUT_LIMIT_MS = 10;
   private int TURRET_PID_THRESHOLD = 2;
 
+  //Creates the actual robot parts
   VictorSP turretMotor;
   TalonSRX turretTalon;
   DigitalInput turretLimitLeft, turretLimitRight;
 
+  //Constructor
   public Turret () {
+    //Creates instances of the actual robot parts
     turretMotor = new VictorSP(RobotMap.TURRET_MOTOR);
     turretTalon = new TalonSRX(RobotMap.TURRET_TALON);
     turretLimitLeft = new DigitalInput(RobotMap.T_STOP_LEFT);
@@ -62,6 +62,7 @@ public class Turret extends Subsystem {
     turretTalon.configPeakOutputForward(1, TIMEOUT_LIMIT_MS);
     turretTalon.configPeakOutputReverse(-1, TIMEOUT_LIMIT_MS);
 
+    //Configurating the actual PID values
     turretTalon.config_kF(slotIndex, TURRET_kF, TIMEOUT_LIMIT_MS);
     turretTalon.config_kP(slotIndex, TURRET_kP, TIMEOUT_LIMIT_MS);
     turretTalon.config_kI(slotIndex, TURRET_kI, TIMEOUT_LIMIT_MS);
@@ -73,12 +74,14 @@ public class Turret extends Subsystem {
     SmartDashboard.putString("Neutral Mode", neutralMode.toString());
   }
 
+  //Will set the turret angle to its original position
   public void resetTurretAngle(){
-    //Reset to 90 degrees (default)
+    //Reset to 0 degrees (default)
       turretTalon.set(ControlMode.Position, resetAngle);
     }
 
-    
+  /*This method will calculate the distance from the current point and center point. Then it will check if its on target. After, it will move in 
+  a certain direction depending on if the distance is negative or positive.*/  
   public void readyTurret(double targetLocation){ 
     //solve for a.p.p later
     double distance = targetLocation - CENTERPOINT;
@@ -99,32 +102,38 @@ public class Turret extends Subsystem {
     }
   }
 
-  
+  //Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
       turretMotor.set(RobotMap.TURRET_TURN_SPEED);
   }  
 
+  //Will set the motor such that the turret rotates right
   public void rotateTurretRight() {
       turretMotor.set(RobotMap.TURRET_TURN_SPEED * -1);
   }
 
+  //Will end the rotation of the turret motor
   public void stopRotation() {
       turretMotor.set(0);
   }
 
+  //Creates a hard left limit
   public boolean getLimitLeft() {
     return !turretLimitLeft.get();
   }
 
+  //Creates a hard right limit
   public boolean getLimitRight() {
     return !turretLimitRight.get();
   }
 
+  //Will find the current angle of the turret
   public double getTurretAngle(){
     turretAngle = turretTalon.getSensorCollection().getQuadraturePosition();
     return turretAngle;
   }
 
+  //Creates a soft left limit
   public boolean getLimitLeftSoft() {
     if (getTurretAngle() < -45){
       return true;
@@ -135,6 +144,7 @@ public class Turret extends Subsystem {
     }
   }
 
+  //Creates a soft right limit
   public boolean getLimitRightSoft() {
     if (getTurretAngle() > 45){
       return true;
@@ -154,6 +164,7 @@ public class Turret extends Subsystem {
     setDefaultCommand(new TurretTurn());
   }
 
+  //Will report the necessary data to shuffleboard/
   public void reportTurretInfeedSensors(){
     SmartDashboard.putBoolean("Top Limit Infeed", getLimitLeft());
     SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());

@@ -17,14 +17,14 @@ import frc.robot.RobotMap;
  */
 public class TurretTurn extends Command {
 
+  //Creates the limits, turn functions, and buttons needed for the program.
   boolean limitRight;
   boolean limitLeft;
-  double turnRight;
-  double turnLeft;
   boolean resetButton;
   boolean readyButton;
   double turretLeftRight;
 
+  //Constructor that finds the subsystem
   public TurretTurn() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.turret);
@@ -39,22 +39,29 @@ public class TurretTurn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    //Creates instances of the buttons
     resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
     readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
+
+    //Checks if the reset button has been pushed and then resets the turret angle if it was pushed
     if (resetButton){
       Robot.turret.resetTurretAngle();
     }
 
+    //Checks to see if the ready button was pushed
     if(readyButton){
+      //Checks to see if the limits have not been breached
       if (!limitLeft && !limitRight){
+        //If the y axis on the controller is above the upper threshold the turret will turn right
         if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
           Robot.turret.rotateTurretRight();
         }
+        //If the y axis on the controller is under the lower threshold the turret will turn left
         else if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
           Robot.turret.rotateTurretLeft();
         }
+        //If the y axis on the controller is at the threshold the turret will stop or not turn to begin with
         else if (turretLeftRight == RobotMap.AXIS_THRESHOLD) {
           Robot.turret.stopRotation();
         }
@@ -67,7 +74,7 @@ public class TurretTurn extends Command {
       Robot.turret.stopRotation();
     }
 
-  }
+  } //All elses stop rotation as conditions are not met. 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
