@@ -33,7 +33,7 @@ public class BallPuncher extends Command {
   protected void execute() {
     boolean ballPunch = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
-    if(ballPunch = true){
+    if(ballPunch){
       Robot.drummag.punchBall();
     }
     else{

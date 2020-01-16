@@ -170,6 +170,7 @@ public class DrumMag extends Subsystem {
     return (getMagAngle() / 72 +1);
   }
 
+
   public void punchBall() {
     ballPuncher.set(true);
   }

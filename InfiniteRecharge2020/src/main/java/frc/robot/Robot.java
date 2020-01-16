@@ -20,9 +20,10 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
+  
   public static DrumMag drummag;
 
-  //public static OI oi;
+  public static OI oi;
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -37,7 +38,8 @@ public class Robot extends TimedRobot {
   public void robotInit() { 
     drummag = new DrumMag();
     
-    
+    oi = new OI();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
