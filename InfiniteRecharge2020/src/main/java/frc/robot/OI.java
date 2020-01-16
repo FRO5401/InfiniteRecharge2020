@@ -69,12 +69,30 @@ public class OI {
     Button xboxR3_Operator		  	= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_R3);
 
   public OI(){
-      //Toggle Compressor
-    xboxA_Operator.whenPressed(new TurretTurn());
-    
-      //Start Override Move
-    xboxB_Operator.whenPressed(new TurretTurn());
       
      
+  }
+  public double xboxAxis(Joystick xboxController, int xboxAxis){
+    return xboxController.getRawAxis(xboxAxis);
+  }
+
+  public boolean xboxButton(Joystick xboxController, int xboxButton){
+    return xboxController.getRawButton(xboxButton);
+  }
+
+  public int xboxAxisAsButton(Joystick xboxController, int xboxAxis){
+    if(xboxController.getRawAxis(xboxAxis) > RobotMap.AXIS_THRESHOLD){
+      return 1;
     }
+    else if(xboxController.getRawAxis(xboxAxis) < (-1 * RobotMap.AXIS_THRESHOLD)){
+      return -1;
+    }
+    else{
+      return 0;
+    }
+  }
+
+  public int xboxDPad(Joystick xboxController){
+    return xboxController.getPOV();
+  }
 }

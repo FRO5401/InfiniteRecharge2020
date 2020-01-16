@@ -89,6 +89,7 @@ public class RobotMap {
   public static final int TURRET_TALON = 2;
   public static final int T_STOP_LEFT = 45;
   public static final int T_STOP_RIGHT = -45;
+  public static final double TURRET_ANGLE_PER_PULSE = 0;
 
   // Elevator
   public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;

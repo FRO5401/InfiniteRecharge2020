@@ -28,14 +28,14 @@ public class Turret extends Subsystem {
   private int loopIndex, slotIndex;
 
   
-
+  private final double CENTERPOINT = 0;
   private double TURRET_kF = 0;
   private double TURRET_kP = 0;
   private double TURRET_kI = 0;
   private double TURRET_kD = 0;
 
   private double turretAngle = 45; 
-  private double resetPosition = 0;
+  private double resetAngle = 0;
 
   private int TIMEOUT_LIMIT_MS = 10;
   private int TURRET_PID_THRESHOLD = 2;
@@ -73,10 +73,33 @@ public class Turret extends Subsystem {
     SmartDashboard.putString("Neutral Mode", neutralMode.toString());
   }
 
-  public void resetTurretPosition(){
-      turretTalon.set(ControlMode.Position, resetPosition);
+  public void resetTurretAngle(){
+    //Reset to 90 degrees (default)
+      turretTalon.set(ControlMode.Position, resetAngle);
     }
 
+    
+  public void readyTurret(double targetLocation){ 
+    //solve for a.p.p later
+    double distance = targetLocation - CENTERPOINT;
+    double distanceInDegrees = distance * RobotMap.TURRET_ANGLE_PER_PULSE;
+    boolean onTarget = Math.abs(turretTalon.getSensorCollection().getQuadraturePosition() - turretTalon.getClosedLoopTarget(loopIndex)) < RobotMap.ANGLE_THRESHOLD;
+
+    if (!onTarget && distanceInDegrees > 0)
+    {
+      rotateTurretLeft();
+    }
+    else if (!onTarget && distanceInDegrees <= 0)
+    {
+      rotateTurretRight();
+    }
+    else if (onTarget)
+    {
+      stopRotation();
+    }
+  }
+
+  
   public void rotateTurretLeft() {
       turretMotor.set(RobotMap.TURRET_TURN_SPEED);
   }  
@@ -95,6 +118,31 @@ public class Turret extends Subsystem {
 
   public boolean getLimitRight() {
     return !turretLimitRight.get();
+  }
+
+  public double getTurretAngle(){
+    turretAngle = turretTalon.getSensorCollection().getQuadraturePosition();
+    return turretAngle;
+  }
+
+  public boolean getLimitLeftSoft() {
+    if (getTurretAngle() < -45){
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  public boolean getLimitRightSoft() {
+    if (getTurretAngle() > 45){
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
 

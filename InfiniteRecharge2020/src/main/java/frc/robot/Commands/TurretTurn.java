@@ -21,6 +21,9 @@ public class TurretTurn extends Command {
   boolean limitLeft;
   double turnRight;
   double turnLeft;
+  boolean resetButton;
+  boolean readyButton;
+  double turretLeftRight;
 
   public TurretTurn() {
     // Use requires() here to declare subsystem dependencies
@@ -30,12 +33,39 @@ public class TurretTurn extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.turret.turretSetTalonNeutralMode(NeutralMode.Brake);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    boolean resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
+    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
+    readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+
+    turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
+    if (resetButton){
+      Robot.turret.resetTurretAngle();
+    }
+
+    if(readyButton){
+      if (!limitLeft && !limitRight){
+        if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
+          Robot.turret.rotateTurretRight();
+        }
+        else if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
+          Robot.turret.rotateTurretLeft();
+        }
+        else if (turretLeftRight == RobotMap.AXIS_THRESHOLD) {
+          Robot.turret.stopRotation();
+        }
+      }
+      else {
+        Robot.turret.stopRotation();
+      }
+    }
+    else{
+      Robot.turret.stopRotation();
+    }
 
   }
 
@@ -48,11 +78,15 @@ public class TurretTurn extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.turret.stopRotation();
+    Robot.turret.resetTurretAngle();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.turret.stopRotation();
+    Robot.turret.resetTurretAngle();
   }
 }
