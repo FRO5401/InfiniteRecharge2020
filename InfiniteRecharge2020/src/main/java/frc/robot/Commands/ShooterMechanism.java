@@ -33,12 +33,7 @@ public class ShooterMechanism extends Command {
 
     boolean drumMagIsFull;
 
-    /*if(!drumMagisFull){
-      Robot.shooter.stop();
-    } else{
-      Robot.shooter.startMotors();
-      Robot.shooter.punchBall();
-    }*/
+
   }
 
   // Called once the command ends or is interrupted.

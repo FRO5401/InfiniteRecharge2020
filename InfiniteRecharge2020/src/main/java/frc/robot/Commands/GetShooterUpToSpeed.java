@@ -40,6 +40,13 @@ public class GetShooterUpToSpeed extends Command {
     currentSpeed = Math.abs(Robot.shooter.getVelocity());
     if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){
       upToSpeed = true;
+
+          /*if(!drumMagisFull){
+      Robot.shooter.stop();
+    } else{
+      Robot.shooter.startMotors();
+      Robot.shooter.punchBall();
+    }*/
     }
   }
 
