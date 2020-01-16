@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -30,14 +28,18 @@ public class Shooter extends Subsystem {
         TalonSRX shooterMaster, shooterSlave;
         private double kP, kI, kD;
         private boolean pidEnabled;
-        private double MOTOR_SPEED;
         private double PID_MOTOR_SPEED = 0;
+        private double MOTOR_SPEED = PID_MOTOR_SPEED;
+        
+        private Solenoid puncher;
 
         // make a constructor and declare the variables
 
         public Shooter() {
+
             TalonSRX shooterMaster = new TalonSRX(0);
             TalonSRX shooterSlave = new TalonSRX(0);
+            Solenoid puncher = new Solenoid(0);
 
             shooterMaster.set(ControlMode.Velocity, 0);
             shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
@@ -53,6 +55,12 @@ public class Shooter extends Subsystem {
             reset();
 
         }
+
+        @Override
+        public void initDefaultCommand() {
+            // TODO Auto-generated method stub
+    
+        }        
 
     public void reset() {
         stop();
@@ -78,12 +86,13 @@ public class Shooter extends Subsystem {
             return shooterMaster.getSensorCollection().getQuadraturePosition();
         }
 
+        public void punchBall(boolean ballPunched ){
+             puncher.set(ballPunched);//maybe rewrite
+        }
+
+
+
         }
     }
     
-
-
-
-
-
 }
