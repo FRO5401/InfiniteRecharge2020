@@ -46,6 +46,11 @@ public class DrumMagPID extends Command {
   @Override
   protected void execute() {
 
+    //Infeed button
+    boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
+
+    //Shooter button
+    boolean rotateToShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
 
       //Read Limit Switches
     ballLimit1 = Robot.drummag.slot1Status();
@@ -54,15 +59,23 @@ public class DrumMagPID extends Command {
     ballLimit4 = Robot.drummag.slot4Status();
     ballLimit5 = Robot.drummag.slot5Status();
 
-    //Logic for determining when to turn to the next slot
+
+    //***Logic for Drum Mag rotation based on conditions***//
+
+    //Bring Slot 1 to face Infeed
+    if(rotateToInfeed = true) {
+        Robot.drummag.setPoint(slot1);
+    }
+
+    //Logic for determining when to turn to the next slot when infeeding
     if((ballLimit1 = true) && Robot.drummag.getCurrentSlot() == 1){ //Turn to slot 2 when ball is in slot 1     
-      Robot.drummag.setPoint(slot2);
+        Robot.drummag.setPoint(slot2);
     }
     if((ballLimit2 = true) && Robot.drummag.getCurrentSlot() == 2){ //Turn to slot 2 when ball is in slot 1     
         Robot.drummag.setPoint(slot3);
     }
     if((ballLimit3 = true) && Robot.drummag.getCurrentSlot() == 3){ //Turn to slot 2 when ball is in slot 1     
-      Robot.drummag.setPoint(slot4);
+        Robot.drummag.setPoint(slot4);
     }  
     if((ballLimit4 = true) && Robot.drummag.getCurrentSlot() == 4){ //Turn to slot 2 when ball is in slot 1     
         Robot.drummag.setPoint(slot5);
@@ -70,7 +83,32 @@ public class DrumMagPID extends Command {
     if((ballLimit5 = true) && (ballLimit1 = !true) && Robot.drummag.getCurrentSlot() == 5) {
         Robot.drummag.setPoint(slot1);
     }
+
+
+    //Bring Slot 1 to face Shooter
+    else if(rotateToShooter = true) {
+        Robot.drummag.setPoint(slot4 - 36);
+    }    
+
+    //Logic for determining when to turn to the next slot when shooting
+    if((ballLimit1 = false) && Robot.drummag.getCurrentSlot() == 3.5){ //Turn to slot 2 when ball leaves slot 1     
+        Robot.drummag.setPoint(slot2);
+    }
+    if((ballLimit2 = false) && Robot.drummag.getCurrentSlot() == 4.5){ //Turn to slot 2 when ball leaves slot 1     
+        Robot.drummag.setPoint(slot3);
+    }
+    if((ballLimit3 = false) && Robot.drummag.getCurrentSlot() == 0.5){ //Turn to slot 2 when ball leaves slot 1     
+        Robot.drummag.setPoint(slot4);
+    }  
+    if((ballLimit4 = false) && Robot.drummag.getCurrentSlot() == 1.5){ //Turn to slot 2 when ball leaves slot 1     
+        Robot.drummag.setPoint(slot5);
+    }
+    if((ballLimit5 = false) && (ballLimit1 = true) && Robot.drummag.getCurrentSlot() == 2.5) {
+        Robot.drummag.setPoint(slot1);
+    }    
   }
+
+    
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

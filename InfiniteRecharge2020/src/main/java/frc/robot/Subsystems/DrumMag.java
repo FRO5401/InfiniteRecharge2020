@@ -174,6 +174,10 @@ public class DrumMag extends Subsystem {
     ballPuncher.set(true);
   }
 
+  public void retractPuncher(){
+    ballPuncher.set(false);
+  }
+
   public void reportElevatorSensors() {
     SmartDashboard.putBoolean("Slot 1 Status", getSlotOccuppied(1));
     SmartDashboard.putBoolean("Slot 2 Status", getSlotOccuppied(2));
