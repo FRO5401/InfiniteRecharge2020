@@ -105,8 +105,8 @@ public class RobotMap {
   public static final int ELEVATOR_COLLAPSE_TOP = 5;
   public static final int ELEVATOR_COLLAPSE_BOTTOM = 1;
 
-  // Hatch Mechanism
-  public static final int HATCH_EXTENDER = 2;
+  // Ball Puncher
+  public static final int MAGAZINE_BALL_PUNCHER_CHANNEL = 2;
 
   /*** Sensors ***/
   // Encoders

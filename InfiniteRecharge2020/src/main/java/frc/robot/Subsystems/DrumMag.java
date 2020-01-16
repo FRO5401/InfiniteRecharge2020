@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -26,6 +27,7 @@ public class DrumMag extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   TalonSRX magazineSRX;
+  Solenoid ballPuncher;
 
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
 
@@ -45,7 +47,11 @@ public class DrumMag extends Subsystem {
     loopIndex = 0;
     slotIndex = 0;
 
+    //Speed controller for the drum mag
     magazineSRX = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
+
+    //Solenoid
+    ballPuncher = new Solenoid(RobotMap.MAGAZINE_BALL_PUNCHER_CHANNEL);
 
     // Limits
     ballLimit1 = new DigitalInput(RobotMap.REVOLVER_STOP_1);
@@ -91,17 +97,13 @@ public class DrumMag extends Subsystem {
     magazinePidEnabled = true;
   }
 
-  // Sets the NeutralMode of the magazine (BRAKE or COAST)
-  public void setMagazineNeutralMode(NeutralMode neutralMode) {
-    magazineSRX.setNeutralMode(neutralMode);
-  }
 
   public boolean onTarget() {
     // Method returns true if on target
     boolean onTarget = Math.abs(magazineSRX.getSensorCollection().getQuadraturePosition()
         - magazineSRX.getClosedLoopTarget(loopIndex)) < RobotMap.MAGAZINE_THRESHOLD_FOR_PID;
     return onTarget;
-    // getClosedLoopT gets the SetPoint already set (or moving to)
+    // getClosedLoopT gets the desired angle
   }
 
   // Potential limit switch for Magazine rotation
@@ -132,9 +134,44 @@ public class DrumMag extends Subsystem {
     return status;
   }
 
-  // probably not right
+  public boolean slot1Status() {
+    return ballLimit1.get();
+  }
+
+  public boolean slot2Status() {
+    return ballLimit2.get();
+  }
+
+  public boolean slot3Status() {
+    return ballLimit3.get();
+  }
+
+  public boolean slot4Status() {
+    return ballLimit4.get();
+  }
+
+  public boolean slot5Status() {
+    return ballLimit5.get();
+  }
+
+  //Getting current angle in actual degrees
   public double getMagAngle() {
     return (magazineSRX.getSensorCollection().getQuadraturePosition() * MAGAZINE_ANGLE_PER_PULSE);
+  }
+
+  //Getting current slot that is facing the infeed
+   /* 
+      Slot that would be facing either infeed or shooter. 
+      **If on integer from 1-5, will be facing infeed
+      **If one 0.5 value, will be facing shooter
+    Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
+    */
+  public double getCurrentSlot() {
+    return (getMagAngle() / 72 +1);
+  }
+
+  public void punchBall() {
+    ballPuncher.set(true);
   }
 
   public void reportElevatorSensors() {
@@ -144,13 +181,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Slot 4 Status", getSlotOccuppied(4));
     SmartDashboard.putBoolean("Slot 5 Status", getSlotOccuppied(5));
     SmartDashboard.putNumber("Current Angle (Raw)", getMagAngle());
-    SmartDashboard.putNumber("Current Slot", (getMagAngle() / 72) +1);
-    /* 
-      Slot that would be facing either infeed or shooter. 
-      **If on integer from 1-5, will be facing infeed
-      **If one 0.5 value, will be facing shooter
-    Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
-
-    */
+    SmartDashboard.putNumber("Current Slot", getCurrentSlot());
+   
   }
 }
