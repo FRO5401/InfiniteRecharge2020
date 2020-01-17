@@ -86,8 +86,16 @@ public class Shooter extends Subsystem {
             return shooterMaster.getSensorCollection().getQuadraturePosition();
         }
 
+        public boolean solenoidInOut(){
+            if(puncher.get() == false){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
         public void punchBall(boolean ballPunched ){
-             puncher.set(ballPunched);//maybe rewrite
+             puncher.set(ballPunched);
         }
 
 

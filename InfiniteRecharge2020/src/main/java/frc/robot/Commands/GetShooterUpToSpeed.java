@@ -13,10 +13,11 @@ public class GetShooterUpToSpeed extends Command {
   /**
    * Creates a new GetShooterUpToSpeed.
    */
-  private boolean upToSpeed;
-  private double currentSpeed;
-  private double targetSpeed;
-  private double THRESH;
+  private boolean   drumMagIsFull;
+  private boolean   upToSpeed;
+  private double    currentSpeed;
+  private double    targetSpeed;
+  private double    THRESH;
 
   public GetShooterUpToSpeed() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,29 +25,25 @@ public class GetShooterUpToSpeed extends Command {
     upToSpeed    = false;
     currentSpeed = 0;
     targetSpeed  = 0;
-    THRESH = 0;
+    THRESH = 0;//probably don't need THRESH because PID
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.shooter.startMotors();
-    targetSpeed = Math.abs(Robot.shooter.getTargetSpeed());
+    if(drumMagIsFull){
+      Robot.shooter.startMotors();
+      targetSpeed = Math.abs(Robot.shooter.getTargetSpeed());
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     currentSpeed = Math.abs(Robot.shooter.getVelocity());
-    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){
+    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){//probably don't need THRESH because PID
       upToSpeed = true;
-
-          /*if(!drumMagisFull){
-      Robot.shooter.stop();
-    } else{
-      Robot.shooter.startMotors();
-      Robot.shooter.punchBall();
-    }*/
     }
   }
 
@@ -58,6 +55,6 @@ public class GetShooterUpToSpeed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return upToSpeed;
   }
 }

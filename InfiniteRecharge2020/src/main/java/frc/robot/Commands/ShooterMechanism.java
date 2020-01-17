@@ -15,9 +15,12 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
+
+  private boolean solenoidStatus;
+
   public ShooterMechanism() {
     // Use addRequirements() here to declare subsystem dependencies.
-    requires(Robot.shooter);
+    requires(Robot.shooter);  
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +34,8 @@ public class ShooterMechanism extends Command {
     boolean punchBall     = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_A_OPERATOR, Robot.oi.xboxController_Operator);
     boolean readyShooter  = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_Y_OPERATOR, Robot.oi.xboxController_Operator);
 
-    boolean drumMagIsFull;
+    solenoidStatus = Robot.shooter.solenoidInOut();
+    Robot.shooter.punchBall(solenoidStatus);
 
 
   }
