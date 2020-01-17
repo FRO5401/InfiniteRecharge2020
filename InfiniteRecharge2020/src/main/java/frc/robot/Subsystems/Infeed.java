@@ -1,8 +1,10 @@
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.Commands.InfeedControl;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -36,25 +38,26 @@ public class Infeed extends Subsystem {
         armSolenoid4 = new DoubleSolenoid(RobotMap.ARM_SOLENOID_FOUR_FORWARD, RobotMap.ARM_SOLENOID_FOUR_REVERSE);
     }
 
-    //Left Trigger, Right Trigger
+    //Left Trigger, Right Trigger - Teleop
     public void extend(boolean retracting, boolean extending) {
         if (retracting) {
+            //FRA - For the Retraction of Arms
             armSolenoid4.set(DoubleSolenoid.Value.kReverse);
             armSolenoid3.set(DoubleSolenoid.Value.kReverse);
             armSolenoid2.set(DoubleSolenoid.Value.kReverse);
             armSolenoid1.set(DoubleSolenoid.Value.kReverse);
-            SmartDashboard.putBoolean("Extended", true);
+            SmartDashboard.putBoolean("Extended", false);
         } else if (extending) {
+            //FEA - For the Extension of Arms
             armSolenoid1.set(DoubleSolenoid.Value.kForward);
             armSolenoid2.set(DoubleSolenoid.Value.kForward);
             armSolenoid3.set(DoubleSolenoid.Value.kForward);
             armSolenoid4.set(DoubleSolenoid.Value.kForward);
-            SmartDashboard.putBoolean("Extended", false);
+            SmartDashboard.putBoolean("Extended", true);
         }
     }
 
     public void moveToInfeedPosition() {
-        
         //Fake variables and methods for unknown drum mag subsystem - DNA (Do Not Activate)
         drumMagMover.move(drumMagAngle);
         lemonSqueezer.move(drumMagAngle);
@@ -62,6 +65,25 @@ public class Infeed extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        
+        setDefaultCommand(new InfeedControl());
     }
+
+    //Autonomous Infeed Direction
+	public void infeedDirection(int infeedIn) {
+        if (infeedIn == -1) {
+            //Left Trigger Pressed
+            armSolenoid4.set(DoubleSolenoid.Value.kReverse);
+            armSolenoid3.set(DoubleSolenoid.Value.kReverse);
+            armSolenoid2.set(DoubleSolenoid.Value.kReverse);
+            armSolenoid1.set(DoubleSolenoid.Value.kReverse);
+            SmartDashboard.putBoolean("Extended", false);
+        } else if (infeedIn == 1) {
+            //Right Trigger Pressed
+            armSolenoid1.set(DoubleSolenoid.Value.kForward);
+            armSolenoid2.set(DoubleSolenoid.Value.kForward);
+            armSolenoid3.set(DoubleSolenoid.Value.kForward);
+            armSolenoid4.set(DoubleSolenoid.Value.kForward);
+            SmartDashboard.putBoolean("Extended", true);
+        }
+	}
 }
