@@ -112,13 +112,13 @@ public class DrumMagPID extends Command {
     if((ballLimit1 = false) && (facingShooter = true)){ //Turn to slot 2 when ball leaves slot 1     
         Robot.drummag.setPoint(shootSlot2);
     }
-    if((ballLimit2 = false) &&  (facingShooter = true)){ //Turn to slot 2 when ball leaves slot 1     
+    if((ballLimit2 = false) &&  (facingShooter = true)){ //Turn to slot 3 when ball leaves slot 2     
         Robot.drummag.setPoint(shootSlot3);
     }
-    if((ballLimit3 = false) && (facingShooter = true)){ //Turn to slot 2 when ball leaves slot 1     
+    if((ballLimit3 = false) && (facingShooter = true)){ //Turn to slot 4 when ball leaves slot 3     
         Robot.drummag.setPoint(shootSlot4);
     }  
-    if((ballLimit4 = false) && (facingShooter = true)){ //Turn to slot 2 when ball leaves slot 1     
+    if((ballLimit4 = false) && (facingShooter = true)){ //Turn to slot 5 when ball leaves slot 4     
         Robot.drummag.setPoint(shootSlot5);
     }
     if((ballLimit5 = false) && (ballLimit1 = true) && (facingShooter = true)) {
