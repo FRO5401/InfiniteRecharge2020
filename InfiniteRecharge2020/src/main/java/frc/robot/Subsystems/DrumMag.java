@@ -166,8 +166,27 @@ public class DrumMag extends Subsystem {
       **If one 0.5 value, will be facing shooter
     Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
     */
-  public double getCurrentSlot() {
-    return (getMagAngle() / 72 +1);
+  public int getCurrentSlot() {
+    double angle = getMagAngle();
+
+    if(angle >= 0 && angle < 72){
+      return 1;
+    }
+    else if(angle >= 73 && angle < 145){
+      return 2;
+    }
+    else if(angle >= 145 && angle < 217){
+      return 3;
+    }
+    else if(angle >= 217 && angle < 289){
+      return 4;
+    }
+    else if(angle >= 289 && angle < 361){
+      return 5;
+    }
+    else{
+      return 999;
+    }
   }
 
 

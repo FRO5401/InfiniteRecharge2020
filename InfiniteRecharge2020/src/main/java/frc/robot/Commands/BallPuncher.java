@@ -25,7 +25,7 @@ public class BallPuncher extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drummag.punchBall();
+//    Robot.drummag.punchBall();
   }
 
   // Called repeatedly when this Command is scheduled to run
