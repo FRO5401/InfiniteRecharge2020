@@ -67,11 +67,11 @@ public class DrumMagPID extends Command {
     boolean rotateToShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
 
       //Read Limit Switches
-    ballLimit1 = Robot.drummag.slot1Status();
-    ballLimit2 = Robot.drummag.slot2Status();
-    ballLimit3 = Robot.drummag.slot3Status();
-    ballLimit4 = Robot.drummag.slot4Status();
-    ballLimit5 = Robot.drummag.slot5Status();
+    ballLimit1 = Robot.drummag.getSlotOccuppied(1);
+    ballLimit2 = Robot.drummag.getSlotOccuppied(2);
+    ballLimit3 = Robot.drummag.getSlotOccuppied(3);
+    ballLimit4 = Robot.drummag.getSlotOccuppied(4);
+    ballLimit5 = Robot.drummag.getSlotOccuppied(5);
 
 
     //***Logic for Drum Mag rotation based on conditions***//

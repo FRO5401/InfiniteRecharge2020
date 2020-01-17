@@ -134,26 +134,6 @@ public class DrumMag extends Subsystem {
     return status;
   }
 
-  public boolean slot1Status() {
-    return ballLimit1.get();
-  }
-
-  public boolean slot2Status() {
-    return ballLimit2.get();
-  }
-
-  public boolean slot3Status() {
-    return ballLimit3.get();
-  }
-
-  public boolean slot4Status() {
-    return ballLimit4.get();
-  }
-
-  public boolean slot5Status() {
-    return ballLimit5.get();
-  }
-
   //Getting current angle in actual degrees
   public double getMagAngle() {
     return (magazineSRX.getSensorCollection().getQuadraturePosition() * MAGAZINE_ANGLE_PER_PULSE);
