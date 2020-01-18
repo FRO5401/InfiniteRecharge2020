@@ -13,18 +13,19 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
- * An example command.  You can replace me with your own command.
+ * An example command. You can replace me with your own command.
  */
 public class TurretTurn extends Command {
 
-  //Creates the limits, turn functions, and buttons needed for the program.
+  // Creates the limits, turn functions, and buttons needed for the program.
   boolean limitRight;
   boolean limitLeft;
   boolean resetButton;
   boolean readyButton;
+  boolean overrideToggle;
   double turretLeftRight;
 
-  //Constructor that finds the subsystem
+  // Constructor that finds the subsystem
   public TurretTurn() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.turret);
@@ -39,42 +40,62 @@ public class TurretTurn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Creates instances of the buttons
-    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B); 
+    // Creates instances of the buttons
+    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
     readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
+    overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
 
-    //Checks if the reset button has been pushed and then resets the turret angle if it was pushed
-    if (resetButton){
+    // Checks if the reset button has been pushed and then resets the turret angle
+    // if it was pushed
+    if (resetButton) {
       Robot.turret.resetTurretAngle();
     }
 
-    //Checks to see if the ready button was pushed
-    if(readyButton){
-      //Checks to see if the limits have not been breached
-      if (!limitLeft && !limitRight){
-        //If the y axis on the controller is above the upper threshold the turret will turn right
-        if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
-          Robot.turret.rotateTurretRight();
-        }
-        //If the y axis on the controller is under the lower threshold the turret will turn left
-        else if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
-          Robot.turret.rotateTurretLeft();
-        }
-        //If the y axis on the controller is at the threshold the turret will stop or not turn to begin with
-        else if (turretLeftRight == RobotMap.AXIS_THRESHOLD) {
-          Robot.turret.stopRotation();
+    if (readyButton) {
+      Robot.turret.readyTurret();
+    }
+    // Checks to see if the ready button was pushed
+    if (overrideToggle) {
+      // Checks to see if the limits have not been breached
+      if (limitLeft == false && limitRight == false) {
+        // This happens when the turret is moving normally
+        if (turretLeftRight > RobotMap.AXIS_THRESHOLD || turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
+          Robot.turret.overrideTurret(turretLeftRight);
+        } else {
+          Robot.turret.overrideTurret(0);
         }
       }
-      else {
+
+      // Checks to see if limitLeft has been breached
+      else if (limitLeft == true && limitRight == false) {
+
+        // Will only let movement occur right
+        if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
+          Robot.turret.overrideTurret(turretLeftRight);
+        } else {
+          Robot.turret.overrideTurret(0);
+        }
+      }
+
+      // Checks to see if limitRight has been breached
+      else if (limitLeft == false && limitRight == true) {
+
+        // Will only let movement occur left
+        if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
+          Robot.turret.overrideTurret(turretLeftRight);
+
+        } else {
+          Robot.turret.overrideTurret(0);
+        }
+      } else {
         Robot.turret.stopRotation();
       }
-    }
-    else{
+    } else {
       Robot.turret.stopRotation();
     }
 
-  } //All elses stop rotation as conditions are not met. 
+  } // All elses stop rotation as conditions are not met.
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
