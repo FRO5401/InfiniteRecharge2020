@@ -99,7 +99,7 @@ public class DrumMagPID extends Command {
             //Once end is reached, and all balls are out, automatically switch back to infeed.
         if (Robot.drummag.getMode() == true) {  
             for (int x = 0; x < shooterSlots.length; x++) {
-                if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x]) && ballLimitArray[x]) {
+                if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x]) && ballLimitArray[x]) { //TODO: Make sure vision is targeting also
                     if (ballPunch) {
                         Robot.drummag.punchBall(); //punch ball 
                         //Add wait command to ensure ball is out(1 second for now)

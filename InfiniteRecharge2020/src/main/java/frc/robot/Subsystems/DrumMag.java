@@ -38,9 +38,6 @@ public class DrumMag extends Subsystem {
   private double magazine_kI = 0;
   private double magazine_kD = 0;
 
-  // FIND LATER
-  public double MAGAZINE_ANGLE_PER_PULSE = 0;
-
   public DrumMag() {
 
     facingShooter = false;
@@ -92,7 +89,7 @@ public class DrumMag extends Subsystem {
 
   // Sets the point to which the magazine will move
   public void setPoint(double setPoint) {
-    double setPointNativeUnits = setPoint / MAGAZINE_ANGLE_PER_PULSE;
+    double setPointNativeUnits = setPoint / (RobotMap.MAGAZINE_ANGLE_PER_PULSE);
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
   }
 
@@ -148,7 +145,7 @@ public class DrumMag extends Subsystem {
 
   //Getting current angle in actual degrees
   public double getMagAngle() {
-    return (magazineSRX.getSensorCollection().getQuadraturePosition() * MAGAZINE_ANGLE_PER_PULSE);
+    return (magazineSRX.getSensorCollection().getQuadraturePosition() * (RobotMap.MAGAZINE_ANGLE_PER_PULSE));
   }
 
   //Getting current slot that is facing the infeed
