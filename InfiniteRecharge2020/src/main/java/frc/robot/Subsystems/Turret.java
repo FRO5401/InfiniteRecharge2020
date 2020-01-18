@@ -93,6 +93,8 @@ public class Turret extends Subsystem {
    * point. Then it will check if its on target. After, it will move in a certain
    * direction depending on if the distance is negative or positive.
    */
+
+
   public void readyTurret() {
     // solve for a.p.p later
     turretPidEnabled = true;
@@ -100,14 +102,15 @@ public class Turret extends Subsystem {
     double distanceInDegrees = distance * RobotMap.TURRET_ANGLE_PER_PULSE;
     boolean onTarget = Math.abs(turretTalon.getSensorCollection().getQuadraturePosition()
         - turretTalon.getClosedLoopTarget(loopIndex)) < RobotMap.ANGLE_THRESHOLD;
-
-    if (!onTarget && distanceInDegrees > 0) {
-      rotateTurretLeft();
-    } else if (!onTarget && distanceInDegrees < 0) {
-      rotateTurretRight();
-    } else if (onTarget) {
-      stopRotation();
-    }
+    do {
+      if (!onTarget && distanceInDegrees > 0 && getLimitLeftSoft() == false) {
+        rotateTurretLeft();
+      } else if (!onTarget && distanceInDegrees < 0 && getLimitRightSoft() == false) {
+        rotateTurretRight();
+      } else if (onTarget) {
+        stopRotation();
+      }
+    } while (!onTarget);  
   }
 
   // Will set the motor such that the turret rotates left

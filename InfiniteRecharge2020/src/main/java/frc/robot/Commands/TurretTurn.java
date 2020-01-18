@@ -21,7 +21,6 @@ public class TurretTurn extends Command {
   boolean limitRight;
   boolean limitLeft;
   boolean resetButton;
-  boolean readyButton;
   boolean overrideToggle;
   double turretLeftRight;
 
@@ -42,7 +41,6 @@ public class TurretTurn extends Command {
   protected void execute() {
     // Creates instances of the buttons
     resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-    readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
 
@@ -52,9 +50,6 @@ public class TurretTurn extends Command {
       Robot.turret.resetTurretAngle();
     }
 
-    if (readyButton) {
-      Robot.turret.readyTurret();
-    }
     // Checks to see if the ready button was pushed
     if (overrideToggle) {
       // Checks to see if the limits have not been breached
