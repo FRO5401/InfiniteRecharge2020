@@ -99,20 +99,7 @@ public class XboxMove extends Command {
         //Robot.drivebase.stopMotors();
         left = 0;
         right = 0;
-      }/* 
-        //TODO: Remove these testing conditionals for competition. 
-      else if(speedConstant1){
-        left = (1.0 / 3);
-        right = (1.0 / 3);
       }
-      else if(speedConstant2){
-        left = (2.0 / 3);
-        right = (2.0 / 3);
-      }
-      else if(speedConstant3){
-        left = (1.0);
-        right = (1.0);
-      } */
         //Not Braking
       else{
           //Pirouetting (Turn in place). 
