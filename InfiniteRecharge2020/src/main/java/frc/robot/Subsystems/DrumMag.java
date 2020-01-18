@@ -147,12 +147,9 @@ public class DrumMag extends Subsystem {
     Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
     */
   public int getCurrentSlot() {
-    double angle = getMagAngle();
-
-    int slot = (int) (angle / 72) + 1;
+    int slot = (int) (getMagAngle() / 72) + 1;
     return slot;
   }
-
 
   public void punchBall() {
     ballPuncher.set(true);
@@ -168,7 +165,8 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Slot 3 Status", getSlotOccuppied(3));
     SmartDashboard.putBoolean("Slot 4 Status", getSlotOccuppied(4));
     SmartDashboard.putBoolean("Slot 5 Status", getSlotOccuppied(5));
-    SmartDashboard.putNumber("Current Angle (Raw)", getMagAngle());
+    SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
+    SmartDashboard.putNumber("Current Angle", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getCurrentSlot());
    
   }
