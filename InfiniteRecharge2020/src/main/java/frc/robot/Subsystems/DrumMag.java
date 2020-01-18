@@ -25,7 +25,7 @@ public class DrumMag extends Subsystem {
   public DigitalInput cellLimit1, cellLimit2, cellLimit3, cellLimit4, cellLimit5;
 
   private int loopIndex, slotIndex;
-  public String incomingFrom;
+  public String magMode;
 
   private double magazine_kF = 0;
   private double magazine_kP = 0;
@@ -101,25 +101,26 @@ public class DrumMag extends Subsystem {
     cellEjectorSolenoid.set(false);
   }
 
-  public void setIncomingFrom(){
-    if(incomingFrom.equals("infeed")){
-      incomingFrom = "shooter";
+    // Changes mode from shooter to infeed or infeed to shooter, and 
+  public void setMagMode(){
+    if(magMode.equals("infeed")){
+      magMode = "shooter";
       setPoint(shooterPositionPID);
     }
     
-    if(incomingFrom.equals("shooter")){
-      incomingFrom = "infeed";
+    if(magMode.equals("shooter")){
+      magMode = "infeed";
       setPoint(infeedPositionPID);
     }
+  }
+
+  public String getMagMode(){
+    return magMode;
   }
 
   public void rotateOneSlot(){
     double position = magazineSRX.getSensorCollection().getQuadraturePosition();
     setPoint(position + nativeUnitsForOneCell);
-  }
-
-  public String getIncomingFrom(){
-    return incomingFrom;
   }
 
   //Tells Operator amount of ammo
@@ -129,9 +130,9 @@ public class DrumMag extends Subsystem {
 
     boolean status = false;
 
-    if(incomingFrom.equals("infeed")){
+    if(magMode.equals("infeed")){
       status = false;
-    } else if (incomingFrom.equals("shooter")){
+    } else if (magMode.equals("shooter")){
       status = true;
     }
 
@@ -171,7 +172,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putNumber("Amount of Power Cells", getSlotPosition());
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagazineAngle());
-    SmartDashboard.putString("Shooter/Infeed Mode", getIncomingFrom());
+    SmartDashboard.putString("Shooter/Infeed Mode", getMagMode());
    
   }
 }
