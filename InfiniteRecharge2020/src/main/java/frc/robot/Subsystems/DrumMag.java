@@ -32,6 +32,7 @@ public class DrumMag extends Subsystem {
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
 
   private boolean magazinePidEnabled;
+  private boolean facingShooter;
   private int loopIndex, slotIndex;
 
   private double magazine_kF = 0;
@@ -43,6 +44,8 @@ public class DrumMag extends Subsystem {
   public double MAGAZINE_ANGLE_PER_PULSE = 0;
 
   public DrumMag() {
+
+    facingShooter = false;
 
     loopIndex = 0;
     slotIndex = 0;
@@ -104,6 +107,15 @@ public class DrumMag extends Subsystem {
         - magazineSRX.getClosedLoopTarget(loopIndex)) < RobotMap.MAGAZINE_THRESHOLD_FOR_PID;
     return onTarget;
     // getClosedLoopT gets the desired angle
+  }
+
+  public void swapMode(){
+    if(!facingShooter){
+      facingShooter = true;
+    }
+    else if(facingShooter){
+      facingShooter = false;
+    }
   }
 
   // Potential limit switch for Magazine rotation
