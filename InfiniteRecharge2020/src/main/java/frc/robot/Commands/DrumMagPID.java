@@ -22,11 +22,10 @@ public class DrumMagPID extends Command {
 
     // Constants
     int[] infeedSlots = new int[] { 0, 72, 144, 216, 288 }; // Pickup Setpoints (in degrees)
-    int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 };
+    int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 }; // Shooting Setpoints (in degrees)
 
     public DrumMagPID() {
         requires(Robot.drummag);
-
     }
 
     // Called just before this Command runs the first time
@@ -39,6 +38,10 @@ public class DrumMagPID extends Command {
     @Override
     protected void execute() {
 
+        // Read Limit Switches constantly
+        boolean[] ballLimitArray = new boolean[] {Robot.drummag.getSlotOccuppied(1), Robot.drummag.getSlotOccuppied(2),
+            Robot.drummag.getSlotOccuppied(3), Robot.drummag.getSlotOccuppied(4), Robot.drummag.getSlotOccuppied(5)};
+        
         // Infeed button
         boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
         // Shooter button
@@ -48,11 +51,7 @@ public class DrumMagPID extends Command {
         // Stop shooting button
         boolean cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
 
-        // Read Limit Switches
-        boolean[] ballLimitArray = new boolean[] { Robot.drummag.getSlotOccuppied(1), Robot.drummag.getSlotOccuppied(2),
-                Robot.drummag.getSlotOccuppied(3), Robot.drummag.getSlotOccuppied(4),
-                Robot.drummag.getSlotOccuppied(5) };
-
+        
 
         // ***Logic for Drum Mag rotation based on conditions***//
 
@@ -68,7 +67,7 @@ public class DrumMagPID extends Command {
             //Once end is reached, and all balls are in, automatically switch to shooter
         if (Robot.drummag.getMode() == false) {
             for (int x = 0; x < infeedSlots.length; x++) {
-                if (withinRange(Robot.drummag.getMagAngle(), infeedSlots[x], 3) && ballLimitArray[x]) {
+                if (withinRange(Robot.drummag.getMagAngle(), infeedSlots[x]) && ballLimitArray[x]) {
                     if ((x + 1) < 5){
                         Robot.drummag.setPoint(shooterSlots[x + 1]);
                     }
@@ -100,7 +99,7 @@ public class DrumMagPID extends Command {
             //Once end is reached, and all balls are out, automatically switch back to infeed.
         if (Robot.drummag.getMode() == true) {  
             for (int x = 0; x < shooterSlots.length; x++) {
-                if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x], 3) && ballLimitArray[x]) {
+                if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x]) && ballLimitArray[x]) {
                     if (ballPunch) {
                         Robot.drummag.punchBall(); //punch ball 
                         //Add wait command to ensure ball is out(1 second for now)
@@ -121,6 +120,10 @@ public class DrumMagPID extends Command {
         }
     }
 
+    //Checks to make sure the slot is within a decent range from the target angle
+    private boolean withinRange(double actual, double target) {
+        return Math.abs(actual - target) < (RobotMap.MAG_ERROR_TOLERANCE); //2 degrees
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -137,11 +140,5 @@ public class DrumMagPID extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-    }
-
-    //Checks to make sure the slot is within a decent range from the target angle
-    private boolean withinRange(double actual, double target, double error) {
-        return Math.abs(actual - target) < error;
-
     }
 }

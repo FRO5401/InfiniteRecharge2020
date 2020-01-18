@@ -9,15 +9,13 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-//import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.RobotMap;
 
 /**
@@ -30,8 +28,6 @@ public class DrumMag extends Subsystem {
   public Solenoid ballPuncher;
 
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
-
-  private boolean magazinePidEnabled;
 
   private boolean facingShooter;
 
@@ -92,14 +88,12 @@ public class DrumMag extends Subsystem {
 
   // magazine Stopped with PID/Interrupted
   public void magazineStop() {
-    magazinePidEnabled = false;
   }
 
   // Sets the point to which the magazine will move
   public void setPoint(double setPoint) {
     double setPointNativeUnits = setPoint / MAGAZINE_ANGLE_PER_PULSE;
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
-    magazinePidEnabled = true;
   }
 
 
@@ -186,6 +180,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getCurrentSlot());
+    SmartDashboard.putBoolean("Ready to Shoot", getMode());
    
   }
 }
