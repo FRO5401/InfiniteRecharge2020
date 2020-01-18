@@ -72,7 +72,7 @@ public class DrumMagPID extends Command {
                     if ((x + 1) < 5){
                         Robot.drummag.setPoint(shooterSlots[x + 1]);
                     }
-                    else if (ballLimitArray[4] & ballLimitArray[0]){
+                    else if (ballLimitArray[4] && ballLimitArray[0]){
                         Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when slots are full
                         Robot.drummag.swapMode();
                     }
@@ -110,7 +110,7 @@ public class DrumMagPID extends Command {
                             if ((x + 1) < 5) {
                                 Robot.drummag.setPoint(shooterSlots[x + 1]);
                             }
-                            else if (!ballLimitArray[4] & !ballLimitArray[0]) {
+                            else if (!ballLimitArray[4] && !ballLimitArray[0]) {
                                 Robot.drummag.setPoint(infeedSlots[0]); // Set back to face infeed when slots are empty
                                 Robot.drummag.swapMode();
                             }
