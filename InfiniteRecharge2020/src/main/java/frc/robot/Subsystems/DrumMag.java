@@ -27,7 +27,7 @@ public class DrumMag extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   TalonSRX magazineSRX;
-  Solenoid ballPuncher;
+  public Solenoid ballPuncher;
 
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
 
@@ -149,24 +149,8 @@ public class DrumMag extends Subsystem {
   public int getCurrentSlot() {
     double angle = getMagAngle();
 
-    if(angle >= 0 && angle < 72){
-      return 1;
-    }
-    else if(angle >= 73 && angle < 145){
-      return 2;
-    }
-    else if(angle >= 145 && angle < 217){
-      return 3;
-    }
-    else if(angle >= 217 && angle < 289){
-      return 4;
-    }
-    else if(angle >= 289 && angle < 361){
-      return 5;
-    }
-    else{
-      return 999;
-    }
+    int slot = (int) (angle / 72) + 1;
+    return slot;
   }
 
 

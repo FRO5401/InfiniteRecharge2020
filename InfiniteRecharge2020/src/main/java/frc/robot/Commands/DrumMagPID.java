@@ -16,132 +16,111 @@ import frc.robot.RobotMap;
 /*
  * Command controls PID setpoints.
  * "Supposed" to run once Override is done running. 
- */ 
+ */
 
 public class DrumMagPID extends Command {
- 
-    //Constants
-  int slot1, slot2, slot3, slot4, slot5;
-  int shootSlot1, shootSlot2, shootSlot3, shootSlot4, shootSlot5;
 
-    //Limit switches
-  boolean ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
-  boolean facingShooter;
+    // Constants
+    int[] infeedSlots = new int[] { 0, 72, 144, 216, 288 }; // Pickup Setpoints (in degrees)
+    int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 };
 
-  public DrumMagPID() {
-    requires(Robot.drummag);
+    boolean facingShooter;
 
-      //Pickup Setpoints (in degrees)
-      slot1 = 0;
-      slot2 = 72;
-      slot3 = 144;
-      slot4 = 216;
-      slot5 = 288;
+    public DrumMagPID() {
+        requires(Robot.drummag);
 
-      //Shoot Setpoints (in degrees)
-      shootSlot1 = 180;
-      shootSlot2 = 252;
-      shootSlot3 = 324;
-      shootSlot4 = 36;
-      shootSlot5 = 108;
-
-      facingShooter = false;
-
-
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    Robot.drummag.setPoint(0);
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-
-    //Infeed button
-    boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
-
-    //Shooter button
-    boolean rotateToShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-
-      //Read Limit Switches
-    ballLimit1 = Robot.drummag.getSlotOccuppied(1);
-    ballLimit2 = Robot.drummag.getSlotOccuppied(2);
-    ballLimit3 = Robot.drummag.getSlotOccuppied(3);
-    ballLimit4 = Robot.drummag.getSlotOccuppied(4);
-    ballLimit5 = Robot.drummag.getSlotOccuppied(5);
-
-
-    //***Logic for Drum Mag rotation based on conditions***//
-
-    //Bring Slot 1 to face Infeed
-    if(rotateToInfeed) {
-        Robot.drummag.setPoint(slot1); //Set back to 0 degrees
         facingShooter = false;
-        
+
     }
 
-    //Logic for determining when to turn to the next slot when infeeding
-    //Maybe change to else if
-    if((ballLimit1 = true) && Robot.drummag.getCurrentSlot() == 1){ //Turn to slot 2 when ball is in slot 1     
-        Robot.drummag.setPoint(slot2);
-    }
-    if((ballLimit2 = true) && Robot.drummag.getCurrentSlot() == 2){ //Turn to slot 3 when ball is in slot 2     
-        Robot.drummag.setPoint(slot3);
-    }
-    if((ballLimit3 = true) && Robot.drummag.getCurrentSlot() == 3){ //Turn to slot 4 when ball is in slot 3     
-        Robot.drummag.setPoint(slot4);
-    }  
-    if((ballLimit4 = true) && Robot.drummag.getCurrentSlot() == 4){ //Turn to slot 5 when ball is in slot 4     
-        Robot.drummag.setPoint(slot5);
-    }
-    if((ballLimit5 = true) && (ballLimit1 = !true) && Robot.drummag.getCurrentSlot() == 5) {
-        Robot.drummag.setPoint(slot1);
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        Robot.drummag.setPoint(0);
     }
 
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
 
-    //Bring Slot 1 to face Shooter
-    if(rotateToShooter) {
-        Robot.drummag.setPoint(shootSlot1); //Set to 180 degrees
-        facingShooter = true;
-    }    
+        // Infeed button
+        boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
 
-    //Logic for determining when to turn to the next slot when shooting
-    if((ballLimit1 = false) && (facingShooter = true)){ //Turn to slot 2 when ball leaves slot 1     
-        Robot.drummag.setPoint(shootSlot2);
+        // Shooter button
+        boolean rotateToShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+
+        // Read Limit Switches
+        boolean[] ballLimitArray = new boolean[] { Robot.drummag.getSlotOccuppied(1), Robot.drummag.getSlotOccuppied(2),
+                Robot.drummag.getSlotOccuppied(3), Robot.drummag.getSlotOccuppied(4),
+                Robot.drummag.getSlotOccuppied(5) };
+
+        // ***Logic for Drum Mag rotation based on conditions***//
+
+        // Bring Slot 1 to face Infeed
+        if (rotateToInfeed) {
+            Robot.drummag.setPoint(infeedSlots[0]); // Set back to 0 degrees
+            facingShooter = false;
+
+        }
+
+        // Logic for determining when to turn to the next slot when infeeding
+        if (!facingShooter && ballLimitArray[4]) {
+            Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when all slots are full again
+            facingShooter = true;
+        }
+
+        else if (!facingShooter) {
+            for (int x = 0; x < infeedSlots.length; x++) {
+                if (withinRange(Robot.drummag.getMagAngle(), infeedSlots[x], 4) && ballLimitArray[x]) {
+                    Robot.drummag.setPoint(shooterSlots[x]);
+                }
+            }
+
+
+            // Bring Slot 1 to face Shooter
+            if (rotateToShooter) {
+                Robot.drummag.setPoint(shooterSlots[0]); // Set to 180 degrees
+                facingShooter = true;
+            }
+
+            // Logic for determining when to turn to the next slot when shooting
+            if (facingShooter && (!ballLimitArray[4])) {
+                Robot.drummag.setPoint(infeedSlots[0]); // Set back to face infeed when all slots are empty again
+                facingShooter = false;
+            }
+
+            else if (facingShooter) {
+                for (int x = 0; x < shooterSlots.length; x++) {
+                    if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x], 4)) {
+                        Robot.drummag.ballPuncher.set(true);
+                        Robot.drummag.ballPuncher.set(false);
+                        Robot.drummag.setPoint(shooterSlots[x]);
+                    }
+                }
+            }
+
+        }
     }
-    if((ballLimit2 = false) &&  (facingShooter = true)){ //Turn to slot 3 when ball leaves slot 2     
-        Robot.drummag.setPoint(shootSlot3);
+
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return Robot.drummag.onTarget();
     }
-    if((ballLimit3 = false) && (facingShooter = true)){ //Turn to slot 4 when ball leaves slot 3     
-        Robot.drummag.setPoint(shootSlot4);
-    }  
-    if((ballLimit4 = false) && (facingShooter = true)){ //Turn to slot 5 when ball leaves slot 4     
-        Robot.drummag.setPoint(shootSlot5);
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
     }
-    if((ballLimit5 = false) && (ballLimit1 = true) && (facingShooter = true)) {
-        Robot.drummag.setPoint(shootSlot1);
-    } 
 
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 
-    
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return Robot.drummag.onTarget();
-  }
+    private boolean withinRange(double actual, double target, double error) {
+        return Math.abs(actual - target) < error;
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    }
 }
