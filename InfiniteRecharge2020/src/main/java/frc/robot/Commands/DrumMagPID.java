@@ -24,12 +24,8 @@ public class DrumMagPID extends Command {
     int[] infeedSlots = new int[] { 0, 72, 144, 216, 288 }; // Pickup Setpoints (in degrees)
     int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 };
 
-    public boolean facingShooter;
-
     public DrumMagPID() {
         requires(Robot.drummag);
-
-        facingShooter = false;
 
     }
 
@@ -61,16 +57,16 @@ public class DrumMagPID extends Command {
         // ***Logic for Drum Mag rotation based on conditions***//
 
         // Bring Slot 1 to face Infeed through button
-        if (rotateToInfeed) {
+        if (rotateToInfeed && (ballLimitArray[0] == false && ballLimitArray[4] == false)) {
             Robot.drummag.setPoint(infeedSlots[0]); // Set back to 0 degrees
-            facingShooter = false;
+            Robot.drummag.swapMode();
         }
 
         // Logic for determining when to turn to the next slot when infeeding
         
         //Runs through each value of the array for limit swithces, checking if each is 'true' through each iteration.
             //Once end is reached, and all balls are in, automatically switch to shooter
-        if (!facingShooter) {
+        if (Robot.drummag.getMode() == false) {
             for (int x = 0; x < infeedSlots.length; x++) {
                 if (withinRange(Robot.drummag.getMagAngle(), infeedSlots[x], 3) && ballLimitArray[x]) {
                     if ((x + 1) < 5){
@@ -78,31 +74,31 @@ public class DrumMagPID extends Command {
                     }
                     else if (ballLimitArray[4] & ballLimitArray[0]){
                         Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when slots are full
-                        facingShooter = true;
+                        Robot.drummag.swapMode();
                     }
                 }
             }
         }
 
         // Bring Slot 1 to face Shooter through button
-        if (rotateToShooter) {
+        if (rotateToShooter && (Robot.drummag.getMode() == false)) {
             Robot.drummag.setPoint(shooterSlots[0]); // Set to 180 degrees
-            facingShooter = true;
+            Robot.drummag.swapMode();
         }
 
         //If shooting override is pressed, turn to face infeed and stop shooting process. 
         //Meant to ensure DrumMag and ballPuncher won't keep going when unwanted 
             //The 'If' statement above will restart shooting process.
-        if (cancelShooter) { 
+        if (cancelShooter && (Robot.drummag.getMode() == true)) { 
             Robot.drummag.setPoint(infeedSlots[0]);
-            facingShooter = false;
+            Robot.drummag.swapMode();
         }
 
         // Logic for determining when to turn to the next slot when shooting
             
         //Runs through each value of the array for limit switches, checking if each is 'false' through each iteration. 
             //Once end is reached, and all balls are out, automatically switch back to infeed.
-        if (facingShooter) {  
+        if (Robot.drummag.getMode() == true) {  
             for (int x = 0; x < shooterSlots.length; x++) {
                 if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x], 3) && ballLimitArray[x]) {
                     if (ballPunch) {
@@ -116,7 +112,7 @@ public class DrumMagPID extends Command {
                             }
                             else if (!ballLimitArray[4] & !ballLimitArray[0]) {
                                 Robot.drummag.setPoint(infeedSlots[0]); // Set back to face infeed when slots are empty
-                                facingShooter = false;
+                                Robot.drummag.swapMode();
                             }
                         }
                     }                 

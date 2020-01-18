@@ -32,7 +32,9 @@ public class DrumMag extends Subsystem {
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
 
   private boolean magazinePidEnabled;
+
   private boolean facingShooter;
+
   private int loopIndex, slotIndex;
 
   private double magazine_kF = 0;
@@ -109,13 +111,17 @@ public class DrumMag extends Subsystem {
     // getClosedLoopT gets the desired angle
   }
 
-  public void swapMode(){
-    if(!facingShooter){
+  public void swapMode(){ //Combined method for indicating which way the drummag is facing
+    if(facingShooter == false){
       facingShooter = true;
     }
-    else if(facingShooter){
+    else if(facingShooter == true){
       facingShooter = false;
     }
+  }
+
+  public boolean getMode(){
+      return facingShooter;
   }
 
   // Potential limit switch for Magazine rotation
