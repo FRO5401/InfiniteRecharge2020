@@ -64,15 +64,16 @@ public class DrumMagPID extends Command {
         }
 
         // Logic for determining when to turn to the next slot when infeeding
-        if (!facingShooter && ballLimitArray[4]) {
-            Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when all slots are full again
-            facingShooter = true;
-        }
-
         else if (!facingShooter) {
             for (int x = 0; x < infeedSlots.length; x++) {
                 if (withinRange(Robot.drummag.getMagAngle(), infeedSlots[x], 4) && ballLimitArray[x]) {
-                    Robot.drummag.setPoint(shooterSlots[x]);
+                    if ((x + 1) < 5){
+                        Robot.drummag.setPoint(shooterSlots[x + 1]);
+                    }
+                    else if (ballLimitArray[4]){
+                        Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when all slots are full again
+                        facingShooter = true;
+                    }
                 }
             }
 
@@ -91,14 +92,27 @@ public class DrumMagPID extends Command {
 
             else if (facingShooter) {
                 for (int x = 0; x < shooterSlots.length; x++) {
-                    if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x], 4)) {
+                    if (withinRange(Robot.drummag.getMagAngle(), shooterSlots[x], 4) && ballLimitArray[x]) {
                         Robot.drummag.ballPuncher.set(true);
-                        Robot.drummag.ballPuncher.set(false);
-                        Robot.drummag.setPoint(shooterSlots[x]);
+                        if (!ballLimitArray[x]){
+                            //Add wait command (1 second for now)
+                            Robot.drummag.ballPuncher.set(false);
+                            //Add wait command to allow ball to shoot (try 5 seconds)
+                            if((x + 1) < 5) {
+                                Robot.drummag.setPoint(shooterSlots[x + 1]);
+                            }
+                            else if(!ballLimitArray[4]) {
+                                Robot.drummag.setPoint(infeedSlots[0]);
+                                facingShooter = false;
+                            }
+                        }
+                        else if (!ballLimitArray[4]){
+                            Robot.drummag.setPoint(infeedSlots[0]); // Set back to face infeed when all slots are empty again
+                            facingShooter = false;
+                        }
                     }
                 }
             }
-
         }
     }
 
