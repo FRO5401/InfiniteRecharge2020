@@ -92,7 +92,7 @@ public class Turret extends Subsystem {
     {
       rotateTurretLeft();
     }
-    else if (!onTarget && distanceInDegrees <= 0)
+    else if (!onTarget && distanceInDegrees < 0)
     {
       rotateTurretRight();
     }
@@ -166,7 +166,7 @@ public class Turret extends Subsystem {
 
   //Will report the necessary data to shuffleboard/
   public void reportTurretInfeedSensors(){
-    SmartDashboard.putBoolean("Top Limit Infeed", getLimitLeft());
+    SmartDashboard.putBoolean("Left Limit Turret", getLimitLeft());
     SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());
     SmartDashboard.putNumber("Turret Direction", turretMotor.getSpeed());
   }
