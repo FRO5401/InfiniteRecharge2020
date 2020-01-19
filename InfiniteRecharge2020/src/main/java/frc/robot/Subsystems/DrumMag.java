@@ -46,15 +46,15 @@ public class DrumMag extends Subsystem {
 
   public DrumMag() {
 
-    facingShooter = false;
+    facingShooter = false; // default facing infeed
 
     loopIndex = 0;
     slotIndex = 0;
 
-    //Speed controller for the drum mag
+    // Speed Controller
     magazineSRX = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
-    //Solenoid
+    // Solenoid
     ballPuncher = new Solenoid(RobotMap.MAGAZINE_BALL_PUNCHER_CHANNEL);
 
     // Limits
@@ -88,7 +88,6 @@ public class DrumMag extends Subsystem {
   public void initDefaultCommand() {
   }
    
-
   // magazine Stopped with PID/Interrupted
   public void magazineStop() {
   }
@@ -98,7 +97,6 @@ public class DrumMag extends Subsystem {
     double setPointNativeUnits = setPoint / (RobotMap.MAGAZINE_ANGLE_PER_PULSE);
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
   }
-
 
   public boolean onTarget() {
     // Method returns true if on target
@@ -115,9 +113,8 @@ public class DrumMag extends Subsystem {
   
     //Getting current slot that is facing the infeed
      /* 
-        Slot that would be facing either infeed or shooter. 
         **If on integer from 1-5, will be facing infeed
-        **If one 0.5 value, will be facing shooter
+        **If on a .5 value, will be facing shooter
       Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
       */
     public int getCurrentSlot() {
@@ -125,7 +122,6 @@ public class DrumMag extends Subsystem {
       return slot;
     }
 
-  // Potential limit switch for Magazine rotation
   public boolean getSlotOccuppied(int slot) {
 
     boolean status = false;
@@ -149,7 +145,6 @@ public class DrumMag extends Subsystem {
     default:
       System.out.print("Doin yourmom");
     }
-
     return status;
   }
 
@@ -224,7 +219,7 @@ public class DrumMag extends Subsystem {
   //Checks to make sure slot is within reasonable distance from target
   private boolean withinRange(double actual, double target) {
     return Math.abs(actual - target) < (RobotMap.MAG_ERROR_TOLERANCE); //2 degrees
-}
+  }
 
   public void reportDrumMagSensors() {
     SmartDashboard.putBoolean("Slot 1 Status", getSlotOccuppied(1));
@@ -235,7 +230,11 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getCurrentSlot());
-    SmartDashboard.putBoolean("Ready to Shoot", getMode());
-    SmartDashboard.putBoolean("Ready to Infeed", !getMode());  
+    if(getMode() == true) {
+      SmartDashboard.putBoolean("Ready to Shoot", getMode());
+    }
+    else if(getMode() == false) {
+      SmartDashboard.putBoolean("Ready to Infeed", getMode());
+    }  
   }
 }

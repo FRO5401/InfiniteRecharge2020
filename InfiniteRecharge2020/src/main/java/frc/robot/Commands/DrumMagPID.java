@@ -54,7 +54,7 @@ public class DrumMagPID extends Command {
         if (rotateToInfeed && (ballLimitArray[0] == false && ballLimitArray[4] == false)) {
             Robot.drummag.rotateToInfeed();
         }
-        if (Robot.drummag.getMode() == false) {
+        if (Robot.drummag.getMode() == false) { //If in 'facing infeed' mode, run through the method in 'DM' for filling
             Robot.drummag.infeedBalls();
         }
 
@@ -62,7 +62,7 @@ public class DrumMagPID extends Command {
         if (rotateToShooter && (Robot.drummag.getMode() == false)) {
             Robot.drummag.rotateToShooter();
         }
-        if (Robot.drummag.getMode() == true) {  
+        if (Robot.drummag.getMode() == true) { //if in 'facing shooter' mode, run through the method in 'DM' for emptying
             Robot.drummag.shootBalls();
         }
 
