@@ -27,6 +27,9 @@ public class DrumMag extends Subsystem {
   TalonSRX magazineSRX;
   public Solenoid ballPuncher;
 
+  int[] infeedSlots = new int[] { 0, 72, 144, 216, 288 }; // Pickup Setpoints (in degrees)
+  int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 }; // Shooting Setpoints (in degrees)
+
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
 
   private boolean facingShooter;
@@ -102,18 +105,22 @@ public class DrumMag extends Subsystem {
     // getClosedLoopT gets the desired angle
   }
 
-  public void swapMode(){ //Combined method for indicating which way the drummag is facing
-    if(facingShooter == false){
-      facingShooter = true;
+    //Getting current angle in actual degrees
+    public double getMagAngle() {
+      return (magazineSRX.getSensorCollection().getQuadraturePosition() * (RobotMap.MAGAZINE_ANGLE_PER_PULSE));
     }
-    else if(facingShooter == true){
-      facingShooter = false;
+  
+    //Getting current slot that is facing the infeed
+     /* 
+        Slot that would be facing either infeed or shooter. 
+        **If on integer from 1-5, will be facing infeed
+        **If one 0.5 value, will be facing shooter
+      Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
+      */
+    public int getCurrentSlot() {
+      int slot = (int) (getMagAngle() / 72) + 1;
+      return slot;
     }
-  }
-
-  public boolean getMode(){
-      return facingShooter;
-  }
 
   // Potential limit switch for Magazine rotation
   public boolean getSlotOccuppied(int slot) {
@@ -143,29 +150,35 @@ public class DrumMag extends Subsystem {
     return status;
   }
 
-  //Getting current angle in actual degrees
-  public double getMagAngle() {
-    return (magazineSRX.getSensorCollection().getQuadraturePosition() * (RobotMap.MAGAZINE_ANGLE_PER_PULSE));
-  }
-
-  //Getting current slot that is facing the infeed
-   /* 
-      Slot that would be facing either infeed or shooter. 
-      **If on integer from 1-5, will be facing infeed
-      **If one 0.5 value, will be facing shooter
-    Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
-    */
-  public int getCurrentSlot() {
-    int slot = (int) (getMagAngle() / 72) + 1;
-    return slot;
-  }
-
   public void punchBall() {
     ballPuncher.set(true);
   }
 
   public void retractPuncher(){
     ballPuncher.set(false);
+  }
+
+  public void rotateToInfeed(){
+    setPoint(infeedSlots[0]);
+    swapMode();
+  }
+
+  public void rotateToShooter(){
+    setPoint(shooterSlots[0]);
+    swapMode();
+  }
+
+  public void swapMode(){ //Combined method for indicating which way the drummag is facing
+    if(facingShooter == false){
+      facingShooter = true;
+    }
+    else if(facingShooter == true){
+      facingShooter = false;
+    }
+  }
+
+  public boolean getMode(){
+      return facingShooter;
   }
 
   public void reportDrumMagSensors() {

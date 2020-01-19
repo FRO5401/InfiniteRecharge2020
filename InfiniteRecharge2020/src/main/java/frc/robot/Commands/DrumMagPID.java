@@ -49,16 +49,13 @@ public class DrumMagPID extends Command {
         // Ball Puncher button
         boolean ballPunch = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
         // Stop shooting button
-        boolean cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-
-        
+        boolean cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);  
 
         // ***Logic for Drum Mag rotation based on conditions***//
 
         // Bring Slot 1 to face Infeed through button
         if (rotateToInfeed && (ballLimitArray[0] == false && ballLimitArray[4] == false)) {
-            Robot.drummag.setPoint(infeedSlots[0]); // Set back to 0 degrees
-            Robot.drummag.swapMode();
+            Robot.drummag.rotateToInfeed();
         }
 
         // Logic for determining when to turn to the next slot when infeeding
@@ -72,8 +69,7 @@ public class DrumMagPID extends Command {
                         Robot.drummag.setPoint(shooterSlots[x + 1]);
                     }
                     else if (ballLimitArray[4] && ballLimitArray[0]){
-                        Robot.drummag.setPoint(shooterSlots[0]); // Set back to face shooter when slots are full
-                        Robot.drummag.swapMode();
+                        Robot.drummag.rotateToShooter();
                     }
                 }
             }
@@ -81,16 +77,7 @@ public class DrumMagPID extends Command {
 
         // Bring Slot 1 to face Shooter through button
         if (rotateToShooter && (Robot.drummag.getMode() == false)) {
-            Robot.drummag.setPoint(shooterSlots[0]); // Set to 180 degrees
-            Robot.drummag.swapMode();
-        }
-
-        //If shooting override is pressed, turn to face infeed and stop shooting process. 
-        //Meant to ensure DrumMag and ballPuncher won't keep going when unwanted 
-            //The 'If' statement above will restart shooting process.
-        if (cancelShooter && (Robot.drummag.getMode() == true)) { 
-            Robot.drummag.setPoint(infeedSlots[0]);
-            Robot.drummag.swapMode();
+            Robot.drummag.rotateToShooter();
         }
 
         // Logic for determining when to turn to the next slot when shooting
@@ -110,13 +97,18 @@ public class DrumMagPID extends Command {
                                 Robot.drummag.setPoint(shooterSlots[x + 1]);
                             }
                             else if (!ballLimitArray[4] && !ballLimitArray[0]) {
-                                Robot.drummag.setPoint(infeedSlots[0]); // Set back to face infeed when slots are empty
-                                Robot.drummag.swapMode();
+                                Robot.drummag.rotateToInfeed();
                             }
                         }
                     }                 
                 }
             }
+        }
+
+            //If shooting override is pressed, turn to face infeed and stop shooting process. 
+        //Meant to ensure DrumMag and ballPuncher won't keep going when unwanted 
+        if (cancelShooter && (Robot.drummag.getMode() == true)) { 
+            Robot.drummag.rotateToInfeed();
         }
     }
 
