@@ -94,11 +94,11 @@ public class DrumMag extends Subsystem {
   }
 
   public void ejectSolenoid(){
-    cellEjector.set(true);
+    cellEjectorSolenoid.set(true);
   }
 
   public void retractSolenoid(){
-    cellEjector.set(false);
+    cellEjectorSolenoid.set(false);
   }
 
   public void setIncomingFrom(){
