@@ -30,7 +30,10 @@ public class DrumMag extends Subsystem {
   int[] infeedSlots = new int[] { 0, 72, 144, 216, 288 }; // Pickup Setpoints (in degrees)
   int[] shooterSlots = new int[] { 180, 252, 324, 36, 108 }; // Shooting Setpoints (in degrees)
 
-  DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
+  boolean[] ballLimitArray = new boolean[] {getSlotOccuppied(1), getSlotOccuppied(2),
+    getSlotOccuppied(3), getSlotOccuppied(4), getSlotOccuppied(5)}; //Limit switch values for logic
+
+  DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5; //Actual limit switches
 
   private boolean facingShooter;
 
@@ -181,6 +184,48 @@ public class DrumMag extends Subsystem {
       return facingShooter;
   }
 
+  // Logic for determining when to turn to the next slot when infeeding
+    //Runs through each value of the array for limit swithces, checking if each is 'true' through each iteration.
+    //Once end is reached, and all balls are in, automatically switch to shooter
+  public void infeedBalls(){
+    for (int x = 0; x < infeedSlots.length; x++) {
+      if (withinRange(getMagAngle(), infeedSlots[x]) && (ballLimitArray[x] == false)) {
+        if ((ballLimitArray[4] == true) && (ballLimitArray[0] == true)){ //If all slots full, switch to shooter
+          rotateToShooter();
+        }
+        else if ((x + 1) < 5){ //If not at last slot, keep rotating
+          setPoint(shooterSlots[x + 1]);
+        }
+      }
+    }
+  }
+
+  // Logic for determining when to turn to the next slot when shooting     
+    //Runs through each value of the array for limit switches, checking if each is 'false' through each iteration. 
+    //Once end is reached, and all balls are out, automatically switch back to infeed.
+  public void shootBalls(){
+    for (int x = 0; x < shooterSlots.length; x++) {
+      if (withinRange(getMagAngle(), shooterSlots[x]) && ballLimitArray[x]) { //TODO: Make sure vision is targeting also 
+        if (!ballLimitArray[x]){  
+          //Add wait command to ensure ball is out when puncher is activated(1 second for now)                          
+          retractPuncher();
+          //wait command to ensure retraction (try 2 seconds). Don't want turning too early.
+          if ((ballLimitArray[4] == false) && (ballLimitArray[0] == false)) { //If all slots empty, switch to infeed
+            rotateToInfeed();
+          }
+          else if ((x + 1) < 5) { //If not at last slot, keep rotating
+            setPoint(shooterSlots[x + 1]);
+          }
+        }                     
+      }
+    }
+  }
+
+  //Checks to make sure slot is within reasonable distance from target
+  private boolean withinRange(double actual, double target) {
+    return Math.abs(actual - target) < (RobotMap.MAG_ERROR_TOLERANCE); //2 degrees
+}
+
   public void reportDrumMagSensors() {
     SmartDashboard.putBoolean("Slot 1 Status", getSlotOccuppied(1));
     SmartDashboard.putBoolean("Slot 2 Status", getSlotOccuppied(2));
@@ -191,6 +236,6 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putNumber("Current Angle", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getCurrentSlot());
     SmartDashboard.putBoolean("Ready to Shoot", getMode());
-   
+    SmartDashboard.putBoolean("Ready to Infeed", !getMode());  
   }
 }
