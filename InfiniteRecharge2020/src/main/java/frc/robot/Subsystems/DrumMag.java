@@ -9,9 +9,6 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-//import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -20,32 +17,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
-/**
- * Add your docs here.
- */
 public class DrumMag extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
   TalonSRX magazineSRX;
-  public Solenoid ballPuncher;
+  public Solenoid cellEjectorSolenoid;
 
-  DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5;
+  public DigitalInput cellLimit1, cellLimit2, cellLimit3, cellLimit4, cellLimit5;
 
-  private boolean magazinePidEnabled;
-  private boolean facingShooter;
   private int loopIndex, slotIndex;
+  public String incomingFrom;
 
   private double magazine_kF = 0;
   private double magazine_kP = 0;
   private double magazine_kI = 0;
   private double magazine_kD = 0;
+  private double infeedPositionPID, shooterPositionPID;
 
-  // FIND LATER
-  public double MAGAZINE_ANGLE_PER_PULSE = 0;
+  //TODO: GOES INTO ROBOTMAP
+  double nativeUnitsForOneCell;
 
   public DrumMag() {
-
-    facingShooter = false;
 
     loopIndex = 0;
     slotIndex = 0;
@@ -54,14 +45,14 @@ public class DrumMag extends Subsystem {
     magazineSRX = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     //Solenoid
-    ballPuncher = new Solenoid(RobotMap.MAGAZINE_BALL_PUNCHER_CHANNEL);
+    cellEjectorSolenoid = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_CHANNEL);
 
     // Limits
-    ballLimit1 = new DigitalInput(RobotMap.REVOLVER_STOP_1);
-    ballLimit2 = new DigitalInput(RobotMap.REVOLVER_STOP_2);
-    ballLimit3 = new DigitalInput(RobotMap.REVOLVER_STOP_3);
-    ballLimit4 = new DigitalInput(RobotMap.REVOLVER_STOP_4);
-    ballLimit5 = new DigitalInput(RobotMap.REVOLVER_STOP_5);
+    cellLimit1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
+    cellLimit2 = new DigitalInput(RobotMap.MAGAZINE_STOP_2);
+    cellLimit3 = new DigitalInput(RobotMap.MAGAZINE_STOP_3);
+    cellLimit4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
+    cellLimit5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
     magazineSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     // 10 is a timeout that waits for successful conection to sensor
@@ -85,21 +76,14 @@ public class DrumMag extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-  }
-   
-
-  // magazine Stopped with PID/Interrupted
-  public void magazineStop() {
-    magazinePidEnabled = false;
+  
   }
 
   // Sets the point to which the magazine will move
   public void setPoint(double setPoint) {
-    double setPointNativeUnits = setPoint / MAGAZINE_ANGLE_PER_PULSE;
+    double setPointNativeUnits = setPoint / RobotMap.MAGAZINE_ANGLE_PER_PULSE;
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
-    magazinePidEnabled = true;
   }
-
 
   public boolean onTarget() {
     // Method returns true if on target
@@ -109,77 +93,85 @@ public class DrumMag extends Subsystem {
     // getClosedLoopT gets the desired angle
   }
 
-  public void swapMode(){
-    if(!facingShooter){
-      facingShooter = true;
+  public void ejectSolenoid(){
+    cellEjector.set(true);
+  }
+
+  public void retractSolenoid(){
+    cellEjector.set(false);
+  }
+
+  public void setIncomingFrom(){
+    if(incomingFrom.equals("infeed")){
+      incomingFrom = "shooter";
+      setPoint(shooterPositionPID);
     }
-    else if(facingShooter){
-      facingShooter = false;
+    
+    if(incomingFrom.equals("shooter")){
+      incomingFrom = "infeed";
+      setPoint(infeedPositionPID);
     }
   }
 
-  // Potential limit switch for Magazine rotation
-  public boolean getSlotOccuppied(int slot) {
+  public void rotateOneSlot(){
+    double position = magazineSRX.getSensorCollection().getQuadraturePosition();
+    setPoint(position + nativeUnitsForOneCell);
+  }
+
+  public String getIncomingFrom(){
+    return incomingFrom;
+  }
+
+  //Tells Operator amount of ammo
+  public int getSlotPosition(){
+     
+    int slotPosition = 0;
 
     boolean status = false;
 
-    switch (slot) {
-    case 1:
-      status = ballLimit1.get();
-      break;
-    case 2:
-      status = ballLimit2.get();
-      break;
-    case 3:
-      status = ballLimit3.get();
-      break;
-    case 4:
-      status = ballLimit4.get();
-      break;
-    case 5:
-      status = ballLimit5.get();
-      break;
-    default:
-      System.out.print("Doin yourmom");
+    if(incomingFrom.equals("infeed")){
+      status = false;
+    } else if (incomingFrom.equals("shooter")){
+      status = true;
     }
 
-    return status;
+    if(cellLimit1.get() == status){
+      slotPosition = 1;
+    }
+    else if(cellLimit2.get() == status){
+      slotPosition = 2;
+    }
+    else if(cellLimit3.get() == status){
+      slotPosition = 3;
+    }
+    else if(cellLimit4.get() == status){
+      slotPosition = 4;
+    }
+    else if(cellLimit4.get() == !status){
+      slotPosition = 5;
+    }
+    else {
+      System.out.print("getSlotPosition Error");
+    }
+
+    return slotPosition;
   }
 
   //Getting current angle in actual degrees
-  public double getMagAngle() {
-    return (magazineSRX.getSensorCollection().getQuadraturePosition() * MAGAZINE_ANGLE_PER_PULSE);
+  public double getMagazineAngle() {
+    return (magazineSRX.getSensorCollection().getQuadraturePosition() * RobotMap.MAGAZINE_ANGLE_PER_PULSE);
   }
 
-  //Getting current slot that is facing the infeed
-   /* 
-      Slot that would be facing either infeed or shooter. 
-      **If on integer from 1-5, will be facing infeed
-      **If one 0.5 value, will be facing shooter
-    Angle/72 because total angle of circle is 360, and there are 5 slots, +1 to account for physical position.
-    */
-  public int getCurrentSlot() {
-    int slot = (int) (getMagAngle() / 72) + 1;
-    return slot;
-  }
-
-  public void punchBall() {
-    ballPuncher.set(true);
-  }
-
-  public void retractPuncher(){
-    ballPuncher.set(false);
-  }
-
-  public void reportElevatorSensors() {
-    SmartDashboard.putBoolean("Slot 1 Status", getSlotOccuppied(1));
-    SmartDashboard.putBoolean("Slot 2 Status", getSlotOccuppied(2));
-    SmartDashboard.putBoolean("Slot 3 Status", getSlotOccuppied(3));
-    SmartDashboard.putBoolean("Slot 4 Status", getSlotOccuppied(4));
-    SmartDashboard.putBoolean("Slot 5 Status", getSlotOccuppied(5));
+  public void reportDrumMagSensors() {
+    SmartDashboard.putBoolean("Cell 1 Status", cellLimit1.get());
+    SmartDashboard.putBoolean("Cell 2 Status", cellLimit2.get());
+    SmartDashboard.putBoolean("Cell 3 Status", cellLimit3.get());
+    SmartDashboard.putBoolean("Cell 4 Status", cellLimit4.get());
+    SmartDashboard.putBoolean("Cell 5 Status", cellLimit5.get());
+    SmartDashboard.putNumber("Amount of Power Cells", getSlotPosition());
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
-    SmartDashboard.putNumber("Current Angle", getMagAngle());
-    SmartDashboard.putNumber("Current Slot", getCurrentSlot());
+    SmartDashboard.putNumber("Current Angle", getMagazineAngle());
+    SmartDashboard.putString("Shooter/Infeed Mode", getIncomingFrom());
    
   }
 }

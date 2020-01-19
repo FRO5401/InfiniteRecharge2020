@@ -46,11 +46,11 @@ public class RobotMap {
   public static final double MAGAZINE_SPEED_SENSITIVITY = .5;
 
   // Limits
-  public static final int REVOLVER_STOP_1 = 0;
-  public static final int REVOLVER_STOP_2 = 0;
-  public static final int REVOLVER_STOP_3 = 0;
-  public static final int REVOLVER_STOP_4 = 0;
-  public static final int REVOLVER_STOP_5 = 0;
+  public static final int MAGAZINE_STOP_1 = 0;
+  public static final int MAGAZINE_STOP_2 = 0;
+  public static final int MAGAZINE_STOP_3 = 0;
+  public static final int MAGAZINE_STOP_4 = 0;
+  public static final int MAGAZINE_STOP_5 = 0;
 
   /*** Operator Interfaces ***/
   // Controllers
@@ -106,8 +106,8 @@ public class RobotMap {
   public static final int ELEVATOR_COLLAPSE_TOP = 5;
   public static final int ELEVATOR_COLLAPSE_BOTTOM = 1;
 
-  // Ball Puncher
-  public static final int MAGAZINE_BALL_PUNCHER_CHANNEL = 2;
+  // Power Cell Ejection
+  public static final int MAGAZINE_CELL_EJECTOR_CHANNEL = 2;
 
   /*** Sensors ***/
   // Encoders
