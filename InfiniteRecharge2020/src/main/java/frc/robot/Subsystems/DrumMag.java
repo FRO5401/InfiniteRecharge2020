@@ -35,7 +35,7 @@ public class DrumMag extends Subsystem {
 
   DigitalInput ballLimit1, ballLimit2, ballLimit3, ballLimit4, ballLimit5; //Actual limit switches
 
-  private boolean facingShooter;
+  private String currentMode;
 
   private int loopIndex, slotIndex;
 
@@ -46,7 +46,7 @@ public class DrumMag extends Subsystem {
 
   public DrumMag() {
 
-    facingShooter = false; // default facing infeed
+    currentMode = "Infeed"; // default facing infeed
 
     loopIndex = 0;
     slotIndex = 0;
@@ -167,16 +167,16 @@ public class DrumMag extends Subsystem {
   }
 
   public void swapMode(){ //Combined method for indicating which way the drummag is facing
-    if(facingShooter == false){
-      facingShooter = true;
+    if(currentMode == "Infeed"){
+      currentMode = "Shooter";
     }
-    else if(facingShooter == true){
-      facingShooter = false;
+    else if(currentMode == "Shooter"){
+      currentMode = "Infeed";
     }
   }
 
-  public boolean getMode(){
-      return facingShooter;
+  public String getMode(){
+      return currentMode;
   }
 
   // Logic for determining when to turn to the next slot when infeeding
@@ -184,13 +184,16 @@ public class DrumMag extends Subsystem {
     //Once end is reached, and all balls are in, automatically switch to shooter
   public void infeedBalls(){
     for (int x = 0; x < infeedSlots.length; x++) {
-      if (withinRange(getMagAngle(), infeedSlots[x]) && (ballLimitArray[x] == false)) {
-        if ((ballLimitArray[4] == true) && (ballLimitArray[0] == true)){ //If all slots full, switch to shooter
+      if (withinRange(getMagAngle(), infeedSlots[x]) && ballLimitArray[x] == true) {
+        if ((ballLimitArray[0] == true) && (ballLimitArray[1] == true) && (ballLimitArray[2] == true) && (ballLimitArray[3] == true) && (ballLimitArray[4] == true)){ //If all slots full, switch to shooter
           rotateToShooter();
         }
         else if ((x + 1) < 5){ //If not at last slot, keep rotating
-          setPoint(shooterSlots[x + 1]);
+          setPoint(infeedSlots[x + 1]);
         }
+      }
+      else if(ballLimitArray[x] == false) {
+        x = x-1; //Prevents the loop from restarting and checking the other slots if they're already passed
       }
     }
   }
@@ -199,20 +202,21 @@ public class DrumMag extends Subsystem {
     //Runs through each value of the array for limit switches, checking if each is 'false' through each iteration. 
     //Once end is reached, and all balls are out, automatically switch back to infeed.
   public void shootBalls(){
-    for (int x = 0; x < shooterSlots.length; x++) {
-      if (withinRange(getMagAngle(), shooterSlots[x]) && ballLimitArray[x]) { //TODO: Make sure vision is targeting also 
-        if (!ballLimitArray[x]){  
-          //Add wait command to ensure ball is out when puncher is activated(1 second for now)                          
-          retractPuncher();
-          //wait command to ensure retraction (try 2 seconds). Don't want turning too early.
-          if ((ballLimitArray[4] == false) && (ballLimitArray[0] == false)) { //If all slots empty, switch to infeed
-            rotateToInfeed();
-          }
-          else if ((x + 1) < 5) { //If not at last slot, keep rotating
-            setPoint(shooterSlots[x + 1]);
-          }
-        }                     
-      }
+    for (int x = 0; x < shooterSlots.length; x++) { 
+      if (withinRange(getMagAngle(), shooterSlots[x]) && ballLimitArray[x] == false){ //TODO: Make sure vision is targeted also 
+        //Add wait command to ensure ball is out when puncher is activated(1 second for now)                          
+        retractPuncher();
+        //wait command to ensure retraction (try 2 seconds). Don't want turning too early.
+        if ((ballLimitArray[0] == false) && (ballLimitArray[1] == false) && (ballLimitArray[2] == false) && (ballLimitArray[3] == false) && (ballLimitArray[4] == false)) { //If all slots empty, switch to infeed
+          rotateToInfeed();
+        }
+        else if ((x + 1) < 5) { //If not at last slot, keep rotating
+          setPoint(shooterSlots[x + 1]);
+        }
+      }   
+      else if (ballLimitArray[x] == true) {
+        x = x-1; //Prevents the loop from restarting and checking the other slots if they're already passed
+      }                  
     }
   }
 
@@ -230,11 +234,6 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagAngle());
     SmartDashboard.putNumber("Current Slot", getCurrentSlot());
-    if(getMode() == true) {
-      SmartDashboard.putBoolean("Ready to Shoot", getMode());
-    }
-    else if(getMode() == false) {
-      SmartDashboard.putBoolean("Ready to Infeed", getMode());
-    }  
+    SmartDashboard.putString("Current Mode = ", getMode());
   }
 }

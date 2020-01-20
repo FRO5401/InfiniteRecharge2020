@@ -33,10 +33,6 @@ public class DrumMagPID extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
-        // Read Limit Switches constantly
-        boolean[] ballLimitArray = new boolean[] {Robot.drummag.getSlotOccuppied(1), Robot.drummag.getSlotOccuppied(2),
-            Robot.drummag.getSlotOccuppied(3), Robot.drummag.getSlotOccuppied(4), Robot.drummag.getSlotOccuppied(5)};
         
         // Infeed button
         boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
@@ -51,24 +47,24 @@ public class DrumMagPID extends Command {
         //***Logic for Drum Mag rotation based on conditions and 'DrumMag' methods***//
 
         // Bring Slot 1 to face Infeed through button
-        if (rotateToInfeed && (ballLimitArray[0] == false && ballLimitArray[4] == false)) {
+        if (rotateToInfeed && (Robot.drummag.getMode() == "Shooter")) { //If not already in infeed mode, switch to infeed
             Robot.drummag.rotateToInfeed();
         }
-        if (Robot.drummag.getMode() == false) { //If in 'facing infeed' mode, run through the method in 'DM' for filling
+        if (Robot.drummag.getMode() == "Infeed") { //If in infeed mode, run through the method in 'DM' for filling
             Robot.drummag.infeedBalls();
         }
 
         // Bring Slot 1 to face Shooter through button
-        if (rotateToShooter && (Robot.drummag.getMode() == false)) {
+        if (rotateToShooter && (Robot.drummag.getMode() == "Infeed")) { //If not already in shooter mode, switch to shooter
             Robot.drummag.rotateToShooter();
         }
-        if (Robot.drummag.getMode() == true) { //if in 'facing shooter' mode, run through the method in 'DM' for emptying
+        if (Robot.drummag.getMode() == "Shooter") { //if in shooter mode, run through the method in 'DM' for emptying
             Robot.drummag.shootBalls();
         }
 
         //If shooting override is pressed, turn to face infeed and stop shooting process. 
             //Meant to ensure DrumMag and ballPuncher won't keep going when unwanted 
-        if (cancelShooter && (Robot.drummag.getMode() == true)) { 
+        if (cancelShooter && (Robot.drummag.getMode() == "Shooter")) { //Must be in shooter mode to make sure drummag won't rotate back when already in infeed mode
             Robot.drummag.rotateToInfeed();
         }
 
