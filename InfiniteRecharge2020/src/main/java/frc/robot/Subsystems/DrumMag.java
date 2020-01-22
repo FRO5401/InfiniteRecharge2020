@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.RobotMap;
+import frc.robot.Commands.DrumMagPID;
 
 /**
  * Add your docs here.
@@ -68,7 +69,7 @@ public class DrumMag extends Subsystem {
     // 10 is a timeout that waits for successful conection to sensor
     magazineSRX.setSensorPhase(true);
 
-    magazineSRX.configAllowableClosedloopError(slotIndex, RobotMap.MAGAZINE_THRESHOLD_FOR_PID,
+    magazineSRX.configAllowableClosedloopError(slotIndex, RobotMap.MAG_THRESHOLD_DEGREES,
         RobotMap.TIMEOUT_LIMIT_IN_Ms);
 
     // Configuring the max & min percentage output.
@@ -86,6 +87,7 @@ public class DrumMag extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new DrumMagPID());
   }
    
   // magazine Stopped with PID/Interrupted
@@ -101,7 +103,7 @@ public class DrumMag extends Subsystem {
   public boolean onTarget() {
     // Method returns true if on target
     boolean onTarget = Math.abs(magazineSRX.getSensorCollection().getQuadraturePosition()
-        - magazineSRX.getClosedLoopTarget(loopIndex)) < RobotMap.MAGAZINE_THRESHOLD_FOR_PID;
+        - magazineSRX.getClosedLoopTarget(loopIndex)) < (RobotMap.MAG_THRESHOLD_DEGREES / RobotMap.MAGAZINE_ANGLE_PER_PULSE);
     return onTarget;
     // getClosedLoopT gets the desired angle
   }
@@ -184,7 +186,7 @@ public class DrumMag extends Subsystem {
     //Once end is reached, and all balls are in, automatically switch to shooter
   public void infeedBalls(){
     for (int x = 0; x < infeedSlots.length; x++) {
-      if (withinRange(getMagAngle(), infeedSlots[x]) && ballLimitArray[x] == true) {
+      if (withinRange(infeedSlots[x]) && ballLimitArray[x] == true) {
         if ((ballLimitArray[0] == true) && (ballLimitArray[1] == true) && (ballLimitArray[2] == true) && (ballLimitArray[3] == true) && (ballLimitArray[4] == true)){ //If all slots full, switch to shooter
           rotateToShooter();
         }
@@ -203,7 +205,7 @@ public class DrumMag extends Subsystem {
     //Once end is reached, and all balls are out, automatically switch back to infeed.
   public void shootBalls(){
     for (int x = 0; x < shooterSlots.length; x++) { 
-      if (withinRange(getMagAngle(), shooterSlots[x]) && ballLimitArray[x] == false){ //TODO: Make sure vision is targeted also 
+      if (withinRange(shooterSlots[x]) && ballLimitArray[x] == false){ //TODO: Make sure vision is targeted also 
         //Add wait command to ensure ball is out when puncher is activated(1 second for now)                          
         retractPuncher();
         //wait command to ensure retraction (try 2 seconds). Don't want turning too early.
@@ -221,8 +223,8 @@ public class DrumMag extends Subsystem {
   }
 
   //Checks to make sure slot is within reasonable distance from target
-  private boolean withinRange(double actual, double target) {
-    return Math.abs(actual - target) < (RobotMap.MAG_ERROR_TOLERANCE); //2 degrees
+  private boolean withinRange(double target) {
+    return Math.abs(getMagAngle() - target) < (RobotMap.MAG_THRESHOLD_DEGREES); //2 degrees
   }
 
   public void reportDrumMagSensors() {

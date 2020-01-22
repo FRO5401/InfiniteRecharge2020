@@ -22,12 +22,14 @@ public class DrumMagPID extends Command {
 
     public DrumMagPID() {
         requires(Robot.drummag);
+
+        //double target = Robot.drummag.getMagAngle() + (Robot.drummag.getMagAngle() % 36);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.drummag.setPoint(0);
+
     }
 
     // Called repeatedly when this Command is scheduled to run

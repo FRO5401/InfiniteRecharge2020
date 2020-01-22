@@ -42,9 +42,8 @@ public class RobotMap {
   // Magazine
   public static final int TIMEOUT_LIMIT_IN_Ms = 10;
   public static final double MAGAZINE_ANGLE_PER_PULSE = 0;
-  public static final int MAGAZINE_THRESHOLD_FOR_PID = 0;
   public static final double MAGAZINE_SPEED_SENSITIVITY = .5;
-  public static final double MAG_ERROR_TOLERANCE = 2;
+  public static final int MAG_THRESHOLD_DEGREES = 2;
 
   // Limits
   public static final int REVOLVER_STOP_1 = 0;
