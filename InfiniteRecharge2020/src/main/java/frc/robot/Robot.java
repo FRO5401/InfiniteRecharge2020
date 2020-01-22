@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Infeed;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +25,11 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  public static Infeed infeed;
+
+  //Always instantiate OI last.
+  public static OI oi;
+  
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -33,6 +39,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    infeed = new Infeed();
+    oi = new OI();
   }
 
   /**
