@@ -16,10 +16,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.Commands.DrumMagPID;
 
 public class DrumMag extends Subsystem {
 
-  TalonSRX magazineSRX;
+  public TalonSRX magazineSRX;
   public Solenoid cellEjectorSolenoid;
 
   public DigitalInput cellLimit1, cellLimit2, cellLimit3, cellLimit4, cellLimit5;
@@ -31,10 +32,13 @@ public class DrumMag extends Subsystem {
   private double magazine_kP = 0;
   private double magazine_kI = 0;
   private double magazine_kD = 0;
+  private double magazineRotationSpeed = 0;
   private double infeedPositionPID, shooterPositionPID;
 
+  public boolean magBoolean;
+
   //TODO: GOES INTO ROBOTMAP
-  double nativeUnitsForOneCell;
+  private double nativeUnitsForOneSlot;
 
   public DrumMag() {
 
@@ -77,7 +81,7 @@ public class DrumMag extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-  
+    setDefaultCommand(new DrumMagPID());
   }
 
   public void setPoint(double setPoint) {
@@ -98,17 +102,27 @@ public class DrumMag extends Subsystem {
   public void retractSolenoid(){
     cellEjectorSolenoid.set(false);
   }
-
   
   public void setMagMode(){
+
+
+      //TODO: SET CUSTOM SPEED (SLIGHTLER SLOWER) LATER OOOP
     if(magMode.equals("infeed")){
-      magMode = "shooter";
       setPoint(shooterPositionPID);
+      magMode = "shooter";
+      magBoolean = true;
+      magazineRotationSpeed = 0.0;
+      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
     
+    
+      //TODO: SET CUSTOM SPEED LATER OOOP
     if(magMode.equals("shooter")){
-      magMode = "infeed";
       setPoint(infeedPositionPID);
+      magMode = "infeed";
+      magBoolean = false;
+      magazineRotationSpeed = 1.0;
+      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
   }
 
@@ -116,36 +130,32 @@ public class DrumMag extends Subsystem {
     return magMode;
   }
 
+  public boolean getMagBoolean(){
+    return magBoolean;
+  }
+
   public void rotateOneSlot(){
     double position = magazineSRX.getSensorCollection().getQuadraturePosition();
-    setPoint(position + nativeUnitsForOneCell);
+    setPoint(position + nativeUnitsForOneSlot);
   }
 
   public int getSlotPosition(){
      
     int slotPosition = 0;
 
-    boolean status = false;
-
-    if(magMode.equals("infeed")){
-      status = false;
-    } else if (magMode.equals("shooter")){
-      status = true;
-    }
-
-    if(cellLimit1.get() == status){
+    if(cellLimit1.get() == magBoolean){
       slotPosition = 1;
     }
-    else if(cellLimit2.get() == status){
+    else if(cellLimit2.get() == magBoolean){
       slotPosition = 2;
     }
-    else if(cellLimit3.get() == status){
+    else if(cellLimit3.get() == magBoolean){
       slotPosition = 3;
     }
-    else if(cellLimit4.get() == status){
+    else if(cellLimit4.get() == magBoolean){
       slotPosition = 4;
     }
-    else if(cellLimit4.get() == !status){
+    else if(cellLimit4.get() == !magBoolean){
       slotPosition = 5;
     }
     else {
@@ -153,6 +163,33 @@ public class DrumMag extends Subsystem {
     }
 
     return slotPosition;
+  }
+
+  public boolean getLimitPressed(int limit) {
+
+    boolean limitPressed = false;
+
+    switch (limit) {
+    case 1:
+      limitPressed = cellLimit1.get();
+      break;
+    case 2:
+      limitPressed = cellLimit2.get();
+      break;
+    case 3:
+      limitPressed = cellLimit3.get();
+      break;
+    case 4:
+      limitPressed = cellLimit4.get();
+      break;
+    case 5:
+      limitPressed = cellLimit5.get();
+      break;
+    default:
+      System.out.print("getSlotOccupied Error");
+    }
+    
+    return limitPressed;
   }
 
   public double getMagazineAngle() {

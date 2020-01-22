@@ -10,8 +10,6 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-//import frc.robot.RobotMap;
-//import frc.robot.Subsystems.DrumMag;
 
 /*
  * Command controls PID setpoints.
@@ -37,26 +35,31 @@ public class DrumMagPID extends Command {
         // Allows Operator to change between Infeed/Shooter
         boolean changeMagMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
 
+        boolean cellEjected = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+
         if(changeMagMode){
             Robot.drummag.setMagMode();
         }
 
         if(Robot.drummag.getSlotPosition() != 5){
-            if(Robot.drummag.getMagMode().equals("infeed")){
-                for(int i = 1; i <= 4; i++){
-                    
+            for(int i = 1; i <= 4; i++){
+                if((Robot.drummag.getLimitPressed(i) != Robot.drummag.getMagBoolean())
+                    && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+                    Robot.drummag.rotateOneSlot();
                 }
-            } 
-            else if (Robot.drummag.getMagMode().equals("shooter")){
-
             }
         }
         else if (Robot.drummag.getSlotPosition() == 5){
             Robot.drummag.setMagMode();
         }
 
-
-
+        // TODO: Check for Vision and RPM Flags OOP
+        if(cellEjected){
+            Robot.drummag.ejectSolenoid();
+        }
+        else{
+            Robot.drummag.retractSolenoid();
+        }
         
     }
 
