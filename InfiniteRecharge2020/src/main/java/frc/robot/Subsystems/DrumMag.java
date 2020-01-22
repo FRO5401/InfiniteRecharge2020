@@ -55,6 +55,7 @@ public class DrumMag extends Subsystem {
     cellLimit5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
     magazineSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
+
     // 10 is a timeout that waits for successful conection to sensor
     magazineSRX.setSensorPhase(true);
 
