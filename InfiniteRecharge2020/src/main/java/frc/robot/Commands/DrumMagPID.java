@@ -34,14 +34,28 @@ public class DrumMagPID extends Command {
     @Override
     protected void execute() {
 
-        // Infeed button
-        boolean rotateToInfeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
-        // Shooter button
-        boolean rotateToShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-        // Ball Puncher button
-        boolean cellEjectorSolenoid = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
-        // Stop shooting button
-        boolean cancelEjection = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
+        // Allows Operator to change between Infeed/Shooter
+        boolean changeMagMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
+
+        if(changeMagMode){
+            Robot.drummag.setMagMode();
+        }
+
+        if(Robot.drummag.getSlotPosition() != 5){
+            if(Robot.drummag.getMagMode().equals("infeed")){
+                for(int i = 1; i <= 4; i++){
+                    
+                }
+            } 
+            else if (Robot.drummag.getMagMode().equals("shooter")){
+
+            }
+        }
+        else if (Robot.drummag.getSlotPosition() == 5){
+            Robot.drummag.setMagMode();
+        }
+
+
 
         
     }

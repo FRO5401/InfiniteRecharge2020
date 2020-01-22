@@ -41,10 +41,10 @@ public class DrumMag extends Subsystem {
     loopIndex = 0;
     slotIndex = 0;
 
-    //Speed controller for the drum mag
+    // Speed Controller for Magazine
     magazineSRX = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
-    //Solenoid
+    // Solenoid
     cellEjectorSolenoid = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_CHANNEL);
 
     // Limits
@@ -80,18 +80,15 @@ public class DrumMag extends Subsystem {
   
   }
 
-  // Sets the point to which the magazine will move
   public void setPoint(double setPoint) {
     double setPointNativeUnits = setPoint / RobotMap.MAGAZINE_ANGLE_PER_PULSE;
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
   }
 
   public boolean onTarget() {
-    // Method returns true if on target
     boolean onTarget = Math.abs(magazineSRX.getSensorCollection().getQuadraturePosition()
         - magazineSRX.getClosedLoopTarget(loopIndex)) < RobotMap.MAGAZINE_THRESHOLD_FOR_PID;
     return onTarget;
-    // getClosedLoopT gets the desired angle
   }
 
   public void ejectSolenoid(){
@@ -102,7 +99,7 @@ public class DrumMag extends Subsystem {
     cellEjectorSolenoid.set(false);
   }
 
-    // Changes mode from shooter to infeed or infeed to shooter, and 
+  
   public void setMagMode(){
     if(magMode.equals("infeed")){
       magMode = "shooter";
@@ -124,7 +121,6 @@ public class DrumMag extends Subsystem {
     setPoint(position + nativeUnitsForOneCell);
   }
 
-  //Tells Operator amount of ammo
   public int getSlotPosition(){
      
     int slotPosition = 0;
@@ -153,13 +149,12 @@ public class DrumMag extends Subsystem {
       slotPosition = 5;
     }
     else {
-      System.out.print("getSlotPosition Error");
+      slotPosition = 69;
     }
 
     return slotPosition;
   }
 
-  //Getting current angle in actual degrees
   public double getMagazineAngle() {
     return (magazineSRX.getSensorCollection().getQuadraturePosition() * RobotMap.MAGAZINE_ANGLE_PER_PULSE);
   }
