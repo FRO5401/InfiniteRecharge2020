@@ -47,7 +47,6 @@ public class RobotMap {
   public static final double TURRET_TURN_SPEED = .4;
   public static final double TURRET_ANGLE_PER_PULSE = 0;
 
-
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;
@@ -81,12 +80,10 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_2 = 3;
 
   // Turret
-  public static final int TURRET_MOTOR = 4;
   public static final int TURRET_TALON = 2;
   public static final int T_STOP_LEFT = 45;
   public static final int T_STOP_RIGHT = -45;
   public static final double TURRET_SPEED_SENSITIVITY = 0;
-
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
@@ -96,7 +93,6 @@ public class RobotMap {
 
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
-
 
   // Hatch Mechanism
   public static final int HATCH_EXTENDER = 2;
