@@ -43,6 +43,8 @@ public class TurretTurn extends Command {
     resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
+    limitRight = Robot.turret.getLimitRightSoft();
+    limitLeft = Robot.turret.getLimitLeftSoft();
 
     // Checks if the reset button has been pushed and then resets the turret angle
     // if it was pushed

@@ -41,17 +41,12 @@ public class Turret extends Subsystem {
   private boolean turretPidEnabled;
 
   // Creates the actual robot parts
-  VictorSP turretMotor;
   TalonSRX turretTalon;
-  DigitalInput turretLimitLeft, turretLimitRight;
 
   // Constructor
   public Turret() {
     // Creates instances of the actual robot parts
-    turretMotor = new VictorSP(RobotMap.TURRET_MOTOR);
     turretTalon = new TalonSRX(RobotMap.TURRET_TALON);
-    turretLimitLeft = new DigitalInput(RobotMap.T_STOP_LEFT);
-    turretLimitRight = new DigitalInput(RobotMap.T_STOP_RIGHT);
 
     loopIndex = 0;
     slotIndex = 0;
@@ -77,15 +72,27 @@ public class Turret extends Subsystem {
     SmartDashboard.putString("Neutral Mode", neutralMode.toString());
   }
 
+  public void setPoint(double setPoint) {
+    double setPointNativeUnits = setPoint / RobotMap.TURRET_ANGLE_PER_PULSE;
+    turretTalon.set(ControlMode.Position, setPointNativeUnits);
+  }
+
   // Will set the turret angle to its original position
   public void resetTurretAngle() {
     // Reset to 0 degrees (default)
     turretTalon.set(ControlMode.Position, resetAngle);
   }
 
-  //Will await data from the network tables
+  // Will await data from the network tables
   public void setTargetLocation(double targetLocation) {
     this.targetLocation = targetLocation;
+  }
+
+  public boolean onTarget() {
+    boolean onTarget = Math.abs(turretTalon.getSensorCollection().getQuadraturePosition()
+        - turretTalon.getClosedLoopTarget(loopIndex)) < RobotMap.ANGLE_THRESHOLD;
+
+    return onTarget;
   }
 
   /*
@@ -94,55 +101,35 @@ public class Turret extends Subsystem {
    * direction depending on if the distance is negative or positive.
    */
 
-
+  // Still need help here.
   public void readyTurret() {
+    double position = turretTalon.getSensorCollection().getQuadraturePosition();
     // solve for a.p.p later
     turretPidEnabled = true;
     double distance = targetLocation - CENTERPOINT;
-    double distanceInDegrees = distance * RobotMap.TURRET_ANGLE_PER_PULSE;
-    boolean onTarget = Math.abs(turretTalon.getSensorCollection().getQuadraturePosition()
-        - turretTalon.getClosedLoopTarget(loopIndex)) < RobotMap.ANGLE_THRESHOLD;
-    do {
-      if (!onTarget && distanceInDegrees > 0 && getLimitLeftSoft() == false) {
-        rotateTurretLeft();
-      } else if (!onTarget && distanceInDegrees < 0 && getLimitRightSoft() == false) {
-        rotateTurretRight();
-      } else if (onTarget) {
-        stopRotation();
-      }
-    } while (!onTarget);  
+    setPoint(position + distance);
   }
 
   // Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
-    turretMotor.set(RobotMap.TURRET_TURN_SPEED);
+    turretTalon.set(ControlMode.Velocity, RobotMap.TURRET_TURN_SPEED);
   }
 
   // Will set the motor such that the turret rotates right
   public void rotateTurretRight() {
-    turretMotor.set(RobotMap.TURRET_TURN_SPEED * -1);
+    turretTalon.set(ControlMode.Velocity, RobotMap.TURRET_TURN_SPEED * -1);
   }
 
   // Will end the rotation of the turret motor
   public void stopRotation() {
-    turretMotor.set(0);
+    turretTalon.set(ControlMode.Velocity, 0);
   }
 
   // Override the movement
   public void overrideTurret(double joystickSpeed) {
     turretPidEnabled = false;
     joystickSpeed *= (-1 * RobotMap.TURRET_SPEED_SENSITIVITY);
-    turretTalon.set(ControlMode.PercentOutput, joystickSpeed);
-  }
-
-  // Creates a hard left limit
-  public boolean getLimitLeft() {
-    return !turretLimitLeft.get();
-  }
-
-  // Creates a hard right limit
-  public boolean getLimitRight() {
-    return !turretLimitRight.get();
+    turretTalon.set(ControlMode.Velocity, joystickSpeed);
   }
 
   // Will find the current angle of the turret
@@ -178,8 +165,8 @@ public class Turret extends Subsystem {
 
   // Will report the necessary data to shuffleboard/
   public void reportTurretInfeedSensors() {
-    SmartDashboard.putBoolean("Left Limit Turret", getLimitLeft());
-    SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());
-    SmartDashboard.putNumber("Turret Direction", turretMotor.getSpeed());
+    SmartDashboard.putBoolean("Left Limit Turret", getLimitLeftSoft());
+    SmartDashboard.putBoolean("Right Limit Turret", getLimitRightSoft());
+    SmartDashboard.putNumber("Turret Direction", turretTalon.getSelectedSensorVelocity());
   }
 }
