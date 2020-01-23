@@ -62,6 +62,7 @@ public class DriveBase extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new XboxMove());
+    System.out.println("Command boi");
   }
 
   // Sets victors to desired speed giving from XboxMove.
@@ -73,6 +74,8 @@ public class DriveBase extends Subsystem {
     rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+
+    System.out.println("drive motors");
   }
 
   // Sets Victors to 0.
@@ -83,6 +86,8 @@ public class DriveBase extends Subsystem {
     rightDrive1.set(ControlMode.PercentOutput, 0);
     rightDrive2.set(ControlMode.PercentOutput, 0);
     rightDrive3.set(ControlMode.PercentOutput, 0);
+
+    System.out.println("stop motors");
   }
 
   // Set shifter to low.
@@ -151,8 +156,10 @@ public class DriveBase extends Subsystem {
     // Victors
     SmartDashboard.putNumber("Left VSP1 Speed", leftDrive1.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left VSP3 Speed", leftDrive3.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Right VSP1", rightDrive1.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Right VSP2", rightDrive2.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right VSP3", rightDrive3.getSelectedSensorVelocity());
   }
 
   // Resets the Encoders.

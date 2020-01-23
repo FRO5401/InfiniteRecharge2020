@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
 
 public class XboxMove extends Command {
+  
   /*** Variables ***/
     //Input Axes
     double turn;
@@ -49,6 +50,7 @@ public class XboxMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+      System.out.println("XboxMove Running");
       /*** Read Inputs ***/
         //Axes
       turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
@@ -83,6 +85,9 @@ public class XboxMove extends Command {
         Robot.drivebase.shiftHighToLow();
       }
   
+      Robot.drivebase.drive(left, right);
+
+
       /*** Precision ***/
         //Hold for Precision Speed
       if(precision){
@@ -139,7 +144,7 @@ public class XboxMove extends Command {
         }
       }
         //After speed manipulation, send to drivebase. 
-      Robot.drivebase.drive(left, right);
+//*****//Robot.drivebase.drive(left, right);
     }
   
     // Make this return true when this Command no longer needs to run execute()
