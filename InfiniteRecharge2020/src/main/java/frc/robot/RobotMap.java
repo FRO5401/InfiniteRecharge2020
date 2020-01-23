@@ -33,8 +33,8 @@ public class RobotMap {
   public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
-  public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // These are for practice bot, skewed a lot
-  public static final double LOW_GEAR_RIGHT_DPP = 0.1568175312974026;
+  public static final double LOW_GEAR_LEFT_DPP = 0; // These are for practice bot, skewed a lot
+  public static final double LOW_GEAR_RIGHT_DPP = 0;
   public static final double HIGH_GEAR_LEFT_DPP = 0;
   public static final double HIGH_GEAR_RIGHT_DPP = 0;
 
@@ -80,9 +80,12 @@ public class RobotMap {
   /*** Motors ***/
   // DriveBase
   public static final int DRIVE_MOTOR_RIGHT_1 = 0;
-  public static final int DRIVE_MOTOR_LEFT_1 = 2;
-  public static final int DRIVE_MOTOR_RIGHT_2 = 1;
+  public static final int DRIVE_MOTOR_RIGHT_2 = 2;
+  public static final int DRIVE_MOTOR_RIGHT_3 = 4;
+
+  public static final int DRIVE_MOTOR_LEFT_1 = 1;
   public static final int DRIVE_MOTOR_LEFT_2 = 3;
+  public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   // CarriageInfeed
   public static final int CARRIAGE_FEED_ROLLERS = 4;

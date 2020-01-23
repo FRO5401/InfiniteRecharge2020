@@ -30,6 +30,8 @@ public class DriveBase extends Subsystem {
   private TalonSRX rightDrive1;
   private VictorSPX leftDrive2;
   private VictorSPX rightDrive2;
+  private VictorSPX leftDrive3;
+  private VictorSPX rightDrive3;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -45,6 +47,8 @@ public class DriveBase extends Subsystem {
     rightDrive1 = new TalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1);
     leftDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2);
     rightDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2);
+    leftDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3);
+    rightDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -65,16 +69,20 @@ public class DriveBase extends Subsystem {
     // Left inverted in accordance to physical wiring.
     leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
     leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
     rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+    rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
   }
 
   // Sets Victors to 0.
   public void stopMotors() {
     leftDrive1.set(ControlMode.PercentOutput, 0);
     leftDrive2.set(ControlMode.PercentOutput, 0);
+    leftDrive3.set(ControlMode.PercentOutput, 0);
     rightDrive1.set(ControlMode.PercentOutput, 0);
     rightDrive2.set(ControlMode.PercentOutput, 0);
+    rightDrive3.set(ControlMode.PercentOutput, 0);
   }
 
   // Set shifter to low.
