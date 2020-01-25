@@ -94,9 +94,6 @@ public class RobotMap {
   public static final int CARRIAGE_TALON_CHANNEL = 2;
   public static final int C_STOP_T = 7;
 
-  // Elevator
-  public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
-  public static final int ELEVATOR_TALON_SLAVE_CHANNEL = 1;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.

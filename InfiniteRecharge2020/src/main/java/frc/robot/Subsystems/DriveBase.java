@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.I2C;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -70,7 +71,7 @@ public class DriveBase extends Subsystem {
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
 
-    leftDrive1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
+    leftDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
     leftDrive1.setSensorPhase(true);
 
     leftDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
@@ -89,7 +90,7 @@ public class DriveBase extends Subsystem {
     leftDrive2.set(ControlMode.Follower, leftDrive1.getDeviceID());
     leftDrive3.set(ControlMode.Follower, leftDrive1.getDeviceID());
 
-    rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
+    rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
     rightDrive1.setSensorPhase(true);
 
     rightDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
@@ -108,10 +109,10 @@ public class DriveBase extends Subsystem {
     rightDrive1.setInverted(true);
     //rightDrive2.set(ControlMode.Follower, rightDrive1.getDeviceID());
     rightDrive2.follow(rightDrive1);
-    rightDrive2.setInverted(true);
+    rightDrive2.setInverted(InvertType.FollowMaster);
     //rightDrive3.set(ControlMode.Follower, rightDrive1.getDeviceID());
     rightDrive3.follow(rightDrive1);
-    rightDrive3.setInverted(true);
+    rightDrive3.setInverted(InvertType.FollowMaster);
 
   }
 
@@ -143,12 +144,12 @@ public class DriveBase extends Subsystem {
 
   //PID control durin Teleop
   public void driveToPosition() {
-    leftDrive1.set(ControlMode.Position, 0);
-    leftDrive2.set(ControlMode.Position, 0);
-    leftDrive3.set(ControlMode.Position, 0);
-    rightDrive1.set(ControlMode.Position, 0);
-    rightDrive2.set(ControlMode.Position, 0);
-    rightDrive3.set(ControlMode.Position, 0);
+    leftDrive1.set(ControlMode.Position, 100);
+    leftDrive2.set(ControlMode.Position, 100);
+    leftDrive3.set(ControlMode.Position, 100);
+    rightDrive1.set(ControlMode.Position, 100);
+    rightDrive2.set(ControlMode.Position, 100);
+    rightDrive3.set(ControlMode.Position, 100);
   }
 
   // Set shifter to low.
@@ -204,23 +205,25 @@ public class DriveBase extends Subsystem {
   public void reportDriveBaseSensors() {
     // Misc.
     SmartDashboard.putBoolean("NavX Connection", navxGyro.isConnected());
-    SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
+    //SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
     // Encoders
+    /*
     SmartDashboard.putNumber("Left Enc Raw", leftEncoder.get());
     SmartDashboard.putNumber("Right Enc Raw", rightEncoder.get());
     SmartDashboard.putNumber("Left Enc Adj", leftEncoder.getDistance());
     SmartDashboard.putNumber("Right Enc Adj", rightEncoder.getDistance());
+    */
     // NavX
     SmartDashboard.putNumber("NaxX Angle", navxGyro.getAngle());
     SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
     SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
     // Victors
     SmartDashboard.putNumber("Left Talon1 Position", leftDrive1.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Left VSP3 Speed", leftDrive3.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Left VSP3 Speed", leftDrive3.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Right Talon1 Position", rightDrive1.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Right VSP2 Speed", rightDrive2.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Right VSP3 Speed", rightDrive3.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Right VSP2 Speed", rightDrive2.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Right VSP3 Speed", rightDrive3.getSelectedSensorVelocity());
   }
 
   // Resets the Encoders.
