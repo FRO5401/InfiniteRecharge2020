@@ -39,6 +39,9 @@ public class XboxMove extends Command {
     double left;
     double right; 
     double sensitivity;
+    double dist;
+
+    double testPosition;
   
     public XboxMove() {
       requires(Robot.drivebase);
@@ -59,6 +62,8 @@ public class XboxMove extends Command {
       throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
       reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
       
+      testPosition = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_X);
+
         //Buttons
       rotate = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_L3);
       brake = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
@@ -84,6 +89,17 @@ public class XboxMove extends Command {
         Robot.drivebase.resetEncoders();
       }
 
+      Robot.drivebase.driveToPosition(dist);
+      if((testPosition > RobotMap.AXIS_THRESHOLD) || (testPosition < (-1 * RobotMap.AXIS_THRESHOLD))){
+        dist = testPosition;
+        //Robot.drivebase.driveToPosition(testPosition);
+      }
+
+      if(driveToPosition){
+        //Robot.drivebase.driveToPosition(5);
+        dist = 5;
+        System.out.print("Driving to Position!");
+      }
 
       /*** Gear Shifting ***/
         //Press for High Gear

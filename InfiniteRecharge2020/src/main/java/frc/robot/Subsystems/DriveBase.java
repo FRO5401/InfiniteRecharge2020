@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -38,9 +39,11 @@ public class DriveBase extends Subsystem {
   //PID stuff
   private int loopIndex, slotIndex;
   private double DRIVEBASE_kF = 0;
-  private double DRIVEBASE_kP = 0.1;
-  private double DRIVEBASE_kI = 0.001;
-  private double DRIVEBASE_kD = 0.0001;
+  private double DRIVEBASE_kP = 0;
+  private double DRIVEBASE_kI = 0;
+  private double DRIVEBASE_kD = 0;
+
+  private int iaccum = 0;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -75,45 +78,56 @@ public class DriveBase extends Subsystem {
     leftDrive1.setSensorPhase(true);
 
     leftDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
+
+    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
   
       //Configuring the max & min percentage output. 
     leftDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
     leftDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputForward(1, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputReverse(-1, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
+    leftDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
+    leftDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
 
       //Configuring PID values. 
+    leftDrive1.selectProfileSlot(slotIndex, loopIndex);
     leftDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     leftDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     leftDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     leftDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
-    leftDrive2.set(ControlMode.Follower, leftDrive1.getDeviceID());
-    leftDrive3.set(ControlMode.Follower, leftDrive1.getDeviceID());
-
+    leftDrive1.configMotionCruiseVelocity(10000);
+    leftDrive1.configMotionAcceleration(10000);
+    leftDrive2.follow(leftDrive1);
+    leftDrive3.follow(leftDrive1);
+    
     rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
     rightDrive1.setSensorPhase(true);
 
     rightDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
+
+    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
   
       //Configuring the max & min percentage output. 
     rightDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
     rightDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputForward(1, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputReverse(-1, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
+    rightDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
+    rightDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
 
       //Configuring PID values. 
+    rightDrive1.selectProfileSlot(slotIndex, loopIndex);
     rightDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     rightDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     rightDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
     rightDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
+    rightDrive1.configMotionCruiseVelocity(10000);
+    rightDrive1.configMotionAcceleration(10000);
     rightDrive1.setInverted(true);
-    //rightDrive2.set(ControlMode.Follower, rightDrive1.getDeviceID());
     rightDrive2.follow(rightDrive1);
     rightDrive2.setInverted(InvertType.FollowMaster);
-    //rightDrive3.set(ControlMode.Follower, rightDrive1.getDeviceID());
     rightDrive3.follow(rightDrive1);
     rightDrive3.setInverted(InvertType.FollowMaster);
+    
 
+    leftDrive1.setNeutralMode(NeutralMode.Brake);
+    rightDrive1.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -124,32 +138,26 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT);
-    leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT);
-    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT);
-    rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
+    rightDrive1.set(ControlMode.PercentOutput, (rightDriveDesired) * RobotMap.TELEOP_SPEED_ADJUSTMENT_RIGHT);
   }
 
   // Sets SC's to 0.
   public void stopMotors() {
     leftDrive1.set(ControlMode.PercentOutput, 0);
-    leftDrive2.set(ControlMode.PercentOutput, 0);
-    leftDrive3.set(ControlMode.PercentOutput, 0);
     rightDrive1.set(ControlMode.PercentOutput, 0);
-    rightDrive2.set(ControlMode.PercentOutput, 0);
-    rightDrive3.set(ControlMode.PercentOutput, 0);
   }
 
-  //PID control durin Teleop
-  public void driveToPosition() {
-    leftDrive1.set(ControlMode.Position, 100);
-    leftDrive2.set(ControlMode.Position, 100);
-    leftDrive3.set(ControlMode.Position, 100);
-    rightDrive1.set(ControlMode.Position, 100);
-    rightDrive2.set(ControlMode.Position, 100);
-    rightDrive3.set(ControlMode.Position, 100);
+  //PID control during Teleop
+  public void driveToPosition(double distance) {
+    double leftDist = distance * 16384;
+    double rightDist = distance * 16384;
+    
+    // Left inverted in accordance to physical wiring.
+    leftDrive1.set(ControlMode.MotionMagic, leftDist);
+    leftDrive1.set(ControlMode.Position, leftDist);
+    rightDrive1.set(ControlMode.MotionMagic, rightDist);
+    rightDrive1.set(ControlMode.Position, rightDist);
   }
 
   // Set shifter to low.
@@ -205,14 +213,12 @@ public class DriveBase extends Subsystem {
   public void reportDriveBaseSensors() {
     // Misc.
     SmartDashboard.putBoolean("NavX Connection", navxGyro.isConnected());
-    //SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
+    SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
     // Encoders
-    /*
     SmartDashboard.putNumber("Left Enc Raw", leftEncoder.get());
     SmartDashboard.putNumber("Right Enc Raw", rightEncoder.get());
     SmartDashboard.putNumber("Left Enc Adj", leftEncoder.getDistance());
     SmartDashboard.putNumber("Right Enc Adj", rightEncoder.getDistance());
-    */
     // NavX
     SmartDashboard.putNumber("NaxX Angle", navxGyro.getAngle());
     SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
