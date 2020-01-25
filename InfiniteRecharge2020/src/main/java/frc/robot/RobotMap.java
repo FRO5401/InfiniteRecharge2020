@@ -33,10 +33,12 @@ public class RobotMap {
   public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
-  public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // These are for practice bot, skewed a lot
-  public static final double LOW_GEAR_RIGHT_DPP = 0.1568175312974026;
-  public static final double HIGH_GEAR_LEFT_DPP = 0;
-  public static final double HIGH_GEAR_RIGHT_DPP = 0;
+  public static final double TELEOP_SPEED_ADJUSTMENT = 0.99;
+  public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // Low gear skews left
+  public static final double LOW_GEAR_RIGHT_DPP  = 0.1568175312974026;
+  public static final double HIGH_GEAR_LEFT_DPP = 0.1568175312974026; // High gear skews left
+  public static final double HIGH_GEAR_RIGHT_DPP = 0.1466004558282468;
+  public static final int DRIVEBASE_THRESHOLD_FOR_PID = 0;
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
@@ -79,10 +81,13 @@ public class RobotMap {
 
   /*** Motors ***/
   // DriveBase
-  public static final int DRIVE_MOTOR_RIGHT_1 = 0;
+  public static final int DRIVE_MOTOR_RIGHT_1 = 1;
+  public static final int DRIVE_MOTOR_RIGHT_2 = 3;
+  public static final int DRIVE_MOTOR_RIGHT_3 = 5;
+
   public static final int DRIVE_MOTOR_LEFT_1 = 2;
-  public static final int DRIVE_MOTOR_RIGHT_2 = 1;
-  public static final int DRIVE_MOTOR_LEFT_2 = 3;
+  public static final int DRIVE_MOTOR_LEFT_2 = 4;
+  public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
   // CarriageInfeed
   public static final int CARRIAGE_FEED_ROLLERS = 4;
