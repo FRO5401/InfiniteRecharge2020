@@ -50,7 +50,6 @@ public class XboxMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      System.out.println("XboxMove Running");
       /*** Read Inputs ***/
         //Axes
       turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
