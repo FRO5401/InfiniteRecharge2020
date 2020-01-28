@@ -34,10 +34,11 @@ public class RobotMap {
 
   // DriveBase
   public static final double TELEOP_SPEED_ADJUSTMENT_LEFT = 1.01;
-  public static final double LOW_GEAR_LEFT_DPP = 0.000705318098462; // Low gear skews left
-  public static final double LOW_GEAR_RIGHT_DPP  = 0.000719610834461; //Low gear dpp for practice bot
+  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; //TODO: Make smaller until skew is gone
+  public static final double LOW_GEAR_RIGHT_DPP  = 0.000618865317636; //Low gear dpp 2020
+  public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462;
   public static final double HIGH_GEAR_LEFT_DPP = 0.000650533437419; // High gear skews left
-  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; //High gear dpp for practice bot
+  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; //High gear dpp 2020
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
