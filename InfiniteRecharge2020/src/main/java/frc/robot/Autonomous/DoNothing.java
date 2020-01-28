@@ -9,12 +9,11 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DriveStraight extends CommandGroup {
+public class DoNothing extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
-    addSequential(new AutoDrive(50, 0.3));
+  public DoNothing() {
     addSequential(new AutoDrive(0, 0.0));
     // Add Commands here:
     // e.g. addSequential(new Command1());

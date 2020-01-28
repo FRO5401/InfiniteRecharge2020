@@ -111,9 +111,9 @@ public class DriveBase extends Subsystem {
 
   // For autonomous driving
   public double getEncoderDistance(int encoderNumber) {
-    double leftDistAdj = leftEncoder.getDistance();
-    double rightDistAdj = rightEncoder.getDistance();
-    double avgDistance = (leftDistAdj + rightDistAdj) / 2;
+    double leftDistAdj = leftDrive1.getSelectedSensorPosition();
+    double rightDistAdj = rightDrive1.getSelectedSensorPosition();
+    double avgDistance = ((-1 * leftDistAdj) + rightDistAdj) / 2;
 
     if (encoderNumber == 1) {
       return leftDistAdj;

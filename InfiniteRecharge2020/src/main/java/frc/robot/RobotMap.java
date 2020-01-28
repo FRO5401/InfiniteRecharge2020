@@ -33,11 +33,11 @@ public class RobotMap {
   public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
-  public static final double TELEOP_SPEED_ADJUSTMENT_LEFT = 0.94;
-  public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // Low gear skews left
-  public static final double LOW_GEAR_RIGHT_DPP  = 0.1568175312974026;
-  public static final double HIGH_GEAR_LEFT_DPP = 0.1568175312974026; // High gear skews left
-  public static final double HIGH_GEAR_RIGHT_DPP = 0.1466004558282468;
+  public static final double TELEOP_SPEED_ADJUSTMENT_LEFT = 1.01;
+  public static final double LOW_GEAR_LEFT_DPP = 0.000705318098462; // Low gear skews left
+  public static final double LOW_GEAR_RIGHT_DPP  = 0.000719610834461; //Low gear dpp for practice bot
+  public static final double HIGH_GEAR_LEFT_DPP = 0.000650533437419; // High gear skews left
+  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; //High gear dpp for practice bot
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
