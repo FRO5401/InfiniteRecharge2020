@@ -33,7 +33,8 @@ public class RobotMap {
   public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
-  public static final double TELEOP_SPEED_ADJUSTMENT_LEFT = 1.01;
+  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 1.09;
+  public static final double SPEED_ADJUSTMENT_LEFT_BACKWARD = 1.09;
   public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; //TODO: Make smaller until skew is gone
   public static final double LOW_GEAR_RIGHT_DPP  = 0.000618865317636; //Low gear dpp 2020
   public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462;

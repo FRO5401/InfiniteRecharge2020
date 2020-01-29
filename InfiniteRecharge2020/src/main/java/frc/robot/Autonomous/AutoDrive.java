@@ -72,10 +72,13 @@ public class AutoDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
 	protected void execute() {
-		distanceTraveled = Robot.drivebase.getEncoderDistance(0) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if ((distanceTraveled) <= Math.abs(desiredDistance)){
-			Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed);
+		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
+		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0){
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 			doneTraveling = false;
+		}
+		else if(distanceTraveled >= (desiredDistance) && desiredDistance < 0){
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 		}
 		else{
 			Robot.drivebase.stopMotors();
