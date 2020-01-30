@@ -9,16 +9,26 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.Robot;
 
 public class DriveStraight extends CommandGroup {
   /**
    * Add your docs here.
    */
+  private double leftBound = 10;
+  private double rightBound = 90;
+
   public DriveStraight() {
-    addSequential(new AutoDrive(50, 0.6));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-50, -0.6));
+    double x = Robot.networktables.getXValue();
+    if (x > leftBound && x < rightBound)
+    {
+      addSequential(new AutoDrive(50, 0.6));
+    }
     addSequential(new AutoDrive(0, 0.0));
+    //addSequential(new AutoDrive(50, 0.6));
+    //addSequential(new WaitCommand(0.5));
+    //addSequential(new AutoDrive(-50, -0.6));
+    //addSequential(new AutoDrive(0, 0.0));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

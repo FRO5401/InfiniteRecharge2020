@@ -17,6 +17,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -67,24 +71,22 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void autoDrive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    //Logic for fixing drift, will be different for comp bot
-    if(leftDriveDesired > 0 && rightDriveDesired > 0){
+    // Logic for fixing drift, will be different for comp bot
+    if (leftDriveDesired > 0 && rightDriveDesired > 0) {
       leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    }
-    else if(leftDriveDesired < 0 && rightDriveDesired < 0){
+    } else if (leftDriveDesired < 0 && rightDriveDesired < 0) {
       leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    }
-    else{
+    } else {
       leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
       leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
       leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
@@ -93,7 +95,8 @@ public class DriveBase extends Subsystem {
       rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     }
   }
-  public void drive(double leftDriveDesired, double rightDriveDesired){
+
+  public void drive(double leftDriveDesired, double rightDriveDesired) {
     leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
     leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
     leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
@@ -160,6 +163,10 @@ public class DriveBase extends Subsystem {
     double pitch = navxGyro.getPitch();
     return pitch;
   }
+
+  
+
+  
 
   // Reports all information from drivebase to SmartDashboard
   public void reportDriveBaseSensors() {

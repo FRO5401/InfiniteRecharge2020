@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.Autonomous.*;
 import frc.robot.Subsystems.*;
 
@@ -22,12 +25,21 @@ import frc.robot.Subsystems.*;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+
+
 public class Robot extends TimedRobot {
+  NetworkTableEntry xEntry;
+  NetworkTableEntry yEntry;
+
+  private double x = 0.0;
+  private double y = 0.0;
+
   private static final String kDefaultAuto = "Default";
   private static final String DriveStraight = "Drive Straight";
   private Command autoSelected;
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
+  public static NetworkTables networktables;
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
   public static OI oi;
@@ -38,6 +50,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("data");
+    xEntry = table.getEntry("X");
+    yEntry = table.getEntry("Y");
+
+
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
     SmartDashboard.putData("Auto choices", chooser);
@@ -60,6 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Robot.drivebase.reportDriveBaseSensors();
+    Robot.drivebase.runNetworkTable();
   }
 
   /**
@@ -115,7 +135,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
+    yEntry.setDouble(x);
+    xEntry.setDouble(y);
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
