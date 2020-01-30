@@ -41,12 +41,12 @@ public class DrumMagPID extends Command {
             Robot.drummag.setMagMode();
         }
 
-        if(Robot.drummag.getSlotPosition() != 5){
-            for(int i = 1; i <= 4; i++){
-                if((Robot.drummag.getLimitPressed(i) != Robot.drummag.getMagBoolean())
-                    && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+        int checkedLimit = Robot.drummag.getSlotPosition() - 1;
+
+        if(Robot.drummag.getSlotPosition() < 5){
+            if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getMagBoolean())
+                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
                     Robot.drummag.rotateOneSlot();
-                }
             }
         }
         else if (Robot.drummag.getSlotPosition() == 5){
