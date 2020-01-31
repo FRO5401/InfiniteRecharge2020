@@ -7,7 +7,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import frc.robot.Commands.VisionMove;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,6 +23,8 @@ public class NetworkTables extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new VisionMove());
+    
   }
 
   public double getXValue(){
@@ -34,18 +36,15 @@ public class NetworkTables extends Subsystem {
     double y = 0;
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
-    while (true) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException ex) {
-        System.out.println("interrupted");
-        break;
-      }
-        x = xEntry.getDouble(0.0);
-        y = yEntry.getDouble(0.0);
-        System.out.println("X: " + x + " Y: " + y);
-      
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException ex) {
+      System.out.println("interrupted");
     }
+    x = xEntry.getDouble(0.0);
+    y = yEntry.getDouble(0.0);
+    System.out.println("X: " + x + " Y: " + y);
+      
     return x;
   }
 }
