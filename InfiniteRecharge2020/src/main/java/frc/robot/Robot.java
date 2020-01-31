@@ -59,7 +59,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
   }
 
   /**
@@ -99,7 +98,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetEncoders();
   }
 
   /**
