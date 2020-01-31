@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -21,10 +23,12 @@ import edu.wpi.first.wpilibj.I2C;
 
 public class DriveBase extends Subsystem {
     // Motors
-    private VictorSP lDrive1;
-    private VictorSP rDrive1;
-    private VictorSP lDrive2;
-    private VictorSP rDrive2;
+    private VictorSPX lDrive1;
+    private VictorSPX rDrive1;
+    private VictorSPX lDrive2;
+    private VictorSPX rDrive2;
+    private TalonSRX lDrive3;
+    private TalonSRX rDrive3;
 
     // Solenoids
     private Solenoid gearShifter;
@@ -37,10 +41,12 @@ public class DriveBase extends Subsystem {
 
  public DriveBase() {
     // Instantiate Motors
-    lDrive1 = new VictorSP(RobotMap.DRIVE_MOTOR_L1);
-    rDrive1 = new VictorSP(RobotMap.DRIVE_MOTOR_R1);
-    lDrive2 = new VictorSP(RobotMap.DRIVE_MOTOR_L2);
-    rDrive2 = new VictorSP(RobotMap.DRIVE_MOTOR_R2);
+    lDrive1 = new VictorSPX(RobotMap.DRIVE_MOTOR_L1);
+    rDrive1 = new VictorSPX(RobotMap.DRIVE_MOTOR_R1);
+    lDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_L2);
+    rDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_R2);
+    lDrive3 = new TalonSRX(RobotMap.DRIVE_MOTOR_L3);
+    rDrive3 = new TalonSRX(RobotMap.DRIVE_MOTOR_R3);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -59,17 +65,21 @@ public void initDefaultCommand() {
 public void drive(double lDriveDesired, double rDriveDesired) {
     rDriveDesired *= -1;
     // Left inverted in accordance to physical wiring.
-    lDrive1.set(lDriveDesired);
-    lDrive2.set(lDriveDesired);
-    rDrive1.set(rDriveDesired);
-    rDrive1.set(rDriveDesired);
+    lDrive1.set(ControlMode.PercentOutput, lDriveDesired);
+    lDrive2.set(ControlMode.PercentOutput, lDriveDesired);
+    lDrive3.set(ControlMode.PercentOutput, lDriveDesired);
+    rDrive1.set(ControlMode.PercentOutput, rDriveDesired);
+    rDrive2.set(ControlMode.PercentOutput, rDriveDesired);
+    rDrive3.set(ControlMode.PercentOutput, rDriveDesired);
 }
 
 public void stopMotors() {
-    lDrive1.set(0);
-    lDrive2.set(0);
-    rDrive1.set(0);
-    rDrive1.set(0);
+    lDrive1.set(ControlMode.PercentOutput, 0);
+    lDrive2.set(ControlMode.PercentOutput, 0);
+    rDrive3.set(ControlMode.PercentOutput, 0);
+    rDrive1.set(ControlMode.PercentOutput, 0);
+    rDrive2.set(ControlMode.PercentOutput, 0);
+    rDrive3.set(ControlMode.PercentOutput, 0);
 }
 
 public void shiftLowtoHigh() {
@@ -131,10 +141,10 @@ public void reportDriveBaseSensors() {
     SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
     SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
     // Victors
-    SmartDashboard.putNumber("Left VSP1 Speed", lDrive1.getSpeed());
-    SmartDashboard.putNumber("Left VSP2 Speed", lDrive2.getSpeed());
-    SmartDashboard.putNumber("Right VSP1", rDrive1.getSpeed());
-    SmartDashboard.putNumber("Right VSP2", rDrive2.getSpeed());
+    SmartDashboard.putNumber("Left VSP1 Speed", lDrive1.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left VSP2 Speed", lDrive2.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right VSP1", rDrive1.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right VSP2", rDrive2.getSelectedSensorVelocity());
 }
 
 public void resetEncoders() {

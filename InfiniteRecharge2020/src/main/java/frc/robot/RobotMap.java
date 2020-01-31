@@ -65,10 +65,12 @@ public class RobotMap {
 
     /**** Motors ****/
     //DriveBase
-    public static final int DRIVE_MOTOR_R1 = 0;
-    public static final int DRIVE_MOTOR_R2 = 1;
-    public static final int DRIVE_MOTOR_L1 = 2;
-    public static final int DRIVE_MOTOR_L2 = 3;
+    public static final int DRIVE_MOTOR_R1 = 3;
+    public static final int DRIVE_MOTOR_R2 = 5;
+    public static final int DRIVE_MOTOR_R3 = 1;
+    public static final int DRIVE_MOTOR_L1 = 4;
+    public static final int DRIVE_MOTOR_L2 = 6;
+    public static final int DRIVE_MOTOR_L3 = 2;
 
     // CarriageInfeed
     public static final int CARRIAGE_FEED_ROLLERS = 4;
