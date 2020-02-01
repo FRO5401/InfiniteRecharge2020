@@ -20,13 +20,17 @@ public class DriveStraight extends CommandGroup {
 
   public DriveStraight() {
     double x = Robot.networktables.getXValue();
-    while (x > leftBound && x < rightBound)
+    if (x > leftBound && x < rightBound)
     {
       addSequential(new AutoDrive(50, 0.6));
       x = Robot.networktables.getXValue();
       addSequential(new WaitCommand(0.5));
     }
-    addSequential(new AutoDrive(0, 0.0));
+    else
+    {
+      addSequential(new AutoDrive(0, 0.0));
+    }
+    
     //addSequential(new AutoDrive(50, 0.6));
     //addSequential(new WaitCommand(0.5));
     //addSequential(new AutoDrive(-50, -0.6));
