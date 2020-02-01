@@ -55,7 +55,7 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    testPWM.set(leftDriveDesired);
+    testPWM.set(leftDriveDesired * .55);
   }
 
   public void stopMotors(){
