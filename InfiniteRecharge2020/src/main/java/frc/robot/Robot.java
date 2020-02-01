@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.*;
+
 //import frc.robot.subsystems.*;
 
 /**
@@ -20,11 +22,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  public static DriveBase drivebase;
+  public static Shooter shooter;
+
+  public static OI oi;
+
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
- // public static Shooter shooter;
+  // public static Shooter shooter;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -35,6 +43,11 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    drivebase = new DriveBase();
+    shooter = new Shooter();
+
+    oi = new OI();
   }
 
   /**

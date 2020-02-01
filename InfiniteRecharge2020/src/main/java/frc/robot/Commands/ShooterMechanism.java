@@ -8,6 +8,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -16,11 +17,9 @@ public class ShooterMechanism extends Command {
    * Creates a new ShooterMechanism.
    */
 
-  private boolean solenoidStatus;
-
   public ShooterMechanism() {
     // Use addRequirements() here to declare subsystem dependencies.
-    requires(Robot.shooter);  
+    requires(Robot.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -31,18 +30,30 @@ public class ShooterMechanism extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean punchBall     = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_A_OPERATOR, Robot.oi.xboxController_Operator);
-    boolean readyShooter  = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_Y_OPERATOR, Robot.oi.xboxController_Operator);
 
-    solenoidStatus = Robot.shooter.solenoidInOut();
-    Robot.shooter.punchBall(solenoidStatus);
+    boolean readyShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+    boolean increaseSpeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
+    boolean decreaseSpeed = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
+    
+    SmartDashboard.getNumber("Desired Speed", Robot.shooter.getTargetSpeed());
 
+    if (readyShooter == true) {
+      Robot.shooter.runMotors();
+    }
+
+    if (increaseSpeed == true) {
+      Robot.shooter.increaseMotorSpeed();
+    }
+
+    if (decreaseSpeed == true) {
+      Robot.shooter.decreaseMotorSpeed();
+    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end () {
+  public void end() {
   }
 
   // Returns true when the command should end.

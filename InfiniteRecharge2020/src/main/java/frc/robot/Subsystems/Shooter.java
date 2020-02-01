@@ -21,86 +21,86 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-
 public class Shooter extends Subsystem {
-    
-        // instanciate the objects
-        TalonSRX shooterMaster, shooterSlave;
-        private double kP, kI, kD;
-        private boolean pidEnabled;
-        private double PID_MOTOR_SPEED = 0;
-        private double MOTOR_SPEED = PID_MOTOR_SPEED;
-        
-        private Solenoid puncher;
 
-        // make a constructor and declare the variables
+    // instanciate the objects
+    TalonSRX shooterMaster, shooterSlave;
+    private double kP, kI, kD;
+    private boolean pidEnabled;
+    private double PID_MOTOR_SPEED = 0;
+    private double MOTOR_SPEED = PID_MOTOR_SPEED;
 
-        public Shooter() {
+    private Solenoid puncher;
 
-            TalonSRX shooterMaster = new TalonSRX(0);
-            TalonSRX shooterSlave = new TalonSRX(0);
-            Solenoid puncher = new Solenoid(0);
+    // make a constructor and declare the variables
 
-            shooterMaster.set(ControlMode.Velocity, 0);
-            shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
-            
-            shooterMaster.getSensorCollection().getQuadraturePosition();
-            shooterSlave.getSensorCollection().getQuadraturePosition();
+    public Shooter() {
 
-            kP = 0;
-            kI = 0;
-            kD = 0;
+        TalonSRX shooterMaster = new TalonSRX(0);
+        TalonSRX shooterSlave = new TalonSRX(0);
 
-            shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-            reset();
+        shooterMaster.set(ControlMode.Velocity, 0);
+        shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
 
-        }
+        shooterMaster.getSensorCollection().getQuadraturePosition();
+        shooterSlave.getSensorCollection().getQuadraturePosition();
 
-        @Override
-        public void initDefaultCommand() {
-            // TODO Auto-generated method stub
-    
-        }        
+        kP = 0;
+        kI = 0;
+        kD = 0;
+
+        shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+        reset();
+
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // TODO Auto-generated method stub
+
+    }
 
     public void reset() {
         stop();
     }
 
     public void stop() {
-        shooterMaster.set(ControlMode.PercentOutput, 0;)
+        shooterMaster.set(ControlMode.Velocity, 0);
     }
+
     public double getTargetSpeed() {
         return MOTOR_SPEED;
-}
+    }
+
+    public void increaseMotorSpeed() {
+        MOTOR_SPEED++;
+    }
+
+    public void decreaseMotorSpeed() {
+        MOTOR_SPEED--;
+    }
+
+    public void runMotors() {
+        shooterMaster.set(ControlMode.Velocity, MOTOR_SPEED);
+    }
 
     public void startMotors() {
 
-        if(pidEnabled) {
+        if (pidEnabled) {
             shooterMaster.config_kP(0, kP, 0);
             shooterMaster.config_kI(0, kI, 0);
             shooterMaster.config_kD(0, kD, 0);
         }
     }
-    
-        public double getVelocity() {
-            return shooterMaster.getSensorCollection().getQuadraturePosition();
-        }
 
-        public boolean solenoidInOut(){
-            if(puncher.get() == false){
-                return false;
-            }else{
-                return true;
-            }
-        }
-
-        public void punchBall(boolean ballPunched ){
-             puncher.set(ballPunched);
-        }
-
-
-
-        }
+    public double getVelocity() {
+        return shooterMaster.getSensorCollection().getQuadraturePosition();
     }
-    
+
+    public void reportShooter() {
+        SmartDashboard.putNumber("Desired Speed", getTargetSpeed());
+        SmartDashboard.putNumber("Current Speed", getVelocity());
+
+    }
+
 }

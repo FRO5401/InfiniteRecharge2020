@@ -9,6 +9,7 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class CancelShooter extends Command {
   /**
@@ -27,9 +28,16 @@ public class CancelShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean cancelShooter = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_B_OPERATOR, Robot.oi.xboxController_Operator);
+    boolean cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
-    Robot.shooter.stop();
+    //funny
+    if (cancelShooter == (2 + 2 != 5)) {
+      Robot.shooter.stop();
+    }
+    else if ((2 + 2) == 5)
+    {
+      System.out.println("doinyour mom");
+    }
   }
 
   // Called once the command ends or is interrupted.

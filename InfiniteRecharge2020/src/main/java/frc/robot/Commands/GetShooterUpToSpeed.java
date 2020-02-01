@@ -8,30 +8,32 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class GetShooterUpToSpeed extends Command {
   /**
    * Creates a new GetShooterUpToSpeed.
    */
-  private boolean   drumMagIsFull;
-  private boolean   upToSpeed;
-  private double    currentSpeed;
-  private double    targetSpeed;
-  private double    THRESH;
+  private boolean drumMagIsFull;
+  private boolean upToSpeed;
+  private double currentSpeed;
+  private double targetSpeed;
+  private double THRESH;
 
   public GetShooterUpToSpeed() {
     // Use addRequirements() here to declare subsystem dependencies.
     requires(Robot.shooter);
-    upToSpeed    = false;
+    upToSpeed = false;
     currentSpeed = 0;
-    targetSpeed  = 0;
-    THRESH = 0;//probably don't need THRESH because PID
+    targetSpeed = 0;
+    THRESH = 0;// probably don't need THRESH because PID
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(drumMagIsFull){
+    if (drumMagIsFull) {
       Robot.shooter.startMotors();
       targetSpeed = Math.abs(Robot.shooter.getTargetSpeed());
     }
@@ -42,7 +44,8 @@ public class GetShooterUpToSpeed extends Command {
   @Override
   public void execute() {
     currentSpeed = Math.abs(Robot.shooter.getVelocity());
-    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){//probably don't need THRESH because PID
+    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH) {// probably don't need THRESH
+                                                                                       // because PID
       upToSpeed = true;
     }
   }
