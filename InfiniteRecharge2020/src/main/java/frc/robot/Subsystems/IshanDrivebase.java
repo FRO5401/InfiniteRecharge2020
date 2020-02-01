@@ -9,17 +9,16 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.Commands.XboxMove;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
+
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.VictorSP;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -117,21 +116,44 @@ public class IshanDrivebase extends Command {
     rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
   }
 
+// Reports all information from drivebase to SmartDashboard
+public void reportDriveBaseSensors() {
+  // Misc.
+  SmartDashboard.putBoolean("NavX Connection", navxGyro.isConnected());
+  SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
+  // Encoders
+  SmartDashboard.putNumber("Left Enc Raw", leftEncoder.get());
+  SmartDashboard.putNumber("Right Enc Raw", rightEncoder.get());
+  SmartDashboard.putNumber("Left Enc Adj", leftEncoder.getDistance());
+  SmartDashboard.putNumber("Right Enc Adj", rightEncoder.getDistance());
+  // NavX
+  SmartDashboard.putNumber("NaxX Angle", navxGyro.getAngle());
+  SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
+  SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
+  // Victors
+  SmartDashboard.putNumber("Left VSP1 Speed", leftmotor1.getSelectedSensorVelocity());
+  SmartDashboard.putNumber("Left VSP2 Speed", leftmotor2.getSelectedSensorVelocity());
+  SmartDashboard.putNumber("Right VSP1", rightmotor1.getSelectedSensorVelocity());
+  SmartDashboard.putNumber("Right VSP2", rightmotor2.getSelectedSensorVelocity());
+}
 
+ 
+ // Resets the Encoders.
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
 
-
-
-  
+  // Resets the Gyro.
+  public void resetGyro() {
+    navxGyro.reset();
+  }
 
   @Override
   protected boolean isFinished() {
+    // TODO Auto-generated method stub
     return false;
   }
 
- 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+
 }
