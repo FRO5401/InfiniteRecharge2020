@@ -8,6 +8,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
@@ -111,6 +112,36 @@ public class KahanDriveBase extends Subsystem {
         rightEncoder.setDistancePerPulse((RobotMap.HIGH_GEAR_RIGHT_DPP));
     }
 
+    // Reports all information from drivebase to SmartDashboard
+    public void reportDriveBaseSensors() {
+    // Misc.
+    SmartDashboard.putBoolean("NavX Connection", navxGyro.isConnected());
+    SmartDashboard.putBoolean("DriveBase Current Gear", gearShift.get());
+    // Encoders
+    SmartDashboard.putNumber("Left Enc Raw", leftEncoder.get());
+    SmartDashboard.putNumber("Right Enc Raw", rightEncoder.get());
+    SmartDashboard.putNumber("Left Enc Adj", leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Enc Adj", rightEncoder.getDistance());
+    // NavX
+    SmartDashboard.putNumber("NaxX Angle", navxGyro.getAngle());
+    SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
+    SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
+    // Victors
+    SmartDashboard.putNumber("Left VSP1 Speed", leftDrive1.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right VSP1", rightDrive1.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right VSP2", rightDrive2.getSelectedSensorVelocity());
 }
 
- 
+    // Reset Rencoders
+    public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+}
+
+    // Reset Gyro
+    public void resetGyro() {
+    navxGyro.reset();
+    }
+}
+  
