@@ -52,8 +52,7 @@ public class AutoDrive extends Command {
     // Called just before this Command runs the first time
     @Override
 	protected void initialize() {
-
-		Robot.drivebase.resetEncoders();
+		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
 //    	heading = Robot.drivebase.getGyroAngle();

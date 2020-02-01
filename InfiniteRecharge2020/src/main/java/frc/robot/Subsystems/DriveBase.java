@@ -185,10 +185,14 @@ public class DriveBase extends Subsystem {
   }
 
   // Resets the Encoders.
-  public void resetEncoders() {
+  public void resetSensors() {
     leftEncoder.reset();
     rightEncoder.reset();
 
+    navxGyro.reset();
+
+//    leftDrive1.setSelectedSensorPosition(0, 0, 10);
+//    rightDrive1.setSelectedSensorPosition(0, 0, 10);
     leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
     rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
   }

@@ -71,7 +71,7 @@ public class XboxMove extends Command {
       speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
         //TODO: Remove this testing method for competition. */
       if(resetSensors){
-        Robot.drivebase.resetEncoders();
+        Robot.drivebase.resetSensors();
         Robot.drivebase.resetGyro();
       }    
       /*** Gear Shifting ***/

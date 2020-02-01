@@ -40,6 +40,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
+    chooser.addOption("Test Turn", new TestTurn());
+    chooser.addOption("Drive Turn Around", new DriveTurnAround());
+    chooser.addOption("Line Up Score", new LineUpScore());
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();
@@ -76,7 +79,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Robot.drivebase.resetEncoders();
+    Robot.drivebase.resetSensors();
+    Robot.drivebase.resetGyro();
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
@@ -103,7 +107,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetEncoders();
+    Robot.drivebase.resetSensors();
     if (autoSelected != null){
       autoSelected.cancel();
     }

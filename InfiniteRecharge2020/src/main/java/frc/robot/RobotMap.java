@@ -132,7 +132,7 @@ public class RobotMap {
   public static final int BOTTOM_EVEVATOR_IN = 7;
 
   /*** Autonomous ***/
-  public static final int ANGLE_THRESHOLD = 2;
+  public static final int ANGLE_THRESHOLD = 6;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
 }

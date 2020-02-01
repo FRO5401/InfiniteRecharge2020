@@ -10,15 +10,20 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveStraight extends CommandGroup {
+public class DriveTurnAround extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
-    addSequential(new AutoDrive(50, 0.6));
-//    addSequential(new WaitCommand(0.5));
-//    addSequential(new AutoDrive(-50, -0.6));
-    addSequential(new AutoDrive(0, 0.0));
+  public DriveTurnAround() {
+    addSequential(new WaitCommand(0.1));
+    addSequential(new AutoDrive(40, 0.3));
+    addSequential(new WaitCommand(1.0)); 
+    addSequential(new AutoTurn(-180, 0.3));
+    addSequential(new WaitCommand(1.0));
+    addSequential(new AutoDrive(40, 0.3));
+    addSequential(new WaitCommand(1.0));
+    addSequential(new AutoTurn(180, 0.3));
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
