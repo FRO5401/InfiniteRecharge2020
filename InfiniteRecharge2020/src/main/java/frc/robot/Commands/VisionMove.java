@@ -2,11 +2,6 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 /*
  * Command controls the Hatch Mechanism.
@@ -16,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class VisionMove extends Command {
 
   public double xVision;
+
   public VisionMove() {
     requires(Robot.networktables);
   }
@@ -30,7 +26,8 @@ public class VisionMove extends Command {
   @Override
   protected void execute() {
     xVision = Robot.networktables.getXValue();
-    //put automatic code here to be used during teleop, maybe add a button to activate it (not sure if there is one yet)
+    // put automatic code here to be used during teleop, maybe add a button to
+    // activate it (not sure if there is one yet)
   }
 
   // Make this return true when this Command no longer needs to run execute()
