@@ -18,6 +18,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class NetworkTables extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  NetworkTable table;
+  NetworkTableInstance inst;
+  NetworkTableEntry xEntry;
+  NetworkTableEntry yEntry;
+  private double x;
+  private double y;
 
   @Override
   public void initDefaultCommand() {
@@ -27,13 +33,16 @@ public class NetworkTables extends Subsystem {
     
   }
 
+  public NetworkTables(){
+    
+  }
+
   public double getXValue(){
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("data");
-    NetworkTableEntry xEntry = table.getEntry("X");
-    NetworkTableEntry yEntry = table.getEntry("Y");
-    double x = 0;
-    double y = 0;
+    inst = NetworkTableInstance.getDefault();
+    table = inst.getTable("data");
+    xEntry = table.getEntry("X");
+    yEntry = table.getEntry("Y");
+    
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
     try {
@@ -41,6 +50,7 @@ public class NetworkTables extends Subsystem {
     } catch (InterruptedException ex) {
       System.out.println("interrupted");
     }
+
     x = xEntry.getDouble(0.0);
     y = yEntry.getDouble(0.0);
     System.out.println("X: " + x + " Y: " + y);

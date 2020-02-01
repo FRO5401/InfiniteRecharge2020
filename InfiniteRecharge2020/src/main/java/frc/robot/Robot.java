@@ -51,16 +51,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("data");
-    xEntry = table.getEntry("X");
-    yEntry = table.getEntry("Y");
-
 
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
     SmartDashboard.putData("Auto choices", chooser);
 
+    networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
     
@@ -134,8 +130,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    yEntry.setDouble(x);
-    xEntry.setDouble(y);
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
