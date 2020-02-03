@@ -83,9 +83,6 @@ public class XboxMove extends Command {
       else if(gearShiftLow){
         Robot.drivebase.shiftHighToLow();
       }
-  
-      Robot.drivebase.drive(left, right);
-
 
       /*** Precision ***/
         //Hold for Precision Speed
@@ -143,7 +140,7 @@ public class XboxMove extends Command {
         }
       }
         //After speed manipulation, send to drivebase. 
-//*****//Robot.drivebase.drive(left, right);
+        Robot.drivebase.drive(left, right);
     }
   
     // Make this return true when this Command no longer needs to run execute()

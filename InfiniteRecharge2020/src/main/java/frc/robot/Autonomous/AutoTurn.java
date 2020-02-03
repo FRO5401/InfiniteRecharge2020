@@ -22,7 +22,7 @@ public class AutoTurn extends Command {
     
     desiredAngle = angleInput;
     autoTurnSpeed = speedInput;
-    doneTraveling = true;
+    doneTraveling = false;
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -31,7 +31,7 @@ public class AutoTurn extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivebase.resetGyro();
+    Robot.drivebase.resetSensors();
     doneTraveling = false;
     angleTraveled = 0;
 
@@ -58,17 +58,20 @@ public class AutoTurn extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    System.out.print("Done turning.");
     return doneTraveling;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivebase.stopMotors();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drivebase.stopMotors();
   }
 }

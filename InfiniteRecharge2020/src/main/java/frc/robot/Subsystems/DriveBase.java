@@ -66,31 +66,65 @@ public class DriveBase extends Subsystem {
 
   // Sets victors to desired speed giving from XboxMove.
   public void autoDrive(double leftDriveDesired, double rightDriveDesired) {
-    // Left inverted in accordance to physical wiring.
-    //Logic for fixing drift, will be different for comp bot
-    if(leftDriveDesired > 0 && rightDriveDesired > 0){
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+    if (leftDriveDesired > 0 && rightDriveDesired > 0){
+      if (getEncoderDistance(1) > getEncoderDistance(2)){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      }
+      else if (getEncoderDistance(2) > getEncoderDistance(1)){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      } 
+      else{
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
     }
-    else if(leftDriveDesired < 0 && rightDriveDesired < 0){
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+    else if (leftDriveDesired < 0 && rightDriveDesired < 0){
+      if (getEncoderDistance(1) > getEncoderDistance(2)){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
+      else if (getEncoderDistance(2) > getEncoderDistance(1)){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      } 
+      else{
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
     }
-    else{
+    else{ //When leftDrive1 and rightDrive1 are zero
       leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
       leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
       leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
       rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);      
     }
   }
   public void drive(double leftDriveDesired, double rightDriveDesired){
@@ -138,9 +172,9 @@ public class DriveBase extends Subsystem {
 
   // For autonomous driving
   public double getEncoderDistance(int encoderNumber) {
-    double leftDistAdj = leftDrive1.getSelectedSensorPosition();
+    double leftDistAdj = leftDrive1.getSelectedSensorPosition() * -1;
     double rightDistAdj = rightDrive1.getSelectedSensorPosition();
-    double avgDistance = ((-1 * leftDistAdj) + rightDistAdj) / 2;
+    double avgDistance = (leftDistAdj + rightDistAdj) / 2;
 
     if (encoderNumber == 1) {
       return leftDistAdj;

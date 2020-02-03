@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Test Turn", new TestTurn());
     chooser.addOption("Drive Turn Around", new DriveTurnAround());
     chooser.addOption("Line Up Score", new LineUpScore());
+    chooser.addOption("Station 3 Start", new Station3Start());
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();

@@ -29,6 +29,7 @@ public class AutoDrive extends Command {
 	private double navXPitchInit;
 	private double navXPitch;	
 
+	//MAKE SURE SPEED BACKWARDS IS NEGATIVE IN ADD SEQUENTIAL
     public AutoDrive(double DistanceInput, double SpeedInput) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -38,7 +39,7 @@ public class AutoDrive extends Command {
 		//Distance is 127 inches not considering robot size
 		
     	autoDriveSpeed = SpeedInput;
-    	doneTraveling = true;
+    	doneTraveling = false;
     	distanceTraveled = 0;
 //    	heading = Robot.drivebase.getGyroAngle();
     	kP_Drift = 0.0;
@@ -56,14 +57,14 @@ public class AutoDrive extends Command {
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
 //    	heading = Robot.drivebase.getGyroAngle();
-    	drift = 0;
+//    	drift = 0;
     	doneTraveling = false;
 		distanceTraveled = 0;
 //		navXPitchInit = Robot.drivebase.getGyroPitch();
 
     	//System.out.println("AutoDriveInitializing");
     	//System.out.println("Angle when starting DriveShift:" + Robot.drivebase.getGyroAngle());
-    	SmartDashboard.putNumber("heading", heading);
+//    	SmartDashboard.putNumber("heading", heading);
 //    	Robot.drivebase.shiftGearHighToLow();
 
     }
@@ -71,13 +72,15 @@ public class AutoDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
 	protected void execute() {
+		//TODO: Change this to read encoder average instead of just right encoder
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0){
+		if ((distanceTraveled) <= (desiredDistance) && desiredDistance > 0){
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 			doneTraveling = false;
 		}
 		else if(distanceTraveled >= (desiredDistance) && desiredDistance < 0){
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			doneTraveling = false;
 		}
 		else{
 			Robot.drivebase.stopMotors();
