@@ -27,7 +27,9 @@ public class AutoDrive extends Command {
 	private double velocitySample2;
 	private final double autoDistThresh;
 	private double navXPitchInit;
-	private double navXPitch;	
+	private double navXPitch;
+	
+	private double angle;
 
 	//MAKE SURE SPEED BACKWARDS IS NEGATIVE IN ADD SEQUENTIAL
     public AutoDrive(double DistanceInput, double SpeedInput) {
@@ -72,14 +74,15 @@ public class AutoDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
 	protected void execute() {
+		angle = Robot.drivebase.getGyroAngle();
 		//TODO: Change this to read encoder average instead of just right encoder
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
 		if ((distanceTraveled) <= (desiredDistance) && desiredDistance > 0){
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
 		}
 		else if(distanceTraveled >= (desiredDistance) && desiredDistance < 0){
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
 		}
 		else{

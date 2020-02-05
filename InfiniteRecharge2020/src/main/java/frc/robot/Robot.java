@@ -41,8 +41,10 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
     chooser.addOption("Test Turn", new TestTurn());
+    chooser.addOption("Turn 360", new TurnFull());
     chooser.addOption("Drive Turn Around", new DriveTurnAround());
     chooser.addOption("Line Up Score", new LineUpScore());
+    chooser.addOption("Shoot Left Start", new ShootBaselineNear());
     chooser.addOption("Station 3 Start", new Station3Start());
     SmartDashboard.putData("Auto choices", chooser);
 

@@ -42,11 +42,11 @@ public class AutoTurn extends Command {
   protected void execute() {
     angleTraveled = Robot.drivebase.getGyroAngle();
     if ((angleTraveled) <= (desiredAngle - RobotMap.ANGLE_THRESHOLD) && desiredAngle > 0){
-			Robot.drivebase.autoDrive(autoTurnSpeed, (-1 * autoTurnSpeed));
+			Robot.drivebase.drive(autoTurnSpeed, (-1 * autoTurnSpeed));
 			doneTraveling = false;
 		}
 		else if(angleTraveled >= (desiredAngle + RobotMap.ANGLE_THRESHOLD) && desiredAngle < 0){
-      Robot.drivebase.autoDrive((-1 * autoTurnSpeed), autoTurnSpeed);
+      Robot.drivebase.drive((-1 * autoTurnSpeed), autoTurnSpeed);
       doneTraveling = false;
 		}
 		else{

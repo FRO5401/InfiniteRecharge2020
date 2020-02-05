@@ -65,20 +65,20 @@ public class DriveBase extends Subsystem {
   }
 
   // Sets victors to desired speed giving from XboxMove.
-  public void autoDrive(double leftDriveDesired, double rightDriveDesired) {
+  public void autoDrive(double leftDriveDesired, double rightDriveDesired, double angle) {
     if (leftDriveDesired > 0 && rightDriveDesired > 0){
-      if (getEncoderDistance(1) > getEncoderDistance(2)){
+      if (angle > 0){
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
       }
-      else if (getEncoderDistance(2) > getEncoderDistance(1)){
-        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      else if (angle < 0){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
         rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
@@ -93,21 +93,21 @@ public class DriveBase extends Subsystem {
       }
     }
     else if (leftDriveDesired < 0 && rightDriveDesired < 0){
-      if (getEncoderDistance(1) > getEncoderDistance(2)){
-        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      if (angle > 0){
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
         rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       }
-      else if (getEncoderDistance(2) > getEncoderDistance(1)){
+      else if (angle < 0){
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
       } 
       else{
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);

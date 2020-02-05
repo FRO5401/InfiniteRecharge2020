@@ -16,10 +16,13 @@ public class TestTurn extends CommandGroup {
    */
   public TestTurn() {
     addSequential(new AutoTurn(-45.0, 0.3));
+    //addSequential(new AutoTurn2017(-45.0, true, true));
     addSequential(new WaitCommand(1.0));
-    addSequential(new AutoTurn(90, 0.3));
+    addSequential(new AutoTurn(90.0, 0.3));
+    //addSequential(new AutoTurn2017(90, true, false));
     addSequential(new WaitCommand(1.0));
     addSequential(new AutoTurn(-45.0, 0.3));
+    //addSequential(new AutoTurn2017(-45.0, true, false));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

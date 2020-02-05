@@ -10,19 +10,20 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveTurnAround extends CommandGroup {
+public class ShootBaselineNear extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveTurnAround() {
-    addSequential(new WaitCommand(0.1));
-    addSequential(new AutoDrive(50, 0.4));
-    addSequential(new WaitCommand(1.0)); 
-    addSequential(new AutoTurn(-180, 0.4));
-    addSequential(new WaitCommand(1.0));
-    addSequential(new AutoDrive(50, 0.4));
-    addSequential(new WaitCommand(1.0));
-    addSequential(new AutoTurn(180, 0.4));
+  public ShootBaselineNear() {
+    addSequential(new WaitCommand(0.01));
+    addSequential(new AutoDrive(-30.0, -0.3));
+    addSequential(new WaitCommand(1));
+    //addSequential(new AutoTurret()); Shoots balls and targets
+    //addSequential(new WaitCommand(0.5));
+    addSequential(new AutoTurn(135.0, 0.3));
+    addSequential(new WaitCommand(1));
+    addSequential(new AutoDrive(80, 0.3));
+    addSequential(new AutoTurn(45, 0.3));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
