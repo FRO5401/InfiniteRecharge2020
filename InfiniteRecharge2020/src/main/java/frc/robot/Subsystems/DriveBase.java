@@ -119,12 +119,7 @@ public class DriveBase extends Subsystem {
       }
     }
     else{ //When leftDrive1 and rightDrive1 are zero
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);      
+      stopMotors();      
     }
   }
   public void drive(double leftDriveDesired, double rightDriveDesired){
