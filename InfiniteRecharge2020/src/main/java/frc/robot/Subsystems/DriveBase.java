@@ -10,7 +10,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.Commands.XboxMove;
+import frc.robot.Commands.KahanXboxMove;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -55,7 +55,7 @@ public class DriveBase extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new XboxMove());
+    setDefaultCommand(new KahanXboxMove());
   }
 
   // Sets victors to desired speed giving from XboxMove.

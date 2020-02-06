@@ -9,8 +9,8 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CompressorToggle extends Command {
-  public CompressorToggle() {
+public class KahanXboxMove extends Command {
+  public KahanXboxMove() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
