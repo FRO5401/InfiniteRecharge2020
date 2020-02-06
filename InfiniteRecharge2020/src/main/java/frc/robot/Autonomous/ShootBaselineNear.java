@@ -15,9 +15,10 @@ public class ShootBaselineNear extends CommandGroup {
    * Add your docs here.
    */
   public ShootBaselineNear() {
+    //addSequential(new ReadyShooter());
     addSequential(new WaitCommand(0.01));
     addSequential(new AutoDrive(-30.0, 0.4));
-    addSequential(new WaitCommand(0.3));
+    addSequential(new WaitCommand(4.0));
     //addSequential(new AutoTurret()); Shoots balls and targets
     //addSequential(new WaitCommand(0.5));
     addSequential(new AutoTurn(135.0, 0.3));
