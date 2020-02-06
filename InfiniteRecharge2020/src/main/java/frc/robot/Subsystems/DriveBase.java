@@ -64,10 +64,10 @@ public class DriveBase extends Subsystem {
     setDefaultCommand(new XboxMove());
   }
 
-  // Sets victors to desired speed giving from XboxMove.
+  //Autonomous drive method that fixes drift when driving straight
   public void autoDrive(double leftDriveDesired, double rightDriveDesired, double angle) {
-    if (leftDriveDesired > 0 && rightDriveDesired > 0){
-      if (angle > 0){
+    if (leftDriveDesired > 0 && rightDriveDesired > 0){ //driving forwards
+      if (angle > 0){ //drifting right
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
@@ -75,7 +75,7 @@ public class DriveBase extends Subsystem {
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
       }
-      else if (angle < 0){
+      else if (angle < 0){ //drifting left
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
@@ -92,8 +92,8 @@ public class DriveBase extends Subsystem {
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       }
     }
-    else if (leftDriveDesired < 0 && rightDriveDesired < 0){
-      if (angle > 0){
+    else if (leftDriveDesired < 0 && rightDriveDesired < 0){ //driving backwards
+      if (angle > 0){ //drifting right
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
@@ -101,7 +101,7 @@ public class DriveBase extends Subsystem {
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
       }
-      else if (angle < 0){
+      else if (angle < 0){ //drifting left
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
@@ -122,6 +122,8 @@ public class DriveBase extends Subsystem {
       stopMotors();      
     }
   }
+    
+  // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired){
     leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
     leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
