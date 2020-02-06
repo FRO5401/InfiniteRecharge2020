@@ -16,16 +16,17 @@ public class Station3Start extends CommandGroup {
    */
   public Station3Start() {
     addSequential(new AutoDrive(90, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoTurn(-65, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(100, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-100, -0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoTurn(65, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-50, -0.4));
+    addSequential(new WaitCommand(0.3));
+    addSequential(new AutoTurn(-65, 0.3));
+    addSequential(new WaitCommand(0.3));
+    addSequential(new AutoDrive(115, 0.4));
+    addSequential(new WaitCommand(0.3));
+    addSequential(new AutoTurn(45, 0.3));
+    addSequential(new WaitCommand(0.3));
+    addSequential(new AutoDrive(132, 0.4));
+    addSequential(new WaitCommand(0.3));
+    addSequential(new AutoTurn(43, 0.3));
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

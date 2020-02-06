@@ -15,9 +15,9 @@ public class DriveStraight extends CommandGroup {
    * Add your docs here.
    */
   public DriveStraight() {
-    addSequential(new AutoDrive(200, 0.3));
+    addSequential(new AutoDrive(100, 0.3));
     addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-200, -0.3));
+    addSequential(new AutoDrive(-100, -0.3));
     addSequential(new AutoDrive(0, 0.0));
     // Add Commands here:
     // e.g. addSequential(new Command1());
