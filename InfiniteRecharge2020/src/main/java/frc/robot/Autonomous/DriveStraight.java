@@ -9,21 +9,22 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.PowerCellSocket;
 import frc.robot.Robot;
 
 public class DriveStraight extends CommandGroup {
   /**
    * Add your docs here.
    */
-  private double leftBound = 10;
-  private double rightBound = 90;
+  private double leftBound = 100;
+  private double rightBound = 300;
 
   public DriveStraight() {
     double x = Robot.networktables.getXValue();
     while (x > leftBound && x < rightBound)
     {
       addSequential(new AutoDrive(50, 0.6));
-      x = Robot.networktables.getXValue();
+      x = PowerCellSocket.getX();
       addSequential(new WaitCommand(0.5));
     }
     
