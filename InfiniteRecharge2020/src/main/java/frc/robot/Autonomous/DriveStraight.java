@@ -20,7 +20,7 @@ public class DriveStraight extends CommandGroup {
   private double rightBound = 300;
 
   public DriveStraight() {
-    double x = Robot.networktables.getXValue();
+    double x = PowerCellSocket.getX();
     while (x > leftBound && x < rightBound)
     {
       addSequential(new AutoDrive(50, 0.6));
