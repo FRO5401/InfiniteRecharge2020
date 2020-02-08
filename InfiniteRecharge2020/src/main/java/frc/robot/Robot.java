@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
 
+    compressorsubsystem.stopCompressor();
+
   }
 
   /**
