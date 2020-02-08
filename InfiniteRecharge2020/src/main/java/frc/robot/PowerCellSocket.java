@@ -26,9 +26,10 @@ public class PowerCellSocket {
             x = Double.parseDouble(str.split(",")[0].replaceAll("\\s", ""));
             y = Double.parseDouble(str.split(",")[1].replaceAll("\\s", ""));
             s.close();
+            System.out.print(x);
         }
         catch (Exception e){
-            System.out.println(e);
+            
         }
     }
 
