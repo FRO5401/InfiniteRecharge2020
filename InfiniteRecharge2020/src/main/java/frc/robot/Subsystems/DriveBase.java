@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
 import edu.wpi.first.wpilibj.VictorSP;
+
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -55,11 +56,11 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    testPWM.set(leftDriveDesired * .55);
+    testPWM.set(leftDriveDesired);
   }
 
   public void stopMotors(){
-    testPWM.set(0);
+    testPWM.set(0.0);
   }
 
   // Set shifter to low.

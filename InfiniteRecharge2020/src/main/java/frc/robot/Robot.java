@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.music.Orchestra;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +37,10 @@ public class Robot extends TimedRobot {
   public static DriveBase drivebase;
   public static OI oi;
 
+  Orchestra orchestra;
+  TalonFX falcon;
+  String song = "starwars.chrp";
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -44,8 +53,16 @@ public class Robot extends TimedRobot {
 
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
-    
+
+    falcon = new TalonFX(6);
+
+    ArrayList<TalonFX> instrument = new ArrayList<TalonFX>();
+    instrument.add(falcon);
+    orchestra = new Orchestra(instrument);
+    orchestra.loadMusic(song);
+
     oi = new OI();
+
   }
 
   /**
@@ -98,6 +115,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    orchestra.play();
+    
   }
 
   /**
@@ -107,6 +126,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     //Robot.drivebase.drive(0.5, 0.5);
+  }
+
+  @Override
+  public void disabledInit(){
+    orchestra.stop();
+  }
+
+  @Override
+  public void disabledPeriodic(){
+    Scheduler.getInstance().run();
   }
 
   /**
