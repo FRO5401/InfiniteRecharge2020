@@ -7,16 +7,19 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.command.Command;
+
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import frc.robot.Autonomous.*;
+import frc.robot.Autonomous.DriveStraight;
 import frc.robot.Subsystems.*;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,21 +28,14 @@ import frc.robot.Subsystems.*;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-
-
 public class Robot extends TimedRobot {
-  NetworkTableEntry xEntry;
-  NetworkTableEntry yEntry;
-
-  private double x = 0.0;
-  private double y = 0.0;
-
   private static final String kDefaultAuto = "Default";
-  private static final String DriveStraight = "Drive Straight";
-  private Command autoSelected;
-  private final SendableChooser<Command> chooser = new SendableChooser<>();
+  private static final String kCustomAuto = "My Auto";
+  private String m_autoSelected;
 
-  public static NetworkTables networktables;
+  Command m_autoCommand;
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
   public static OI oi;
@@ -50,17 +46,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    m_chooser.setDefaultOption("Vision", new DriveStraight());
+    SmartDashboard.putData("Auto choices", m_chooser);
 
-
-    chooser.setDefaultOption("Do Nothing", new DoNothing());
-    chooser.addOption("Drive Straight", new DriveStraight());
-    SmartDashboard.putData("Auto choices", chooser);
-
-    networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
-    
+
+
     oi = new OI();
+
   }
 
   /**
@@ -74,8 +68,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
     PowerCellSocket.callSocket();
+    Scheduler.getInstance().run();
   }
 
   /**
@@ -92,12 +86,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Robot.drivebase.resetEncoders();
-    autoSelected = chooser.getSelected();
-    if(autoSelected != null) {
-      autoSelected.start();
-    }
+    m_autoCommand = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /**
@@ -105,24 +96,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-/*    switch (autoSelected) {
-    case DriveStraight:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;    
-    }     */
+    if (m_autoCommand != null) {
+      m_autoCommand.start();
+    }
   }
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetEncoders();
-    if (autoSelected != null){
-      autoSelected.cancel();
-    }
+    
+    
   }
 
   /**
@@ -132,6 +114,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     //Robot.drivebase.drive(0.5, 0.5);
+  }
+
+  @Override
+  public void disabledInit(){
+    
+  }
+
+  @Override
+  public void disabledPeriodic(){
+    Scheduler.getInstance().run();
   }
 
   /**
