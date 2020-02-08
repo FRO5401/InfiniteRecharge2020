@@ -41,15 +41,36 @@ public class DrumMagPID extends Command {
             Robot.drummag.setMagMode();
         }
 
-        int checkedLimit = Robot.drummag.getSlotPosition() - 1;
+        int checkedLimit = Robot.drummag.getCurrentSlot() - 1;
 
-        if(Robot.drummag.getSlotPosition() < 5){
+        /*Starts at 2 due the method .getCurrentSlot()
+        * When IR Sensor for 1 is crossed, it returns 2 for CurrentSlot
+        * It has not actually turned yet, so it needs to check 1 and then rotate
+        */
+        if(Robot.drummag.getCurrentSlot() == 2){
+            if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getMagBoolean())
+                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+                    Robot.drummag.rotateOneSlot();
+            }
+        }
+
+        /* Position is now 3 or more
+        *  If 2's IR sensor is crossed, it is at position 3
+        *  It has not turned yet
+        *  So, it double check's IR sensor
+        */
+        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() < 5){
             if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getMagBoolean())
                 && (Robot.drummag.cellEjectorSolenoid.get() == false)){
                     Robot.drummag.rotateOneSlot();
             }
         }
-        else if (Robot.drummag.getSlotPosition() == 5){
+
+        /* In .getCurrentPosition 5 is the position when 5 is crossed
+        *  So, as soon as it is 
+        *  It changes to the next mode
+        */
+        else if (Robot.drummag.getCurrentSlot() == 5){
             Robot.drummag.setMagMode();
         }
 

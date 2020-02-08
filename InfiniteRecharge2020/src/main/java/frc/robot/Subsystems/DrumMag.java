@@ -136,10 +136,10 @@ public class DrumMag extends Subsystem {
 
   public void rotateOneSlot(){
     double position = magazineSRX.getSensorCollection().getQuadraturePosition();
-    setPoint(position + nativeUnitsForOneSlot);
+    setPoint(position + (nativeUnitsForOneSlot * 2));
   }
 
-  public int getSlotPosition(){
+  public int getCurrentSlot(){
      
     int slotPosition = 0;
 
@@ -155,7 +155,7 @@ public class DrumMag extends Subsystem {
     else if(cellLimit4.get() == magBoolean){
       slotPosition = 4;
     }
-    else if(cellLimit4.get() == !magBoolean){
+    else if(cellLimit5.get() != magBoolean){
       slotPosition = 5;
     }
     else {
