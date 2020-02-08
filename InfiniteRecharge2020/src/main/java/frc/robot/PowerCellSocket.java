@@ -20,15 +20,16 @@ public class PowerCellSocket {
     public static void callSocket()
     {
         try {
-            Socket s = new Socket("jetson.local", 5805);
+            Socket s = new Socket("10.54.1.98", 5805);
             DataInputStream dis = new DataInputStream(s.getInputStream());
             String str = (String) dis.readUTF();
             x = Double.parseDouble(str.split(",")[0].replaceAll("\\s", ""));
             y = Double.parseDouble(str.split(",")[1].replaceAll("\\s", ""));
             s.close();
+            System.out.print(x);
         }
         catch (Exception e){
-            System.out.println(e);
+            
         }
     }
 

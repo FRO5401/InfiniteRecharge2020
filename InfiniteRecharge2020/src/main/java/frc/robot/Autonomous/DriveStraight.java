@@ -23,7 +23,7 @@ public class DriveStraight extends CommandGroup {
     double x = PowerCellSocket.getX();
     while (x > leftBound && x < rightBound)
     {
-      addSequential(new AutoDrive(50, 0.6));
+      addSequential(new AutoDrive(50, 0.2));
       x = PowerCellSocket.getX();
       addSequential(new WaitCommand(0.5));
     }
