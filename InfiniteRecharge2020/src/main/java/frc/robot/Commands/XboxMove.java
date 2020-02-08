@@ -25,6 +25,8 @@ public class XboxMove extends Command {
     boolean precision;
     boolean gearShiftHigh;
     boolean gearShiftLow;
+
+    boolean shoot;
   
       /* //Testing Buttons (TODO: Remove for Comp)
     boolean resetSensors;
@@ -62,6 +64,9 @@ public class XboxMove extends Command {
       precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
       gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
       gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
+
+      //For Shooter test
+      shoot = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
       /* 
         //TODO: Remove these testing buttons for competition.
       resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_Y);
@@ -84,8 +89,13 @@ public class XboxMove extends Command {
         Robot.drivebase.shiftHighToLow();
       }
   
-      Robot.drivebase.drive(left, right);
-
+      //Only runs shooter if A button is pressed
+      if(shoot){
+        Robot.drivebase.drive();
+      }
+      else if(shoot == false){
+        Robot.drivebase.stopMotors();
+      }
 
       /*** Precision ***/
         //Hold for Precision Speed
