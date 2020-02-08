@@ -155,7 +155,7 @@ public class DrumMag extends Subsystem {
     else if(cellLimit4.get() == magBoolean){
       slotPosition = 4;
     }
-    else if(cellLimit5.get() != magBoolean){
+    else if(cellLimit5.get() == magBoolean){
       slotPosition = 5;
     }
     else {

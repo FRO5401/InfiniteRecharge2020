@@ -66,11 +66,11 @@ public class DrumMagPID extends Command {
             }
         }
 
-        /* In .getCurrentPosition 5 is the position when 5 is crossed
+        /* In .getCurrentPosition 69 is the position when 5 is crossed
         *  So, as soon as it is 
         *  It changes to the next mode
         */
-        else if (Robot.drummag.getCurrentSlot() == 5){
+        else if (Robot.drummag.getCurrentSlot() == 69){
             Robot.drummag.setMagMode();
         }
 
