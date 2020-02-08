@@ -21,9 +21,13 @@ import frc.robot.Commands.DrumMagPID;
 public class DrumMag extends Subsystem {
 
   public TalonSRX magazineSRX;
-  public Solenoid cellEjectorSolenoid;
+  public Solenoid cellEjector;
 
   public DigitalInput cellLimit1, cellLimit2, cellLimit3, cellLimit4, cellLimit5;
+  public DigitalInput ejectorLimit;
+  public DigitalInput homeLimit;
+
+  boolean[] ballLimitArray = new boolean[5];
 
   private int loopIndex, slotIndex;
   public String magMode;
@@ -35,7 +39,7 @@ public class DrumMag extends Subsystem {
   private double magazineRotationSpeed = 0;
   private double infeedPositionPID, shooterPositionPID;
 
-  public boolean magBoolean;
+  public boolean facingShooter;
 
   //TODO: GOES INTO ROBOTMAP
   private double nativeUnitsForOneSlot;
@@ -49,7 +53,7 @@ public class DrumMag extends Subsystem {
     magazineSRX = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     // Solenoid
-    cellEjectorSolenoid = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_CHANNEL);
+    cellEjector = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_CHANNEL);
 
     // Limits
     cellLimit1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
@@ -57,6 +61,15 @@ public class DrumMag extends Subsystem {
     cellLimit3 = new DigitalInput(RobotMap.MAGAZINE_STOP_3);
     cellLimit4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
     cellLimit5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
+
+    ejectorLimit = new DigitalInput(RobotMap.EJECTOR_RETRACTED);
+
+    ballLimitArray[0] = cellLimit1.get();
+    ballLimitArray[1] = cellLimit2.get();
+    ballLimitArray[2] = cellLimit3.get();
+    ballLimitArray[3] = cellLimit4.get();
+    ballLimitArray[4] = cellLimit5.get();
+    
 
     magazineSRX.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
 
@@ -95,12 +108,12 @@ public class DrumMag extends Subsystem {
     return onTarget;
   }
 
-  public void ejectSolenoid(){
-    cellEjectorSolenoid.set(true);
+  public void ejectCell(){
+    cellEjector.set(true);
   }
 
   public void retractSolenoid(){
-    cellEjectorSolenoid.set(false);
+    cellEjector.set(false);
   }
   
   public void setMagMode(){
@@ -110,7 +123,7 @@ public class DrumMag extends Subsystem {
     if(magMode.equals("infeed")){
       setPoint(shooterPositionPID);
       magMode = "shooter";
-      magBoolean = true;
+      facingShooter = true;
       magazineRotationSpeed = 0.0;
       magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
@@ -120,7 +133,7 @@ public class DrumMag extends Subsystem {
     if(magMode.equals("shooter")){
       setPoint(infeedPositionPID);
       magMode = "infeed";
-      magBoolean = false;
+      facingShooter = false;
       magazineRotationSpeed = 1.0;
       magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
@@ -130,8 +143,8 @@ public class DrumMag extends Subsystem {
     return magMode;
   }
 
-  public boolean getMagBoolean(){
-    return magBoolean;
+  public boolean getFacingShooter(){
+    return facingShooter;
   }
 
   public void rotateOneSlot(){
@@ -143,19 +156,19 @@ public class DrumMag extends Subsystem {
      
     int slotPosition = 0;
 
-    if(cellLimit1.get() == magBoolean){
+    if(cellLimit1.get() == facingShooter){
       slotPosition = 1;
     }
-    else if(cellLimit2.get() == magBoolean){
+    else if(cellLimit2.get() == facingShooter){
       slotPosition = 2;
     }
-    else if(cellLimit3.get() == magBoolean){
+    else if(cellLimit3.get() == facingShooter){
       slotPosition = 3;
     }
-    else if(cellLimit4.get() == magBoolean){
+    else if(cellLimit4.get() == facingShooter){
       slotPosition = 4;
     }
-    else if(cellLimit5.get() != magBoolean){
+    else if(cellLimit5.get() != facingShooter){
       slotPosition = 5;
     }
     else {
@@ -169,26 +182,7 @@ public class DrumMag extends Subsystem {
 
     boolean limitPressed = false;
 
-    switch (limit) {
-    case 1:
-      limitPressed = cellLimit1.get();
-      break;
-    case 2:
-      limitPressed = cellLimit2.get();
-      break;
-    case 3:
-      limitPressed = cellLimit3.get();
-      break;
-    case 4:
-      limitPressed = cellLimit4.get();
-      break;
-    case 5:
-      limitPressed = cellLimit5.get();
-      break;
-    default:
-      System.out.print("getSlotOccupied Error");
-    }
-    
+    limitPressed = ballLimitArray[limit-1];
     return limitPressed;
   }
 
@@ -202,7 +196,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Cell 3 Status", cellLimit3.get());
     SmartDashboard.putBoolean("Cell 4 Status", cellLimit4.get());
     SmartDashboard.putBoolean("Cell 5 Status", cellLimit5.get());
-    SmartDashboard.putNumber("Amount of Power Cells", getSlotPosition());
+    SmartDashboard.putNumber("Amount of Power Cells", getCurrentSlot()-1);
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagazineAngle());
     SmartDashboard.putString("Shooter/Infeed Mode", getMagMode());

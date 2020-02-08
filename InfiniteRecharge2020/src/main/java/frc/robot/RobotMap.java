@@ -52,6 +52,8 @@ public class RobotMap {
   public static final int MAGAZINE_STOP_4 = 0;
   public static final int MAGAZINE_STOP_5 = 0;
 
+  public static final int EJECTOR_RETRACTED = 0;
+
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;

@@ -48,8 +48,8 @@ public class DrumMagPID extends Command {
         * It has not actually turned yet, so it needs to check 1 and then rotate
         */
         if(Robot.drummag.getCurrentSlot() == 2){
-            if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+            if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getFacingShooter()) //Make sure the limit ball is out or in, 
+                && (Robot.drummag.cellEjector.get() == false && Robot.drummag.ejectorLimit.get() == true)){ //and that the solenoid is retracted
                     Robot.drummag.rotateOneSlot();
             }
         }
@@ -59,9 +59,9 @@ public class DrumMagPID extends Command {
         *  It has not turned yet
         *  So, it double check's IR sensor
         */
-        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() < 5){
-            if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() <= 5){
+            if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getFacingShooter()) //Make sure the limit ball is out or in, 
+                && (Robot.drummag.cellEjector.get() == false && Robot.drummag.ejectorLimit.get() == true)){ //and that the solenoid is retracted
                     Robot.drummag.rotateOneSlot();
             }
         }
@@ -70,13 +70,13 @@ public class DrumMagPID extends Command {
         *  So, as soon as it is 
         *  It changes to the next mode
         */
-        else if (Robot.drummag.getCurrentSlot() == 5){
+        else if (Robot.drummag.getCurrentSlot() == 69){
             Robot.drummag.setMagMode();
         }
 
         // TODO: Check for Vision and RPM Flags OOP
         if(cellEjected){
-            Robot.drummag.ejectSolenoid();
+            Robot.drummag.ejectCell();
         }
         else{
             Robot.drummag.retractSolenoid();
