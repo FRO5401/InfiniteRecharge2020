@@ -26,6 +26,7 @@ public class DrumMag extends Subsystem {
   public DigitalInput cellLimit1, cellLimit2, cellLimit3, cellLimit4, cellLimit5;
   public DigitalInput ejectorLimit;
   public DigitalInput homeLimit;
+  public DigitalInput genevaLimit;
 
   boolean[] ballLimitArray = new boolean[5];
 
@@ -63,6 +64,8 @@ public class DrumMag extends Subsystem {
     cellLimit5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
     ejectorLimit = new DigitalInput(RobotMap.EJECTOR_RETRACTED);
+    homeLimit = new DigitalInput(RobotMap.EJECTOR_RETRACTED);
+    genevaLimit = new DigitalInput(RobotMap.EJECTOR_RETRACTED);
 
     ballLimitArray[0] = cellLimit1.get();
     ballLimitArray[1] = cellLimit2.get();
@@ -147,9 +150,14 @@ public class DrumMag extends Subsystem {
     return facingShooter;
   }
 
-  public void rotateOneSlot(){
-    double position = magazineSRX.getSensorCollection().getQuadraturePosition();
-    setPoint(position + (nativeUnitsForOneSlot * 2));
+  public void rotate36Degrees(){
+    if(genevaLimit.get() == true) //If you are at the end of a rotation, rotate
+    setPoint(magazineSRX.getSensorCollection().getQuadraturePosition() + nativeUnitsForOneSlot);
+  }
+
+  public void rotate72Degrees(){
+    if(genevaLimit.get() == true) //If you are at the end of a rotation, rotate twice
+    setPoint(magazineSRX.getSensorCollection().getQuadraturePosition() + (nativeUnitsForOneSlot * 2));
   }
 
   public int getCurrentSlot(){

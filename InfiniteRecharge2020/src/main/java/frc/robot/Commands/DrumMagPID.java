@@ -50,7 +50,7 @@ public class DrumMagPID extends Command {
         if(Robot.drummag.getCurrentSlot() == 2){
             if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getFacingShooter()) //Make sure the limit ball is out or in, 
                 && (Robot.drummag.cellEjector.get() == false && Robot.drummag.ejectorLimit.get() == true)){ //and that the solenoid is retracted
-                    Robot.drummag.rotateOneSlot();
+                    Robot.drummag.rotate72Degrees();
             }
         }
 
@@ -62,7 +62,7 @@ public class DrumMagPID extends Command {
         else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() <= 5){
             if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getFacingShooter()) //Make sure the limit ball is out or in, 
                 && (Robot.drummag.cellEjector.get() == false && Robot.drummag.ejectorLimit.get() == true)){ //and that the solenoid is retracted
-                    Robot.drummag.rotateOneSlot();
+                    Robot.drummag.rotate72Degrees();
             }
         }
 
