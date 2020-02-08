@@ -202,7 +202,7 @@ public class DrumMag extends Subsystem {
     SmartDashboard.putBoolean("Cell 3 Status", cellLimit3.get());
     SmartDashboard.putBoolean("Cell 4 Status", cellLimit4.get());
     SmartDashboard.putBoolean("Cell 5 Status", cellLimit5.get());
-    SmartDashboard.putNumber("Amount of Power Cells", getSlotPosition());
+    SmartDashboard.putNumber("Amount of Power Cells", getCurrentSlot());
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
     SmartDashboard.putNumber("Current Angle", getMagazineAngle());
     SmartDashboard.putString("Shooter/Infeed Mode", getMagMode());

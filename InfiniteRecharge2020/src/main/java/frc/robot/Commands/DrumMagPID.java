@@ -41,6 +41,9 @@ public class DrumMagPID extends Command {
             Robot.drummag.setMagMode();
         }
 
+        //!! SCENARIOS ARE WRITTEN WITH INFEED MODE IN MIND!!
+        //      !! REVERSE LOGIC FOR SHOOTER MODE !!
+
         int checkedLimit = Robot.drummag.getCurrentSlot() - 1;
 
         /*Starts at 2 due the method .getCurrentSlot()
@@ -49,7 +52,7 @@ public class DrumMagPID extends Command {
         */
         if(Robot.drummag.getCurrentSlot() == 2){
             if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+                && (Robot.drummag.cellEjectorSolenoid.get() == true)){
                     Robot.drummag.rotateOneSlot();
             }
         }
@@ -59,9 +62,9 @@ public class DrumMagPID extends Command {
         *  It has not turned yet
         *  So, it double check's IR sensor
         */
-        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() < 5){
+        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() <= 5){
             if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == false)){
+                && (Robot.drummag.cellEjectorSolenoid.get() == true)){
                     Robot.drummag.rotateOneSlot();
             }
         }
@@ -69,6 +72,7 @@ public class DrumMagPID extends Command {
         /* In .getCurrentPosition 69 is the position when 5 is crossed
         *  So, as soon as it is 
         *  It changes to the next mode
+        *  Nice!
         */
         else if (Robot.drummag.getCurrentSlot() == 69){
             Robot.drummag.setMagMode();
