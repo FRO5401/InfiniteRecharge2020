@@ -7,39 +7,158 @@
 
 package frc.robot.Commands;
 
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.RobotMap;
 
 public class XboxMove extends Command {
-  /**
-   * Creates a new XboxMove.
+  
+  /*** Variables ***/
+    //Input Axes
+    double turn;
+    double throttle;
+    double reverse;
+  
+      //Input Buttons
+    boolean rotate; 
+    boolean brake;
+    boolean precision;
+    boolean gearShiftHigh;
+    boolean gearShiftLow;
+    boolean resetSensors;
+  
+      /* //Testing Buttons (TODO: Remove for Comp)
+    boolean resetSensors;
+    boolean speedConstant1;
+    boolean speedConstant2;
+    boolean speedConstant3;
    */
-  public XboxMove() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+      //Instance Vars
+    double left;
+    double right; 
+    double sensitivity;
+  
+    public XboxMove() {
+      requires(Robot.drivebase);
+    }
+  
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+      Robot.drivebase.shiftHighToLow();
+    }
+  
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+      /*** Read Inputs ***/
+        //Axes
+      turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
+      throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
+      reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
+      
+        //Buttons
+      rotate = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_L3);
+      brake = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
+      precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
+      gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
+      gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
+       
+        //TODO: Remove these testing buttons for competition.
+      resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
+/*      speedConstant1 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
+      speedConstant2 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
+      speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
+        //TODO: Remove this testing method for competition. */
+      if(resetSensors){
+        Robot.drivebase.resetSensors();
+        Robot.drivebase.resetGyro();
+      }    
+      /*** Gear Shifting ***/
+        //Press for High Gear
+      if(gearShiftHigh){
+        Robot.drivebase.shiftLowToHigh();
+      }
+        //Press for Low Gear
+      else if(gearShiftLow){
+        Robot.drivebase.shiftHighToLow();
+      }
 
-  // Called when the command is initially scheduled.
-  @Override
-  protected void initialize() {
+      /*** Precision ***/
+        //Hold for Precision Speed
+      if(precision){
+        sensitivity = RobotMap.DRIVE_SENSITIVITY_PRECISION;
+      }
+        //Release for Regular Speed
+      else{
+        sensitivity = RobotMap.DRIVE_SENSITIVITY_DEFAULT;
+      }
+  
+      /*** Driving ***/
+        //Braking
+      if(brake){
+        //Robot.drivebase.stopMotors();
+        left = 0;
+        right = 0;
+      }
+        //Not Braking
+      else{
+          //Pirouetting (Turn in place). 
+        if(rotate){
+            //If the joystick is pushed passed the threshold. 
+          if(Math.abs(turn) > RobotMap.AXIS_THRESHOLD){
+              //Sets it to spin the desired direction.
+            left = RobotMap.SPIN_SENSITIVITY * turn;
+            right = RobotMap.SPIN_SENSITIVITY * (turn * -1);
+          }
+            //If its not past the threshold stop spinning
+          else if(Math.abs(turn) < RobotMap.AXIS_THRESHOLD){
+            left = 0;
+            right = 0;
+          }
+        }
+          //Not pirouetting (Not turning in place).
+        else{
+            //Turning right
+          if(turn > RobotMap.AXIS_THRESHOLD){
+              //Makes left slow down by a factor of how far the axis is pushed. 
+            left = (throttle - reverse) * sensitivity;
+            right = (throttle - reverse) * sensitivity * (1 - turn);
+          }
+            //Turning left
+          else if(turn < (-1 * RobotMap.AXIS_THRESHOLD)){
+              //Makes right speed up by a factor of how far the axis is pushed. 
+            left = (throttle - reverse) * sensitivity * (1 + turn);
+            right = (throttle - reverse) * sensitivity;
+          }
+            //Driving straight 
+          else{
+              //No joystick manipulation. 
+            left = (throttle - reverse) * sensitivity;
+            right = (throttle - reverse) * sensitivity;
+          }
+        }
+      }
+        //After speed manipulation, send to drivebase. 
+        Robot.drivebase.drive(left, right);
+    }
+  
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+  
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+      Robot.drivebase.stopMotors();
+    }
+  
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+      Robot.drivebase.stopMotors();
+    }
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  protected void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  protected void end() {
-  }
-
-  @Override
-  protected void interrupted() {
-
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
-}

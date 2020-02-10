@@ -30,8 +30,7 @@ public class Shooter extends Subsystem {
         private boolean pidEnabled;
         private double PID_MOTOR_SPEED = 0;
         private double MOTOR_SPEED = PID_MOTOR_SPEED;
-        
-        private Solenoid puncher;
+
 
         // make a constructor and declare the variables
 
@@ -39,7 +38,6 @@ public class Shooter extends Subsystem {
 
             TalonSRX shooterMaster = new TalonSRX(0);
             TalonSRX shooterSlave = new TalonSRX(0);
-            Solenoid puncher = new Solenoid(0);
 
             shooterMaster.set(ControlMode.Velocity, 0);
             shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
@@ -67,7 +65,7 @@ public class Shooter extends Subsystem {
     }
 
     public void stop() {
-        shooterMaster.set(ControlMode.PercentOutput, 0;)
+        shooterMaster.set(ControlMode.PercentOutput, 0);
     }
     public double getTargetSpeed() {
         return MOTOR_SPEED;
@@ -85,22 +83,5 @@ public class Shooter extends Subsystem {
         public double getVelocity() {
             return shooterMaster.getSensorCollection().getQuadraturePosition();
         }
-
-        public boolean solenoidInOut(){
-            if(puncher.get() == false){
-                return false;
-            }else{
-                return true;
-            }
-        }
-
-        public void punchBall(boolean ballPunched ){
-             puncher.set(ballPunched);
-        }
-
-
-
-        }
-    }
     
 }

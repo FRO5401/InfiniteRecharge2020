@@ -31,12 +31,7 @@ public class ShooterMechanism extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean punchBall     = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_A_OPERATOR, Robot.oi.xboxController_Operator);
-    boolean readyShooter  = Robot.oi.xboxButton(RobotMap.XBOX_BUTTON_Y_OPERATOR, Robot.oi.xboxController_Operator);
-
-    solenoidStatus = Robot.shooter.solenoidInOut();
-    Robot.shooter.punchBall(solenoidStatus);
-
+    boolean readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_Y);
 
   }
 

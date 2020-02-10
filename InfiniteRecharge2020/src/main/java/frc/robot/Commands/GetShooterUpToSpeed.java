@@ -8,6 +8,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class GetShooterUpToSpeed extends Command {
   /**
@@ -31,12 +32,9 @@ public class GetShooterUpToSpeed extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(drumMagIsFull){
       Robot.shooter.startMotors();
       targetSpeed = Math.abs(Robot.shooter.getTargetSpeed());
     }
-
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

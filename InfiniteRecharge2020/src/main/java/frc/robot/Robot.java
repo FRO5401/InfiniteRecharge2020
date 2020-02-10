@@ -10,7 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.Subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,10 +23,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
- // public static Shooter shooter;
+  private static final String DriveStraight = "Drive Straight";
+  private Command autoSelected;
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
+
+  public static CompressorSubsystem compressorsubsystem;
+  public static DriveBase drivebase;
+  public static Shooter shooter;
+  public static OI oi;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -32,9 +38,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData("Auto choices", chooser);
+
+    compressorsubsystem = new CompressorSubsystem();
+    drivebase = new DriveBase();
+    
+    oi = new OI();
   }
 
   /**
@@ -48,6 +57,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    Robot.drivebase.reportDriveBaseSensors();
   }
 
   /**
@@ -64,9 +74,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    Robot.drivebase.resetSensors();
+    Robot.drivebase.resetGyro();
+    autoSelected = chooser.getSelected();
+    if(autoSelected != null) {
+      autoSelected.start();
+    }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /**
@@ -74,14 +88,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-    case kCustomAuto:
+    Scheduler.getInstance().run();
+/*    switch (autoSelected) {
+    case DriveStraight:
       // Put custom auto code here
       break;
     case kDefaultAuto:
     default:
       // Put default auto code here
-      break;
+      break;    
+    }     */
+  }
+
+  @Override
+  public void teleopInit() {
+    Robot.drivebase.resetSensors();
+    if (autoSelected != null){
+      autoSelected.cancel();
     }
   }
 
@@ -90,6 +113,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+    
+    //Robot.drivebase.drive(0.5, 0.5);
   }
 
   /**
