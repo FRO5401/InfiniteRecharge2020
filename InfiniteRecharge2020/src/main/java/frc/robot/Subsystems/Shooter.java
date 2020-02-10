@@ -21,13 +21,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-
 public class Shooter extends Subsystem {
     
         // instanciate the objects
         TalonSRX shooterMaster, shooterSlave;
         private double kP, kI, kD;
-        private boolean pidEnabled;
         private double PID_MOTOR_SPEED = 0;
         private double MOTOR_SPEED = PID_MOTOR_SPEED;
 
@@ -72,12 +70,9 @@ public class Shooter extends Subsystem {
 }
 
     public void startMotors() {
-
-        if(pidEnabled) {
-            shooterMaster.config_kP(0, kP, 0);
-            shooterMaster.config_kI(0, kI, 0);
-            shooterMaster.config_kD(0, kD, 0);
-        }
+        shooterMaster.config_kP(0, kP, 0);
+        shooterMaster.config_kI(0, kI, 0);
+        shooterMaster.config_kD(0, kD, 0);
     }
     
         public double getVelocity() {

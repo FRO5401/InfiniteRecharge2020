@@ -26,7 +26,7 @@ public class GetShooterUpToSpeed extends Command {
     upToSpeed    = false;
     currentSpeed = 0;
     targetSpeed  = 0;
-    THRESH = 0;//probably don't need THRESH because PID
+    THRESH = 0;
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +40,7 @@ public class GetShooterUpToSpeed extends Command {
   @Override
   public void execute() {
     currentSpeed = Math.abs(Robot.shooter.getVelocity());
-    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){//probably don't need THRESH because PID
+    if (currentSpeed <= targetSpeed + THRESH && currentSpeed >= targetSpeed - THRESH){
       upToSpeed = true;
     }
   }
