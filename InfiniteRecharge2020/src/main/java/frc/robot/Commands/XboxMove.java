@@ -7,39 +7,39 @@
 
 package frc.robot.Commands;
 
+import java.text.BreakIterator;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class XboxMove extends Command {
-  /**
-   * Creates a new XboxMove.
-   */
-  public XboxMove() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+  //Input Axis
 
-  // Called when the command is initially scheduled.
+  double throttle;
+  double turn;
+  double reverse;
+
+
+  //Buttons
+  boolean rotate;
+  boolean brake;
+  boolean precision;
+  boolean gearShiftLow;
+  boolean gearShiftHigh;
+
+
+  //Vars
+  double sensitivity;
+  double left;
+  double right;
+
+  
+
+
   @Override
-  protected void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  protected void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  protected void end() {
-  }
-
-  @Override
-  protected void interrupted() {
-
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
+  protected boolean isFinished() {
+    // TODO Auto-generated method stub
     return false;
   }
+
+
 }

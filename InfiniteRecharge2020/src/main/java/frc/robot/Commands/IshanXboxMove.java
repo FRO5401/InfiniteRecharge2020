@@ -9,34 +9,50 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
-public class CompressorToggle extends Command {
-  public CompressorToggle() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class IshanXboxMove extends Command {
+    //Input Axis
 
-    requires(Robot.compressorsubsystem);
+    double throttle;
+    double turn;
+    double reverse;
+  
+  
+    //Buttons
+    boolean rotate;
+    boolean brake;
+    boolean precision;
+    boolean gearShiftLow;
+    boolean gearShiftHigh;
+  
+  
+    //Vars
+    double sensitivity;
+    double left;
+    double right;
+  
+    
+  public IshanXboxMove() {
+    requires(Robot.drivebase);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.drivebase.shiftHighToLow();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.compressorsubsystem.isEnabled()){
-      Robot.compressorsubsystem.stopCompressor();
-    } else{
-      Robot.compressorsubsystem.startCompressor();
-    }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
@@ -48,6 +64,5 @@ public class CompressorToggle extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.compressorsubsystem.stopCompressor();
   }
 }
