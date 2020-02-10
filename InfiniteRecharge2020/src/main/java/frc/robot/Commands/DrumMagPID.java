@@ -37,7 +37,7 @@ public class DrumMagPID extends Command {
 
         boolean cellEjected = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
-        if(changeMagMode){
+        if(changeMagMode){                  //TODO: This might keep switching if the button is held. Maybe add boolean? -John
             Robot.drummag.setMagMode();
         }
 

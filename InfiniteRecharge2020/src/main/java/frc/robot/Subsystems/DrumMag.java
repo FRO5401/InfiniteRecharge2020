@@ -119,7 +119,7 @@ public class DrumMag extends Subsystem {
     cellEjector.set(false);
   }
   
-  public void setMagMode(){
+  public void setMagMode(){ //TODO: Add ejectorLimit in condition to stop robot from destroying itself
 
 
       //TODO: SET CUSTOM SPEED (SLIGHTLER SLOWER) LATER OOOP
@@ -128,7 +128,7 @@ public class DrumMag extends Subsystem {
       magMode = "shooter";
       facingShooter = true;
       magazineRotationSpeed = 0.0;
-      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
+      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed); //TODO: Should be ControlMode.PercentageOutput -John
     }
     
     
@@ -138,7 +138,7 @@ public class DrumMag extends Subsystem {
       magMode = "infeed";
       facingShooter = false;
       magazineRotationSpeed = 1.0;
-      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
+      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed); //TODO: Should be ControlMode.PercentageOutput -John
     }
   }
 
@@ -150,12 +150,12 @@ public class DrumMag extends Subsystem {
     return facingShooter;
   }
 
-  public void rotate36Degrees(){
+  public void rotate36Degrees(){ //TODO: Add ejectorLimit in condition to stop robot from destroying itself
     if(genevaLimit.get() == true) //If you are at the end of a rotation, rotate
     setPoint(magazineSRX.getSensorCollection().getQuadraturePosition() + nativeUnitsForOneSlot);
   }
 
-  public void rotate72Degrees(){
+  public void rotate72Degrees(){ //TODO: Add ejectorLimit in condition to stop robot from destroying itself
     if(genevaLimit.get() == true) //If you are at the end of a rotation, rotate twice
     setPoint(magazineSRX.getSensorCollection().getQuadraturePosition() + (nativeUnitsForOneSlot * 2));
   }
