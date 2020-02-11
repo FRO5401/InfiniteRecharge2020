@@ -36,9 +36,10 @@ public class DrumMag extends Subsystem {
   private double infeedPositionPID, shooterPositionPID;
 
   public boolean magBoolean;
+  public int currentCellPosition = 1;
 
   //TODO: GOES INTO ROBOTMAP
-  private double nativeUnitsForOneSlot;
+  private double nativeUnitsFor32Degrees;
 
   public DrumMag() {
 
@@ -84,6 +85,7 @@ public class DrumMag extends Subsystem {
     setDefaultCommand(new DrumMagPID());
   }
 
+  //PID related methods, used for the Geneva Mechanism
   public void setPoint(double setPoint) {
     double setPointNativeUnits = setPoint / RobotMap.MAGAZINE_ANGLE_PER_PULSE;
     magazineSRX.set(ControlMode.Position, setPointNativeUnits);
@@ -95,6 +97,8 @@ public class DrumMag extends Subsystem {
     return onTarget;
   }
 
+
+  //Solenoid related methods, lets you control the ejector
   public void ejectSolenoid(){
     cellEjectorSolenoid.set(true);
   }
@@ -103,26 +107,21 @@ public class DrumMag extends Subsystem {
     cellEjectorSolenoid.set(false);
   }
   
+  //Positional related methods, allows you to switch between Infeed/Shooter
   public void setMagMode(){
 
-
-      //TODO: SET CUSTOM SPEED (SLIGHTLER SLOWER) LATER OOOP
     if(magMode.equals("infeed")){
-      setPoint(shooterPositionPID);
+      //How to get to shooter
+      resetCurrentCellPosition();
       magMode = "shooter";
       magBoolean = true;
-      magazineRotationSpeed = 0.0;
-      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
-    
-    
-      //TODO: SET CUSTOM SPEED LATER OOOP
+  
     if(magMode.equals("shooter")){
-      setPoint(infeedPositionPID);
+      //How to get to infeed
+      resetCurrentCellPosition();
       magMode = "infeed";
       magBoolean = false;
-      magazineRotationSpeed = 1.0;
-      magazineSRX.set(ControlMode.Velocity, magazineRotationSpeed);
     }
   }
 
@@ -134,37 +133,34 @@ public class DrumMag extends Subsystem {
     return magBoolean;
   }
 
-  public void rotateOneSlot(){
+  //Rotation related methods, allows Drummag to rotate a certain number of degrees
+  public void rotate32Degrees(){
     double position = magazineSRX.getSensorCollection().getQuadraturePosition();
-    setPoint(position + (nativeUnitsForOneSlot * 2));
+    setPoint(position + (nativeUnitsFor32Degrees));
   }
 
-  public int getCurrentSlot(){
-     
-    int slotPosition = 0;
-
-    if(cellLimit1.get() == magBoolean){
-      slotPosition = 1;
-    }
-    else if(cellLimit2.get() == magBoolean){
-      slotPosition = 2;
-    }
-    else if(cellLimit3.get() == magBoolean){
-      slotPosition = 3;
-    }
-    else if(cellLimit4.get() == magBoolean){
-      slotPosition = 4;
-    }
-    else if(cellLimit5.get() == magBoolean){
-      slotPosition = 5;
-    }
-    else {
-      slotPosition = 69;
-    }
-
-    return slotPosition;
+  public void rotate72Degrees(){
+    double position = magazineSRX.getSensorCollection().getQuadraturePosition();
+    setPoint(position + (nativeUnitsFor32Degrees * 2));
   }
 
+  //Cell related methods, tells you which slot you are currently at
+  public int getCurrentCellPosition(){
+    return currentCellPosition;
+  }
+
+  public void resetCurrentCellPosition(){
+    currentCellPosition = 1;
+  }
+
+  public void updateCurrentCellPosition(){
+    if(currentCellPosition <= 4){
+      currentCellPosition = currentCellPosition + 1;
+    }
+  }
+
+
+  //Slot related methods, tells us which slot is being occupied due to parameters
   public boolean getLimitPressed(int limit) {
 
     boolean limitPressed = false;
@@ -192,19 +188,15 @@ public class DrumMag extends Subsystem {
     return limitPressed;
   }
 
-  public double getMagazineAngle() {
-    return (magazineSRX.getSensorCollection().getQuadraturePosition() * RobotMap.MAGAZINE_ANGLE_PER_PULSE);
-  }
-
+  //Methods that report to the Driver/Operator
   public void reportDrumMagSensors() {
     SmartDashboard.putBoolean("Cell 1 Status", cellLimit1.get());
     SmartDashboard.putBoolean("Cell 2 Status", cellLimit2.get());
     SmartDashboard.putBoolean("Cell 3 Status", cellLimit3.get());
     SmartDashboard.putBoolean("Cell 4 Status", cellLimit4.get());
     SmartDashboard.putBoolean("Cell 5 Status", cellLimit5.get());
-    SmartDashboard.putNumber("Amount of Power Cells", getCurrentSlot());
+    SmartDashboard.putNumber("Amount of Power Cells", getCurrentCellPosition());
     SmartDashboard.putNumber("Current Angle (Raw)", magazineSRX.getSensorCollection().getQuadraturePosition());
-    SmartDashboard.putNumber("Current Angle", getMagazineAngle());
     SmartDashboard.putString("Shooter/Infeed Mode", getMagMode());
    
   }

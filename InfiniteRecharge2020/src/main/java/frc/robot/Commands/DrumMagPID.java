@@ -34,49 +34,30 @@ public class DrumMagPID extends Command {
 
         // Allows Operator to change between Infeed/Shooter
         boolean changeMagMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-
         boolean cellEjected = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
         if(changeMagMode){
             Robot.drummag.setMagMode();
         }
 
-        //!! SCENARIOS ARE WRITTEN WITH INFEED MODE IN MIND!!
-        //      !! REVERSE LOGIC FOR SHOOTER MODE !!
+        //Drummag checks which beams are crossed and increments from 1
+        int currentCellSlot = Robot.drummag.getCurrentCellPosition();
+        boolean magModeBoolean = Robot.drummag.getMagBoolean();
 
-        int checkedLimit = Robot.drummag.getCurrentSlot() - 1;
-
-        /*Starts at 2 due the method .getCurrentSlot()
-        * When IR Sensor for 1 is crossed, it returns 2 for CurrentSlot
-        * It has not actually turned yet, so it needs to check 1 and then rotate
-        */
-        if(Robot.drummag.getCurrentSlot() == 2){
-            if((Robot.drummag.getLimitPressed(1) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == true)){
-                    Robot.drummag.rotateOneSlot();
+        if(currentCellSlot < 5){
+            if(Robot.drummag.getLimitPressed(currentCellSlot) != magModeBoolean
+            && Robot.drummag.cellEjectorSolenoid.get() == true){
+                Robot.drummag.rotate72Degrees();
+                Robot.drummag.updateCurrentCellPosition();
             }
         }
-
-        /* Position is now 3 or more
-        *  If 2's IR sensor is crossed, it is at position 3
-        *  It has not turned yet
-        *  So, it double check's IR sensor
-        */
-        else if( Robot.drummag.getCurrentSlot() > 2 && Robot.drummag.getCurrentSlot() <= 5){
-            if((Robot.drummag.getLimitPressed(checkedLimit) != Robot.drummag.getMagBoolean())
-                && (Robot.drummag.cellEjectorSolenoid.get() == true)){
-                    Robot.drummag.rotateOneSlot();
+        else if(Robot.drummag.getCurrentCellPosition() == 5){
+            if(Robot.drummag.getLimitPressed(currentCellSlot) != magModeBoolean
+            && Robot.drummag.cellEjectorSolenoid.get() == true){
+                Robot.drummag.setMagMode();
             }
         }
-
-        /* In .getCurrentPosition 69 is the position when 5 is crossed
-        *  So, as soon as it is 
-        *  It changes to the next mode
-        *  Nice!
-        */
-        else if (Robot.drummag.getCurrentSlot() == 69){
-            Robot.drummag.setMagMode();
-        }
+        
 
         // TODO: Check for Vision and RPM Flags OOP
         if(cellEjected){
