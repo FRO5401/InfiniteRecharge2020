@@ -29,6 +29,7 @@ public class DrumMag extends Subsystem {
   private int magMode;
   private boolean target; //Used in findDesiredPosition()
   private int currentPosition;
+  private boolean finishedRotating;
 
   boolean[] cellLimits;
 
@@ -49,6 +50,7 @@ public class DrumMag extends Subsystem {
 
       magMode = 1; //Initializes in shooter mode
       target = true; //Target must be true for shooter mode (looking for where ball is present)
+      finishedRotating = true;
 
     }
 
@@ -58,14 +60,30 @@ public class DrumMag extends Subsystem {
     }
 
     //Rotates 36 degrees (one geneva turn)
-    public void rotate ()
+    public void rotate()
     {
-      if(!getKickerLimit()){
-        genevaMotor.set(ControlMode.PercentOutput, 0.1); //Slow speed for now
-        if(getGenevaLimit()){
+        genevaMotor.set(ControlMode.PercentOutput, 0.1); //Slow speed for testing
+
+        if(getGenevaLimit() && finishedRotating == false){
           incrementPosition(); //Finishes moving, increments position
+          finishedRotating = true;
         }
-      }
+    }
+
+    //Sets finishedRotating to false
+    public void switchFinishedRotating(){
+      finishedRotating = false;
+    }
+    
+    //Returns finishedRotating
+    public boolean getFinishedRotating(){
+      return finishedRotating;
+    }
+
+    //Stops drummag motor
+    public void stop(){
+      genevaMotor.set(ControlMode.PercentOutput, 0.0);
+      finishedRotating = true;
     }
 
     //Finds position to turn to next

@@ -18,6 +18,8 @@ public class DrumControl extends Command {
   boolean changeMode;
   boolean override;
   boolean homingReset;
+  boolean kickerLimit;
+  boolean genevaOnLimit;
 
   public DrumControl() {
     requires(Robot.drummag);
@@ -35,32 +37,45 @@ public class DrumControl extends Command {
     position = Robot.drummag.getPosition();
     cellLimit = Robot.drummag.getCellLimits(); //cell limit array
     homingReset = Robot.drummag.getHomingLimit();
+    kickerLimit = Robot.drummag.getKickerLimit();
+    genevaOnLimit = Robot.drummag.getGenevaLimit();
 
     changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
     override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
 
-  if(!override){ //If NOT Override button
-      desiredPosition = Robot.drummag.findDesiredPosition();
-
+  //Switches between shooter and infeed modes when button is pressed
     if(changeMode){
       Robot.drummag.changeMode();
     }
 
-    if(position != desiredPosition){
-      Robot.drummag.rotate();
-    }
-
-    if(homingReset){
+    if(homingReset){ //Resets position when homing limit is tripped
       Robot.drummag.resetPosition();
     }
-  }
 
-  else if(override){
-    //Override Control
-  }
+    if(!override){ //If NOT Override button
+        desiredPosition = Robot.drummag.findDesiredPosition(); //Updates desired position
+  
+      if(kickerLimit){
+        Robot.drummag.stop();
+      }
 
-  }
+      else if(!kickerLimit){ //Prevents drummag from moving while kicker is deployed
+        if(position != desiredPosition){ //Moves until at desired position
+          Robot.drummag.rotate();
+          if(genevaOnLimit == false){
+            Robot.drummag.switchFinishedRotating();
+          }
+        }
+        else{
+          Robot.drummag.stop();
 
+        }
+      }
+    }
+    else if(override){
+      //Override Control
+    }
+  }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -70,11 +85,13 @@ public class DrumControl extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drummag.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drummag.stop();
   }
 }
