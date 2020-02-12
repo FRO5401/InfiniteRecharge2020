@@ -14,6 +14,10 @@ import frc.robot.RobotMap;
 public class DrumControl extends Command {
   boolean[] cellLimit = new boolean[5];
   int desiredPosition;
+  int position;
+  boolean changeMode;
+  boolean override;
+  boolean homingReset;
 
   public DrumControl() {
     requires(Robot.drummag);
@@ -28,11 +32,32 @@ public class DrumControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    cellLimit = Robot.drummag.getLemonLimits(); //Array
+    position = Robot.drummag.getPosition();
+    cellLimit = Robot.drummag.getCellLimits(); //cell limit array
+    homingReset = Robot.drummag.getHomingLimit();
 
-    if(RobotMap.PLACE_HOLDER){ //Override button
+    changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
+    override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
+
+  if(!override){ //If NOT Override button
       desiredPosition = Robot.drummag.findDesiredPosition();
+
+    if(changeMode){
+      Robot.drummag.changeMode();
     }
+
+    if(position != desiredPosition){
+      Robot.drummag.rotate();
+    }
+
+    if(homingReset){
+      Robot.drummag.resetPosition();
+    }
+  }
+
+  else if(override){
+    //Override Control
+  }
 
   }
 
