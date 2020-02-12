@@ -29,7 +29,7 @@ public class DrumMag extends Subsystem {
   private int magMode;
   private boolean target; //Used in findDesiredPosition()
   private int currentPosition;
-  private boolean finishedRotating;
+  private boolean finishedRotating; //Used to prevent currentPosition from endlessly incrementing
 
   boolean[] cellLimits;
 
@@ -50,7 +50,7 @@ public class DrumMag extends Subsystem {
 
       magMode = 1; //Initializes in shooter mode
       target = true; //Target must be true for shooter mode (looking for where ball is present)
-      finishedRotating = true;
+      finishedRotating = true; //Starts true
 
     }
 
