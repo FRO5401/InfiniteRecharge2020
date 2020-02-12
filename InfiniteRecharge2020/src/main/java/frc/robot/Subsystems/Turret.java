@@ -88,6 +88,7 @@ public class Turret extends Subsystem {
     this.targetLocation = targetLocation;
   }
 
+  //I don't know if this is necessary
   public boolean onTarget() {
     boolean onTarget = Math.abs(turretTalon.getSensorCollection().getQuadraturePosition()
         - turretTalon.getClosedLoopTarget(loopIndex)) < RobotMap.ANGLE_THRESHOLD;
@@ -138,8 +139,8 @@ public class Turret extends Subsystem {
     return turretAngle;
   }
 
-  // Creates a soft left limit
-  public boolean getLimitLeftSoft() {
+  // Creates a left limit
+  public boolean getLimitLeft() {
     if (getTurretAngle() < -45) {
       return true;
     } else {
@@ -147,8 +148,8 @@ public class Turret extends Subsystem {
     }
   }
 
-  // Creates a soft right limit
-  public boolean getLimitRightSoft() {
+  // Creates a right limit
+  public boolean getLimitRight() {
     if (getTurretAngle() > 45) {
       return true;
     } else {
@@ -165,8 +166,8 @@ public class Turret extends Subsystem {
 
   // Will report the necessary data to shuffleboard/
   public void reportTurretInfeedSensors() {
-    SmartDashboard.putBoolean("Left Limit Turret", getLimitLeftSoft());
-    SmartDashboard.putBoolean("Right Limit Turret", getLimitRightSoft());
+    SmartDashboard.putBoolean("Left Limit Turret", getLimitLeft());
+    SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());
     SmartDashboard.putNumber("Turret Direction", turretTalon.getSelectedSensorVelocity());
   }
 }
