@@ -52,16 +52,20 @@ public class DrumMag extends Subsystem {
       target = true; //Target must be true for shooter mode (looking for where ball is present)
       finishedRotating = true; //Starts true
 
+      cellLimits[0] = cell1.get();
+      cellLimits[1] = cell1.get();
+      cellLimits[2] = cell1.get();
+      cellLimits[3] = cell1.get();
+      cellLimits[4] = cell1.get();
+
     }
 
-    public void changeMode()
-    {
+    public void changeMode(){
       magMode = 1 - magMode;
     }
 
     //Rotates 36 degrees (one geneva turn)
-    public void rotate()
-    {
+    public void rotate(){
         genevaMotor.set(ControlMode.PercentOutput, 0.1); //Slow speed for testing
 
         if(getGenevaLimit() && finishedRotating == false){
