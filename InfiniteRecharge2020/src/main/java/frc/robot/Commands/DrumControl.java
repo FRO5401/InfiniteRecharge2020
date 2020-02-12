@@ -50,14 +50,12 @@ public class DrumControl extends Command {
     overrideAxis = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_X);
     puncher = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
-    //Puncher, yay!
+    // Puncher, yay! This will only let you punch the ball if the geneva is on limit
     if (puncher && genevaOnLimit) {
       Robot.drummag.punchBall(true);
-    }
-    else {
+    } else {
       Robot.drummag.punchBall(false);
     }
-    
 
     // Switches between shooter and infeed modes when button is pressed
     if (changeMode) {

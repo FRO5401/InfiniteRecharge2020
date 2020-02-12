@@ -37,6 +37,7 @@ public class DrumMag extends Subsystem {
   boolean[] cellLimits;
 
   public DrumMag() {
+    // PLACEHOLDERS FOR PORTS
     cell1 = new DigitalInput(0);
     cell2 = new DigitalInput(0);
     cell3 = new DigitalInput(0);
@@ -58,6 +59,7 @@ public class DrumMag extends Subsystem {
     target = true; // Target must be true for shooter mode (looking for where ball is present)
     finishedRotating = true; // Starts true
 
+    // Will check to see if the ball is in the mag.
     cellLimits[0] = cell1.get();
     cellLimits[1] = cell1.get();
     cellLimits[2] = cell1.get();
@@ -66,10 +68,12 @@ public class DrumMag extends Subsystem {
 
   }
 
+  // 1 is shooter, 0 is infeed. This method will switch the modes.
   public void changeMode() {
     magMode = 1 - magMode;
   }
 
+  // This will punch or retract the solenoid depending on what is passed
   public void punchBall(boolean status) {
     puncher1.set(status);
     puncher2.set(status);

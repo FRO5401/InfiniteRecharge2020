@@ -20,7 +20,7 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  
+
   public static DrumMag drummag;
 
   public static OI oi;
@@ -35,9 +35,9 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
   @Override
-  public void robotInit() { 
+  public void robotInit() {
     drummag = new DrumMag();
-    
+
     oi = new OI();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);

@@ -27,7 +27,7 @@ public class RobotMap {
   /*** Constants ***/
   // OI
   public static final double AXIS_THRESHOLD = 0.1;
-  
+
   // DriveBase
   public static final double LOW_GEAR_LEFT_DPP = 0.1568175312974026;
   public static final double LOW_GEAR_RIGHT_DPP = 0.1568175312974026;
