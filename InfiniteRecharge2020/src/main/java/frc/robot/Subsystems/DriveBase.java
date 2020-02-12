@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.VictorSP;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -27,7 +28,7 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class DriveBase extends Subsystem {
   // Motors
-  private TalonFX testPWM;
+  private TalonFX testPWM, falcon;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -39,7 +40,8 @@ public class DriveBase extends Subsystem {
 
   public DriveBase() {
     // Instantiate Motors
-    testPWM = new TalonFX(6);
+    testPWM = new TalonFX(7);
+    falcon = new TalonFX(8);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -55,13 +57,16 @@ public class DriveBase extends Subsystem {
     setDefaultCommand(new XboxMove());
   }
 
+
   // Sets victors to desired speed giving from XboxMove.
   public void drive() {
-    testPWM.set(ControlMode.PercentOutput, 0.8);
+    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 0.2);
+    falcon.set(TalonFXControlMode.PercentOutput, 0.2);
   }
 
-  public void stopMotors(){
-    testPWM.set(ControlMode.PercentOutput, 0);
+  public void stopMotors() {
+    testPWM.set(TalonFXControlMode.PercentOutput, 0);
+    falcon.set(TalonFXControlMode.PercentOutput, 0);
   }
 
   // Set shifter to low.
