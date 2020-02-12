@@ -96,10 +96,11 @@ public class DrumMag extends Subsystem {
       else if(magMode == 0){
         target = false;
       }
-
+      //This SHOULD equal the first index in the cell limit array that equals the variable target
       int firstValueIndex = IntStream.range(0, cellLimits.length).filter(i -> target == cellLimits[i]).findFirst().orElse(-1);
+      //This math makes desiredPosition equal the next position the mag needs to go to
       desiredPosition = ((2 * firstValueIndex) + (1 - magMode) * 5) % 10;
-      return desiredPosition;      
+      return desiredPosition;
     }
 
     //Gets power cell status
@@ -118,8 +119,7 @@ public class DrumMag extends Subsystem {
     }
 
     //Increments position by 1
-    /*
-    Shooter 1 = 0
+/*  Shooter 1 = 0
     Infeed 4  = 1
     Shooter 2 = 2
     Infeed 5  = 3
