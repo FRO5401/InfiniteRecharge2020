@@ -20,6 +20,8 @@ public class DrumControl extends Command {
   boolean homingReset;
   boolean kickerLimit;
   boolean genevaOnLimit;
+  boolean puncher;
+  double overrideAxis;
 
   public DrumControl() {
     requires(Robot.drummag);
@@ -35,51 +37,65 @@ public class DrumControl extends Command {
   @Override
   protected void execute() {
     position = Robot.drummag.getPosition();
-    cellLimit = Robot.drummag.getCellLimits(); //cell limit array
+
+    // Limits
+    cellLimit = Robot.drummag.getCellLimits(); // cell limit array
     homingReset = Robot.drummag.getHomingLimit();
     kickerLimit = Robot.drummag.getKickerLimit();
     genevaOnLimit = Robot.drummag.getGenevaLimit();
 
-    changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
-    override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.PLACE_HOLDER);
+    // Buttons
+    changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
+    override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_L3);
+    overrideAxis = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_X);
+    puncher = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
-  //Switches between shooter and infeed modes when button is pressed
-    if(changeMode){
+    //Puncher, yay!
+    if (puncher && genevaOnLimit) {
+      Robot.drummag.punchBall(true);
+    }
+    else {
+      Robot.drummag.punchBall(false);
+    }
+    
+
+    // Switches between shooter and infeed modes when button is pressed
+    if (changeMode) {
       Robot.drummag.changeMode();
     }
 
-    if(homingReset){ //Resets position when homing limit is tripped
+    if (homingReset) { // Resets position when homing limit is tripped
       Robot.drummag.resetPosition();
     }
 
-    if(!override){ //If NOT Override button
-        desiredPosition = Robot.drummag.findDesiredPosition(); //Updates desired position
-  
-      if(kickerLimit){ //Stops drummag if kicker is deployed (robot will break if spun while deployed)
+    if (!override) { // If NOT Override button
+      desiredPosition = Robot.drummag.findDesiredPosition(); // Updates desired position
+
+      if (kickerLimit) { // Stops drummag if kicker is deployed (robot will break if spun while deployed)
         Robot.drummag.stop();
       }
 
-      else if(!kickerLimit){ //Prevents drummag from moving while kicker is deployed
-        if(position != desiredPosition){ //Moves until at desired position
+      else if (!kickerLimit) { // Prevents drummag from moving while kicker is deployed
+        if (position != desiredPosition) { // Moves until at desired position
           Robot.drummag.rotate();
-          if(genevaOnLimit == false){ //Robot.drummag.finishedRotating will become false once geneve is off limit
+          if (genevaOnLimit == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
             Robot.drummag.switchFinishedRotating();
           }
-        }
-        else{ //When position reaches desired position
+        } else { // When position reaches desired position
           Robot.drummag.stop();
 
         }
       }
-    }
-    else if(override){
-      //TODO: Override Control (keep in mind kicker must not be deployed before spinning)
+    } else if (override) {
+      // TODO: Override Control (keep in mind kicker must not be deployed before
+      // spinning)
     }
   }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false; //TODO: Return true when endgame starts to save power
+    return false; // TODO: Return true when endgame starts to save power
   }
 
   // Called once after isFinished returns true
