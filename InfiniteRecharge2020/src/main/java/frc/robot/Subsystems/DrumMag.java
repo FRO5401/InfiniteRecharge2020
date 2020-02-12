@@ -141,8 +141,16 @@ public class DrumMag extends Subsystem {
 
   // Increments position by 1
   /*
-   * Shooter 1 = 0 Infeed 4 = 1 Shooter 2 = 2 Infeed 5 = 3 Shooter 3 = 4 Infeed 1
-   * = 5 Shooter 4 = 6 Infeed 2 = 7 Shooter 5 = 8 Infeed 3 = 9
+   * Shooter 1 = 0 
+   * Infeed 4  = 1 
+   * Shooter 2 = 2 
+   * Infeed 5  = 3 
+   * Shooter 3 = 4 
+   * Infeed 1  = 5 
+   * Shooter 4 = 6 
+   * Infeed 2  = 7 
+   * Shooter 5 = 8 
+   * Infeed 3  = 9
    */
   public void incrementPosition() {
     if (currentPosition == 9) {
