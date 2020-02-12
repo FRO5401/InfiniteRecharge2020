@@ -15,8 +15,8 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
+  private boolean readyShooter;
 
-  private boolean solenoidStatus;
 
   public ShooterMechanism() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,7 +31,11 @@ public class ShooterMechanism extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_Y);
+    readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+
+    if(readyShooter) {
+      Robot.shooter.runMotors();
+    }
 
   }
 

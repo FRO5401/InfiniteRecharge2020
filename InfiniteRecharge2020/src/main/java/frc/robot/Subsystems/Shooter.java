@@ -18,65 +18,73 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class Shooter extends Subsystem {
-    
-        // instanciate the objects
-        TalonSRX shooterMaster, shooterSlave;
-        private double kP, kI, kD;
-        private double PID_MOTOR_SPEED = 0;
-        private double MOTOR_SPEED = PID_MOTOR_SPEED;
 
+    // instanciate the objects
+    TalonFX shooterMaster, shooterSlave;
+    private double kP, kI, kD;
+    private double PID_MOTOR_SPEED = 0;
+    private double MOTOR_SPEED = PID_MOTOR_SPEED;
 
-        // make a constructor and declare the variables
+    // make a constructor and declare the variables
 
-        public Shooter() {
+    public Shooter() {
 
-            TalonSRX shooterMaster = new TalonSRX(0);
-            TalonSRX shooterSlave = new TalonSRX(0);
+        // Placeholder
+        TalonFX shooterMaster = new TalonFX(0);
+        TalonFX shooterSlave = new TalonFX(0);
 
-            shooterMaster.set(ControlMode.Velocity, 0);
-            shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
-            
-            shooterMaster.getSensorCollection().getQuadraturePosition();
-            shooterSlave.getSensorCollection().getQuadraturePosition();
+        // Sets the speed
+        shooterMaster.set(ControlMode.Velocity, 0);
+        shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
 
-            kP = 0;
-            kI = 0;
-            kD = 0;
+        // Positioning
+        shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+        shooterSlave.getSensorCollection().getIntegratedSensorPosition();
 
-            shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-            reset();
+        kP = 0;
+        kI = 0;
+        kD = 0;
 
-        }
+        shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+        reset();
 
-        @Override
-        public void initDefaultCommand() {
-            // TODO Auto-generated method stub
-    
-        }        
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // TODO Auto-generated method stub
+
+    }
 
     public void reset() {
         stop();
     }
 
     public void stop() {
-        shooterMaster.set(ControlMode.PercentOutput, 0);
+        shooterMaster.set(ControlMode.Velocity, 0);
     }
+
     public double getTargetSpeed() {
         return MOTOR_SPEED;
-}
+    }
 
     public void startMotors() {
         shooterMaster.config_kP(0, kP, 0);
         shooterMaster.config_kI(0, kI, 0);
         shooterMaster.config_kD(0, kD, 0);
     }
-    
-        public double getVelocity() {
-            return shooterMaster.getSensorCollection().getQuadraturePosition();
-        }
-    
+
+    public void runMotors() {
+        shooterMaster.set(ControlMode.Velocity, 100);
+    }
+
+    public double getVelocity() {
+        return shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+    }
+
 }

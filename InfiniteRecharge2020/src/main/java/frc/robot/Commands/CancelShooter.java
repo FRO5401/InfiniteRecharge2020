@@ -30,7 +30,10 @@ public class CancelShooter extends Command {
   public void execute() {
     boolean cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_B);
 
-    Robot.shooter.stop();
+    if (cancelShooter) {
+      Robot.shooter.stop();
+    }
+    
   }
 
   // Called once the command ends or is interrupted.

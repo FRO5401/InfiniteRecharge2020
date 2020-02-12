@@ -14,7 +14,6 @@ public class GetShooterUpToSpeed extends Command {
   /**
    * Creates a new GetShooterUpToSpeed.
    */
-  private boolean   drumMagIsFull;
   private boolean   upToSpeed;
   private double    currentSpeed;
   private double    targetSpeed;
