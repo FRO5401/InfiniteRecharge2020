@@ -15,7 +15,8 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
-  private boolean readyShooter;
+  public boolean readyShooter;
+  public boolean cancelShooter;
 
 
   public ShooterMechanism() {
@@ -32,6 +33,11 @@ public class ShooterMechanism extends Command {
   @Override
   public void execute() {
     readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+    cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_B);
+
+    if (cancelShooter) {
+      Robot.shooter.stop();
+    }
 
     if(readyShooter) {
       Robot.shooter.runMotors();
