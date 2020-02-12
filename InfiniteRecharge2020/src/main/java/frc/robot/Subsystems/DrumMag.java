@@ -93,7 +93,7 @@ public class DrumMag extends Subsystem {
     //Finds position to turn to next
     public int findDesiredPosition(){
       int desiredPosition;
-      cellLimits = getCellLimits();
+      getCellLimits();
       if(magMode == 1){
         target = true;
       }
