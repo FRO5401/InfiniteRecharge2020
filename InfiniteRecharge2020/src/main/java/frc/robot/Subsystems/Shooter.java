@@ -10,6 +10,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.Commands.ShooterMechanism;
 import frc.robot.Commands.XboxMove;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -26,7 +27,7 @@ public class Shooter extends Subsystem {
 
     // instanciate the objects
     TalonFX shooterMaster, shooterSlave;
-    private double kP, kI, kD;
+    private double kF, kP, kI, kD;
     private double PID_MOTOR_SPEED = 0;
     private double MOTOR_SPEED = PID_MOTOR_SPEED;
 
@@ -46,6 +47,7 @@ public class Shooter extends Subsystem {
         shooterMaster.getSensorCollection().getIntegratedSensorPosition();
         shooterSlave.getSensorCollection().getIntegratedSensorPosition();
 
+        kF = 0;
         kP = 0;
         kI = 0;
         kD = 0;
@@ -57,7 +59,7 @@ public class Shooter extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // TODO Auto-generated method stub
+        setDefaultCommand(new ShooterMechanism());
 
     }
 
@@ -74,9 +76,10 @@ public class Shooter extends Subsystem {
     }
 
     public void startMotors() {
-        shooterMaster.config_kP(0, kP, 0);
-        shooterMaster.config_kI(0, kI, 0);
-        shooterMaster.config_kD(0, kD, 0);
+        shooterMaster.config_kF(0, kF, 1000);
+        shooterMaster.config_kP(0, kP, 1000);
+        shooterMaster.config_kI(0, kI, 1000);
+        shooterMaster.config_kD(0, kD, 1000);
     }
 
     public void runMotors() {

@@ -27,6 +27,7 @@ public class ShooterMechanism extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.shooter.startMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +40,7 @@ public class ShooterMechanism extends Command {
       Robot.shooter.stop();
     }
 
-    if(readyShooter) {
+    else if(readyShooter) {
       Robot.shooter.runMotors();
     }
 
