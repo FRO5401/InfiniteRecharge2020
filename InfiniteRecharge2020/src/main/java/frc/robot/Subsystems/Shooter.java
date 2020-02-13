@@ -53,7 +53,7 @@ public class Shooter extends Subsystem {
         kD = 0;
 
         shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        reset();
+        stop();
 
     }
 
@@ -61,10 +61,6 @@ public class Shooter extends Subsystem {
     public void initDefaultCommand() {
         setDefaultCommand(new ShooterMechanism());
 
-    }
-
-    public void reset() {
-        stop();
     }
 
     public void stop() {
