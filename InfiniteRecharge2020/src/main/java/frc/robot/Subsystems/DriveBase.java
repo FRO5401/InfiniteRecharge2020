@@ -60,8 +60,8 @@ public class DriveBase extends Subsystem {
 
   // Sets victors to desired speed giving from XboxMove.
   public void drive() {
-    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 0.2);
-    falcon.set(TalonFXControlMode.PercentOutput, 0.2);
+    testPWM.set(TalonFXControlMode.PercentOutput, 1.0);
+    falcon.set(TalonFXControlMode.PercentOutput, -1 * 1.0);
   }
 
   public void stopMotors() {
