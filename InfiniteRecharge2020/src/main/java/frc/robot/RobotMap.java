@@ -44,9 +44,8 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // CarriageInfeed
-  public static final double CARRIAGE_FEEDER_SPEED = .4;
-  public static final double CARRIAGE_ANGLE_PER_PULSE = 0;
+  //Infeed
+  public static final double INFEED_SPEED = 0.55;
 
   // Elevator
   public static final int TIMEOUT_LIMIT_IN_Ms = 10;

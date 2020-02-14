@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
 
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
+  public static Infeed infeed;
   public static OI oi;
 
   /**
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
 
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
+    infeed = new Infeed();
     
     oi = new OI();
   }
