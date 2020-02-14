@@ -36,16 +36,16 @@ public class Shooter extends Subsystem {
     public Shooter() {
 
         // Placeholder
-        TalonFX shooterMaster = new TalonFX(0); //TODO: Set to correct CAN IDs
-        TalonFX shooterSlave = new TalonFX(0);
+        TalonFX shooterMaster = new TalonFX(RobotMap.SHOOTER_MASTER_CHANNEL); //TODO: Set to correct CAN IDs
+        TalonFX shooterSlave = new TalonFX(RobotMap.SHOOTER_SLAVE_CHANNEL);
 
-        // Sets the speed
-        shooterMaster.set(ControlMode.Velocity, 0);
-        shooterSlave.set(ControlMode.Follower, shooterMaster.getDeviceID());
+        //shooterSlave must follow shooterMaster inverted
+        shooterSlave.follow(shooterMaster);
+        shooterSlave.setInverted(true);
 
         // Positioning
-        shooterMaster.getSensorCollection().getIntegratedSensorPosition();
-        shooterSlave.getSensorCollection().getIntegratedSensorPosition();
+        //shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+        //shooterSlave.getSensorCollection().getIntegratedSensorPosition();
 
         kF = 0; //TODO: Set PID values (bruh moment)
         kP = 0;
