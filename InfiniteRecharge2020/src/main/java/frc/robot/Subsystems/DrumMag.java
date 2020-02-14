@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 import frc.robot.Commands.DrumControl;
 
 /**
@@ -22,7 +23,7 @@ import frc.robot.Commands.DrumControl;
  */
 public class DrumMag extends Subsystem {
   private DigitalInput cell1, cell2, cell3, cell4, cell5;
-  private DigitalInput kicker;
+  private DigitalInput kickerSwitch;
   private DigitalInput genevaLimit;
   private DigitalInput homingLimit;
   private TalonSRX genevaMotor;
@@ -38,22 +39,22 @@ public class DrumMag extends Subsystem {
 
   public DrumMag() {
     // PLACEHOLDERS FOR PORTS
-    cell1 = new DigitalInput(0);
-    cell2 = new DigitalInput(0);
-    cell3 = new DigitalInput(0);
-    cell4 = new DigitalInput(0);
-    cell5 = new DigitalInput(0);
+    cell1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
+    cell2 = new DigitalInput(RobotMap.MAGAZINE_STOP_2);
+    cell3 = new DigitalInput(RobotMap.MAGAZINE_STOP_3);
+    cell4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
+    cell5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
-    puncher1 = new Solenoid(0);
-    puncher2 = new Solenoid(0);
+    puncher1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL);
+    puncher2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
 
-    kicker = new DigitalInput(0);
+    kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
 
-    genevaLimit = new DigitalInput(0);
+    genevaLimit = new DigitalInput(RobotMap.GENEVA_LIMIT);
 
-    homingLimit = new DigitalInput(0);
+    homingLimit = new DigitalInput(RobotMap.HOMING_LIMIT);
 
-    genevaMotor = new TalonSRX(0);
+    genevaMotor = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     magMode = 1; // Initializes in shooter mode
     target = true; // Target must be true for shooter mode (looking for where ball is present)
@@ -162,7 +163,7 @@ public class DrumMag extends Subsystem {
 
   // Gets limit status
   public boolean getKickerLimit() {
-    return kicker.get();
+    return kickerSwitch.get();
   }
 
   // Gets limit status

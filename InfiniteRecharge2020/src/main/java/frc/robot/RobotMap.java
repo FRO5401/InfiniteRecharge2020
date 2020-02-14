@@ -52,7 +52,11 @@ public class RobotMap {
   public static final int MAGAZINE_STOP_4 = 0;
   public static final int MAGAZINE_STOP_5 = 0;
 
-  public static final int EJECTOR_RETRACTED = 0;
+  public static final int KICKER_DEPLOYED = 0;
+
+  public static final int GENEVA_LIMIT = 0;
+
+  public static final int HOMING_LIMIT = 0;
 
   /*** Operator Interfaces ***/
   // Controllers
@@ -109,7 +113,8 @@ public class RobotMap {
   public static final int ELEVATOR_COLLAPSE_BOTTOM = 1;
 
   // Power Cell Ejection
-  public static final int MAGAZINE_CELL_EJECTOR_CHANNEL = 2;
+  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 2;
+  public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
 
   /*** Sensors ***/
   // Encoders
