@@ -18,6 +18,9 @@ public class ShooterMechanism extends Command {
   public boolean readyShooter;
   public boolean cancelShooter;
 
+  //For PID testing
+  public int dPad;
+
 
   public ShooterMechanism() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,8 +36,17 @@ public class ShooterMechanism extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Robot.shooter.reportValues();
     readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
     cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_B);
+
+    //For Pid testing
+    dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
+
+    //For PID testing
+    if(dPad == 180){
+      Robot.shooter.getPIDInput();
+    }
 
     if (cancelShooter) {
       Robot.shooter.stop();

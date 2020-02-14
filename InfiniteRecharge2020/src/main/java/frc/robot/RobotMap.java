@@ -90,8 +90,8 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
   //Shooter
-  public static final int SHOOTER_MASTER_CHANNEL = 0;
-  public static final int SHOOTER_SLAVE_CHANNEL  = 0;
+  public static final int SHOOTER_MASTER_CHANNEL = 7;
+  public static final int SHOOTER_SLAVE_CHANNEL  = 8;
 
   // CarriageInfeed
   public static final int CARRIAGE_FEED_ROLLERS = 4;

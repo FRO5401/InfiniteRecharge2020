@@ -79,11 +79,26 @@ public class Shooter extends Subsystem {
     }
 
     public void runMotors() {
-        shooterMaster.set(ControlMode.Velocity, 100);
+        shooterMaster.set(ControlMode.Velocity, 1); //Make first velocity 1
     }
 
     public double getVelocity() {
         return shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+    }
+
+    public void reportValues(){
+        SmartDashboard.putNumber("Shooter Speed", shooterMaster.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Current kF", kF);
+        SmartDashboard.putNumber("Current kP", kP);
+        SmartDashboard.putNumber("Current kI", kI);
+        SmartDashboard.putNumber("Current kD", kD);
+    }
+
+    public void getPIDInput(){
+        SmartDashboard.getNumber("Input kF", kF); //Second parameter is default value (in this case, current value)
+        SmartDashboard.getNumber("Input kP", kP);
+        SmartDashboard.getNumber("Input kI", kI);
+        SmartDashboard.getNumber("Input kD", kD);
     }
 
 }
