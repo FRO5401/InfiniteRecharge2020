@@ -64,7 +64,7 @@ public class Shooter extends Subsystem {
     }
 
     public void stop() {
-        shooterMaster.set(ControlMode.Velocity, 0);
+        shooterMaster.set(ControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
     }
 
     public double getTargetSpeed() {
@@ -79,7 +79,8 @@ public class Shooter extends Subsystem {
     }
 
     public void runMotors() {
-        shooterMaster.set(ControlMode.Velocity, 1); //Make first velocity 1
+        shooterMaster.set(ControlMode.PercentOutput, 0.05); //Change back to velocity after testing master/slave
+        //Make first velocity 1
     }
 
     public double getVelocity() {
