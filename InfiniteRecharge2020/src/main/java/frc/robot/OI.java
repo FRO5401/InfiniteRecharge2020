@@ -15,7 +15,6 @@
 package frc.robot;
 
 import frc.robot.RobotMap;
-import frc.robot.Commands.CompressorToggle;
 import edu.wpi.first.wpilibj.Joystick;
  
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -36,8 +35,8 @@ public class OI{
     Button xboxRightBumper_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     Button xboxBack_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_BACK);
     Button xboxStart_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_START);
-    Button xboxL3_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_L3);
-    Button xboxR3_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_R3);
+    Button xboxL3_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_LS);
+    Button xboxR3_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_RS);
   
     //Buttons (Operator)
     Button xboxA_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_A);
@@ -48,14 +47,17 @@ public class OI{
     Button xboxRightBumper_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     Button xboxBack_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_BACK);
     Button xboxStart_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_START);
-    Button xboxL3_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_L3);
-    Button xboxR3_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_R3);
+    Button xboxL3_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_LS);
+    Button xboxR3_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_RS);
 
- 
- 
-  public OI() {
-    xboxY_Driver.whenPressed(new CompressorToggle()); // Don't know if it is needed
- }
+    
+    public double xboxAxis(Joystick controller, int xboxAxis) {
+      return controller.getRawAxis(xboxAxis);
+      
+    }
+    public boolean xboxButton(Joystick xboxController, int xboxButton){
+      return xboxController.getRawButton(xboxButton);
+    }
 
 }
 

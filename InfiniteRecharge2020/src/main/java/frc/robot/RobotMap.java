@@ -66,8 +66,8 @@ public class RobotMap {
   public static final int XBOX_BUTTON_RIGHT_BUMPER = 6;
   public static final int XBOX_BUTTON_BACK = 7;
   public static final int XBOX_BUTTON_START = 8;
-  public static final int XBOX_BUTTON_L3 = 9;
-  public static final int XBOX_BUTTON_R3 = 10;
+  public static final int XBOX_BUTTON_LS = 9;
+  public static final int XBOX_BUTTON_RS = 10;
 
   // Axes
   public static final int XBOX_AXIS_LEFT_X = 0;

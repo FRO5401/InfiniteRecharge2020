@@ -36,41 +36,41 @@ public class KahanXboxMove extends Command {
   double sensitivity;
 
   public KahanXboxMove() {
-    requires((Subsystem) Robot.drivebase);
+    requires(Robot.drivebase);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    ((DriveBase) Robot.drivebase).shiftHighToLow();
+    Robot.drivebase.shiftHightoLow();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     /*** Read Inputs ***/
-    
-    //Axes
-    /*I don't know what to do here. Uncommnet to see what I mean. Plase tell me if you know what is wrong
 
-    turn = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X); 
-    throttle = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
-    reverse = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
+    // Axes
+    // I dont know what to do here. Uncommnet to see what I mean. Plase tell me if
+    // you know what is wrong
 
-    //Buttons
-    rotate = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_BUTTON_L3);
-    brake = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
-    precision = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
-    gearShiftLow = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_BUTTON_START);
-    gearShiftHigh = Robot.OI.xboxAxis(Robot.OI.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
-    */
+    turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
+    throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
+    reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
 
-   //Gear Shift
+    // Buttons
+    rotate = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_LS);
+    brake = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
+    precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
+    gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
+    gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
+
+    // Gear Shift
 
     if (gearShiftHigh) {
-      ((DriveBase) Robot.drivbase).shiftHighToLow();
+      Robot.drivebase.shiftHightoLow();
     } else if (gearShiftLow) {
-      ((DriveBase) Robot.drivebase).shiftLowToHigh();
+      Robot.drivebase.shiftLowtoHigh();
     }
 
     // Precision 
@@ -84,15 +84,14 @@ public class KahanXboxMove extends Command {
     //Brake
 
     if (brake) {
-      ((DriveBase) Robot.drivebase).stopMotors(); 
+      Robot.drivebase.stopMotors(); 
       
       left = 0;
       right = 0;     
 
       // Comment out the one that is not going to be used
     } else {
-      ((DriveBase) Robot.drivebase).setDefaultCommand(new KahanXboxMove()); 
-    }
+
 
     //Rotation 
 
@@ -121,9 +120,9 @@ public class KahanXboxMove extends Command {
       }
       
       // Sends Signal Back to DriveBase
-      ((DriveBase) Robot.drivebase).drive(left, right);
+      Robot.drivebase.drive(left, right);
     }
-  
+  }  
   @Override
   protected boolean isFinished() {
    return false;
@@ -131,12 +130,12 @@ public class KahanXboxMove extends Command {
 
   @Override 
   protected void end() {
-    ((DriveBase)Robot.drivebase).stopMotors();
+    Robot.drivebase.stopMotors();
   }
 
   @Override 
   protected void interrupted() {
-    ((DriveBase)Robot.drivebase).stopMotors();
+    Robot.drivebase.stopMotors();
   }
 
 }

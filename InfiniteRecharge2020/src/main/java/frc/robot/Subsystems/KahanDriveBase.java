@@ -79,7 +79,7 @@ public class KahanDriveBase extends Subsystem {
     }
 
     //Motor Stop
-    public void stop() {
+    public void stopMotors() {
         leftDrive1.set(ControlMode.PercentOutput, 0);
         leftDrive2.set(ControlMode.PercentOutput, 0);
         leftDrive3.set(ControlMode.PercentOutput, 0);

@@ -8,9 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.DriveBase;
+import frc.robot.Subsystems.KahanDriveBase;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,10 +24,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-public static final double OI = 0;
-public static Subsystem compressorsubsystem;
-public static Subsystem drivbase;
-public static Object drivebase;
+  public static OI oi;
+  public static KahanDriveBase drivebase;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -35,6 +35,9 @@ public static Object drivebase;
    */
   @Override
   public void robotInit() {
+    drivebase = new KahanDriveBase();
+    oi = new OI();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -93,6 +96,7 @@ public static Object drivebase;
    */
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
   }
 
   /**
