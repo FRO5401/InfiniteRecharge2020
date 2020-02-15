@@ -45,8 +45,11 @@ public class OI{
 	
 	xboxY_Driver.whenPressed(new CompressorToggle());
 
-    
-
-
+  }
+  public double xboxAxis(Joystick controller, int xboxAxis){
+	  return controller.getRawAxis(xboxAxis);
+  }
+  public boolean xboxButton(Joystick xboxController, int xboxButton) {
+	  return xboxController.getRawButton(xboxButton);
   }
 }

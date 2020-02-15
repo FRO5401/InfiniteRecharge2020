@@ -98,12 +98,17 @@ public class IshanDrivebase extends Command {
 
   }
 
-  public void shiftGearLowtoHigh() {
-    gearShifter.set(false);
+  public void shiftHighToLow() {
+    gearShifter.set(true);
     setDPPLowGear();
-
-
   }
+
+  // Set shifter to High.
+  public void shiftLowToHigh() {
+    gearShifter.set(false);
+    setDPPHighGear();
+  }
+
  //DPP to high gear
   public void setDPPHighGear() {
     leftEncoder.setDistancePerPulse(RobotMap.HIGH_GEAR_LEFT_DPP);
