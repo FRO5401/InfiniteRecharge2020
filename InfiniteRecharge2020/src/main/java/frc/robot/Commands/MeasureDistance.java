@@ -35,11 +35,11 @@ public class MeasureDistance extends Command {
 
     if (measure)
     {
-        Robot.lidar.startMeasuring();
+        Robot.lidar.start();
     }
     else
     {
-        Robot.lidar.stopMeasuring();
+        Robot.lidar.stop();
     }
   }
 

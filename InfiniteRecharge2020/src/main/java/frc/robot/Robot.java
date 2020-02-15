@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Robot.lidar.reportLidarDistance();
+    Robot.lidar.update();
   }
 
   /**
