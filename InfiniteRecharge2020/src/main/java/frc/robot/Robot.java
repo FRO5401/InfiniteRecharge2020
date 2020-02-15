@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -30,6 +31,7 @@ public class Robot extends TimedRobot {
 
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
+  public static Lidar lidar;
   public static OI oi;
 
   /**
@@ -44,7 +46,7 @@ public class Robot extends TimedRobot {
 
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
-    
+    lidar = new Lidar(I2C.Port.kMXP);
     oi = new OI();
   }
 

@@ -8,6 +8,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.nio.ByteBuffer;
 
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 /**
  * An example subsystem. You can replace me with your own Subsystem.
  */
-public class Lidar extends Subsystem {
+public class Lidar extends Subsystem{
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -67,6 +68,12 @@ public class Lidar extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         // TODO Auto-generated method stub
+        
+    }
+  
 
+    public void reportLidarDistance()
+    {
+        SmartDashboard.putNumber("Lidar Distance", pidGet());
     }
 }
