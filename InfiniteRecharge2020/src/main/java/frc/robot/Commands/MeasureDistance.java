@@ -36,7 +36,6 @@ public class MeasureDistance extends Command {
     if (measure)
     {
         Robot.lidar.startMeasuring();
-        Robot.lidar.pidGet();
     }
     else
     {

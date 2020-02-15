@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static CompressorSubsystem compressorsubsystem;
-  public static DriveBase drivebase;
   public static Lidar lidar;
   public static OI oi;
 
@@ -45,7 +44,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     compressorsubsystem = new CompressorSubsystem();
-    drivebase = new DriveBase();
     lidar = new Lidar(I2C.Port.kMXP);
     oi = new OI();
   }
@@ -61,7 +59,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
     Robot.lidar.reportLidarDistance();
   }
 
@@ -102,7 +99,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetEncoders();
   }
 
   /**
