@@ -11,17 +11,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.ShooterMechanism;
-import frc.robot.Commands.XboxMove;
 
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 public class Shooter extends Subsystem {
 
@@ -36,24 +29,31 @@ public class Shooter extends Subsystem {
     public Shooter() {
 
         // Placeholder
-        TalonFX shooterMaster = new TalonFX(RobotMap.SHOOTER_MASTER_CHANNEL); //TODO: Set to correct CAN IDs
-        TalonFX shooterSlave = new TalonFX(RobotMap.SHOOTER_SLAVE_CHANNEL);
+        shooterMaster = new TalonFX(RobotMap.SHOOTER_MASTER_CHANNEL); //TODO: Set to correct CAN IDs
+        shooterSlave = new TalonFX(RobotMap.SHOOTER_SLAVE_CHANNEL);
 
         //shooterSlave must follow shooterMaster inverted
         shooterSlave.follow(shooterMaster);
         shooterSlave.setInverted(true);
 
-        // Positioning
-        //shooterMaster.getSensorCollection().getIntegratedSensorPosition();
-        //shooterSlave.getSensorCollection().getIntegratedSensorPosition();
+        SmartDashboard.putNumber("Input kF", 0.0);
+        SmartDashboard.putNumber("Input kP", 0.0);
+        SmartDashboard.putNumber("Input kI", 0.0);
+        SmartDashboard.putNumber("Input kD", 0.0);
 
-        kF = 0; //TODO: Set PID values (bruh moment)
+        SmartDashboard.putNumber("CLICK BOX FOR CLICKING", 5401);
+
+        kF = 0;
         kP = 0;
         kI = 0;
         kD = 0;
 
-        shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        stop();
+
+        // Positioning
+        //shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+        //shooterSlave.getSensorCollection().getIntegratedSensorPosition();
+
+        //shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 
     }
 
@@ -64,7 +64,7 @@ public class Shooter extends Subsystem {
     }
 
     public void stop() {
-        shooterMaster.set(ControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
+        shooterMaster.set(TalonFXControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
     }
 
     public double getTargetSpeed() {
@@ -79,16 +79,16 @@ public class Shooter extends Subsystem {
     }
 
     public void runMotors() {
-        shooterMaster.set(ControlMode.PercentOutput, 0.05); //Change back to velocity after testing master/slave
+        shooterMaster.set(TalonFXControlMode.PercentOutput, 1.0); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 
     public double getVelocity() {
-        return shooterMaster.getSensorCollection().getIntegratedSensorPosition();
+        return shooterMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 
     public void reportValues(){
-        SmartDashboard.putNumber("Shooter Speed", shooterMaster.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Shooter Speed", getVelocity());
         SmartDashboard.putNumber("Current kF", kF);
         SmartDashboard.putNumber("Current kP", kP);
         SmartDashboard.putNumber("Current kI", kI);
@@ -96,10 +96,11 @@ public class Shooter extends Subsystem {
     }
 
     public void getPIDInput(){
-        SmartDashboard.getNumber("Input kF", kF); //Second parameter is default value (in this case, current value)
-        SmartDashboard.getNumber("Input kP", kP);
-        SmartDashboard.getNumber("Input kI", kI);
-        SmartDashboard.getNumber("Input kD", kD);
+        kF = SmartDashboard.getNumber("Input kF", kF); //Second parameter is default value (in this case, current value)
+        kP = SmartDashboard.getNumber("Input kP", kP);
+        kI = SmartDashboard.getNumber("Input kI", kI);
+        kD = SmartDashboard.getNumber("Input kD", kD);
+        startMotors();
     }
 
 }

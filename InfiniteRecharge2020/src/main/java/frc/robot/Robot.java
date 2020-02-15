@@ -28,7 +28,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   public static CompressorSubsystem compressorsubsystem;
-  public static DriveBase drivebase;
   public static Shooter shooter;
   public static OI oi;
 
@@ -38,10 +37,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    SmartDashboard.putData("Auto choices", chooser);
+//    SmartDashboard.putData("Auto choices", chooser);
 
+    shooter = new Shooter();
     compressorsubsystem = new CompressorSubsystem();
-    drivebase = new DriveBase();
     
     oi = new OI();
   }
@@ -57,7 +56,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
   }
 
   /**
@@ -74,14 +72,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Robot.drivebase.resetSensors();
-    Robot.drivebase.resetGyro();
-    autoSelected = chooser.getSelected();
-    if(autoSelected != null) {
-      autoSelected.start();
+//    autoSelected = chooser.getSelected();
+//    if(autoSelected != null) {
+//      autoSelected.start();
     }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-  }
+  
 
   /**
    * This function is called periodically during autonomous.
@@ -102,11 +98,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetSensors();
-    if (autoSelected != null){
-      autoSelected.cancel();
+//    if (autoSelected != null){
+//      autoSelected.cancel();
     }
-  }
+  
 
   /**
    * This function is called periodically during operator control.

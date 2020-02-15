@@ -15,8 +15,8 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
-  public boolean readyShooter;
-  public boolean cancelShooter;
+  boolean readyShooter;
+  boolean cancelShooter;
 
   //For PID testing
   public int dPad;
@@ -52,7 +52,7 @@ public class ShooterMechanism extends Command {
       Robot.shooter.stop();
     }
 
-    else if(readyShooter) {
+    if(readyShooter) {
       Robot.shooter.runMotors();
     }
 
@@ -61,6 +61,12 @@ public class ShooterMechanism extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end () {
+    Robot.shooter.stop();
+  }
+
+  @Override
+  public void interrupted(){
+    Robot.shooter.stop();
   }
 
   // Returns true when the command should end.
