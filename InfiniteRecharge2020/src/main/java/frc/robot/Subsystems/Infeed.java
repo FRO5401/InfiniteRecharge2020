@@ -21,19 +21,12 @@ public class Infeed extends Subsystem {
   //MIGHT NOT BE VICTOR SP, check with design
   private VictorSP infeedMotor1;
   private VictorSP infeedMotor2;
-  private Solenoid deployInfeed1;
-  private Solenoid deployInfeed2;
-  private Solenoid deployInfeed3;
-  private Solenoid deployInfeed4;
+  private Solenoid deployInfeed;
 
   public Infeed(){
     infeedMotor1 = new VictorSP(0);
     infeedMotor2 = new VictorSP(0);
-    deployInfeed1 = new Solenoid(0);
-    deployInfeed2 = new Solenoid(0);
-    deployInfeed3 = new Solenoid(0);
-    deployInfeed4 = new Solenoid(0);
-
+    deployInfeed = new Solenoid(0);
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -47,14 +40,11 @@ public class Infeed extends Subsystem {
 
   //Deploy Infeed
   public void deployInfeed(boolean status){
-    deployInfeed1.set(status);
-    deployInfeed2.set(status);
-    deployInfeed3.set(status);
-    deployInfeed4.set(status);
+    deployInfeed.set(status);
   }
 
   public boolean getDeployStatus(){
-    boolean status = deployInfeed1.get();
+    boolean status = deployInfeed.get();
     return status;
   }
 
