@@ -19,11 +19,11 @@ public class DriveStraight extends CommandGroup {
   private double rightBound = 90;
 
   public DriveStraight() {
-    double x = Robot.networktables.getXValue();
+    double x = 50000000;
     while (x > leftBound && x < rightBound)
     {
       addSequential(new AutoDrive(50, 0.6));
-      x = Robot.networktables.getXValue();
+      //x = Robot.networktables.getXValue();
       addSequential(new WaitCommand(0.5));
     }
     

@@ -21,9 +21,6 @@ public class NetworkTables extends Subsystem {
   NetworkTable table;
   NetworkTableInstance inst;
   NetworkTableEntry xEntry;
-  NetworkTableEntry yEntry;
-  private double x;
-  private double y;
 
   @Override
   public void initDefaultCommand() {
@@ -37,11 +34,10 @@ public class NetworkTables extends Subsystem {
     
   }
 
-  public double getXValue(){
+  public void getXValue(){
     inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("data");
-    xEntry = table.getEntry("X");
-    yEntry = table.getEntry("Y");
+    table = inst.getTable("SmartDashbooard");
+    xEntry = table.getEntry("cX");
     
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
@@ -51,10 +47,7 @@ public class NetworkTables extends Subsystem {
       System.out.println("interrupted");
     }
 
-    x = xEntry.getDouble(0.0);
-    y = yEntry.getDouble(0.0);
-    System.out.println("X: " + x + " Y: " + y);
-      
-    return x;
+    System.out.println(xEntry);
+  
   }
 }
