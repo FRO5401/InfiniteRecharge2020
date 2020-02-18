@@ -17,9 +17,17 @@ public class DriveStraight extends CommandGroup {
    */
   private double leftBound = 10;
   private double rightBound = 90;
+  private double x;
 
   public DriveStraight() {
-    double x = Robot.networktables.getXValue();
+    try {
+      x = Robot.networktables.getXValue();
+    }
+    catch (NullPointerException ex){
+      x = 0;
+    }
+    
+
     while (x > leftBound && x < rightBound)
     {
       addSequential(new AutoDrive(50, 0.6));
