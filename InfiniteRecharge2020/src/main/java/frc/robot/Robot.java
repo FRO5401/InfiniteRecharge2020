@@ -59,8 +59,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.lidar.reportLidarDistance();
-    Robot.lidar.update();
+    
   }
 
   /**
@@ -108,6 +107,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    Robot.lidar.reportLidarDistance();
+    Robot.lidar.update();
     //Robot.drivebase.drive(0.5, 0.5);
   }
 

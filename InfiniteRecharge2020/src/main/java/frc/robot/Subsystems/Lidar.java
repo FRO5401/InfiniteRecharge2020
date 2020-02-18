@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lidar extends Subsystem {
 	private I2C i2c;
-	private byte[] distance;
-    private boolean started;
+	private byte[] distanceArray;
+	private boolean started;
 	
 	private final int LIDAR_ADDR = 0x62;
 	private final int LIDAR_CONFIG_REGISTER = 0x00;
@@ -19,7 +19,7 @@ public class Lidar extends Subsystem {
 	public Lidar(Port port) {
 		i2c = new I2C(port, LIDAR_ADDR);
 		
-		distance = new byte[2];
+		distanceArray = new byte[2];
     }
     
     @Override
@@ -28,12 +28,12 @@ public class Lidar extends Subsystem {
 	}
 	
 	// Distance in cm
-	public int getDistance() {
-		return (int)Integer.toUnsignedLong(distance[0] << 8) + Byte.toUnsignedInt(distance[1]);
+	public int convertDistance() {
+		return (int)Integer.toUnsignedLong(distanceArray[0] << 8) + Byte.toUnsignedInt(distanceArray[1]);
 	}
 
-	public double pidGet() {
-		return getDistance();
+	public double getDistance() {
+		return (((double)convertDistance())/100);
 	}
     
     public void start()
@@ -48,15 +48,17 @@ public class Lidar extends Subsystem {
 	// Update distance variable
 	public void update() {
         if (started) {
+			i2c.write(0x04, 0x08 | 32);
+			i2c.write(0x11, 0xff);
             i2c.write(LIDAR_CONFIG_REGISTER, 0x04); // Initiate measurement
             Timer.delay(0.04); // Delay for measurement to be taken
-            i2c.read(LIDAR_DISTANCE_REGISTER, 2, distance); // Read in measurement
-            Timer.delay(0.005); // Delay to prevent over polling
+            i2c.read(LIDAR_DISTANCE_REGISTER, 2, distanceArray); // Read in measurement
+            Timer.delay(0.02); // Delay to prevent over polling
         }    
     }
     public void reportLidarDistance()
     {
-        SmartDashboard.putNumber("Lidar Distance", pidGet());
+        SmartDashboard.putNumber("Lidar Distance", getDistance());
     }
 	
 }    
