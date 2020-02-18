@@ -23,8 +23,8 @@ public class NetworkTables extends Subsystem {
   NetworkTableInstance inst;
   NetworkTableEntry xEntry;
   NetworkTableEntry yEntry;
-  private double x;
-  private double y;
+  private static double x;
+  private static double y;
 
   @Override
   public void initDefaultCommand() {

@@ -25,7 +25,7 @@ public class VisionMove extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    xVision = Robot.networktables.getXValue();
+    //xVision = Robot.networktables.getXValue();
     // put automatic code here to be used during teleop, maybe add a button to
     // activate it (not sure if there is one yet)
   }
