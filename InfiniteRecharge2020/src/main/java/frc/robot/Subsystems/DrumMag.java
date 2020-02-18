@@ -178,7 +178,7 @@ public class DrumMag extends Subsystem {
 
   // Resets position to 0 (called when homing limit is true)
   public void resetPosition() {
-    currentPosition = 0;
+    currentPosition = 5; //Resets currentPosition to infeed 1 because the limit is there
   }
 
   @Override
