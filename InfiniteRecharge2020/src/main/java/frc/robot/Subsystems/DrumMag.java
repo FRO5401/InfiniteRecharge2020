@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -26,7 +27,7 @@ public class DrumMag extends Subsystem {
   private DigitalInput kickerSwitch;
   private DigitalInput genevaSwitch;
   private DigitalInput homingSwitch;
-  private TalonSRX genevaMotor;
+  private VictorSPX genevaMotor;
   private Solenoid kicker1;
   private Solenoid kicker2;
 
@@ -55,7 +56,7 @@ public class DrumMag extends Subsystem {
 
     homingSwitch = new DigitalInput(RobotMap.HOMING_LIMIT);
 
-    genevaMotor = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
+    genevaMotor = new VictorSPX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     magMode = 1; // Initializes in shooter mode
     target = true; // Target must be true for shooter mode (looking for where ball is present)
