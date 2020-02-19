@@ -45,7 +45,7 @@ public class DrumMag extends Subsystem {
     cell4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
     cell5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
-    puncher1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL);
+    puncher1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
     puncher2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
 
     kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
@@ -84,7 +84,7 @@ public class DrumMag extends Subsystem {
   public void rotate() {
     genevaMotor.set(ControlMode.PercentOutput, 0.1); // Slow speed for testing
 
-    if (getGenevaLimit() && finishedRotating == false) {
+    if (getGenevaLimit() && (finishedRotating == false)) { 
       incrementPosition(); // Finishes moving, increments position
       finishedRotating = true;
     }
@@ -93,11 +93,6 @@ public class DrumMag extends Subsystem {
   // Sets finishedRotating to false
   public void switchFinishedRotating() {
     finishedRotating = false;
-  }
-
-  // Returns finishedRotating
-  public boolean getFinishedRotating() {
-    return finishedRotating;
   }
 
   // Stops drummag motor
@@ -179,6 +174,7 @@ public class DrumMag extends Subsystem {
   // Resets position to 0 (called when homing limit is true)
   public void resetPosition() {
     currentPosition = 5; //Resets currentPosition to infeed 1 because the limit is there
+    //TODO: Make sure homing reset is correct. The ideal position is Shooter 1
   }
 
   @Override

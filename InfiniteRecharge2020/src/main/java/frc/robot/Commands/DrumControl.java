@@ -30,6 +30,7 @@ public class DrumControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    // TODO: Add competition reset
 
   }
 
@@ -79,7 +80,8 @@ public class DrumControl extends Command {
           if (genevaOnLimit == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
             Robot.drummag.switchFinishedRotating();
           }
-        } else { // When position reaches desired position
+        } 
+        else { // When position reaches desired position
           Robot.drummag.stop();
 
         }
@@ -87,6 +89,7 @@ public class DrumControl extends Command {
     } else if (override) {
       // TODO: Override Control (keep in mind kicker must not be deployed before
       // spinning)
+      // Override control should still be incremented
     }
   }
 
