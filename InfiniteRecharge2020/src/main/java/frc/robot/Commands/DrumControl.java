@@ -12,7 +12,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class DrumControl extends Command {
-  boolean[] cellLimit = new boolean[5];
+  
   int desiredPosition;
   int position;
 
@@ -25,6 +25,7 @@ public class DrumControl extends Command {
   boolean homingLimit;
   boolean kickerLimit;
   boolean genevaLimit;
+  boolean[] cellLimit = new boolean[5];
 
   public DrumControl() {
     requires(Robot.drummag);

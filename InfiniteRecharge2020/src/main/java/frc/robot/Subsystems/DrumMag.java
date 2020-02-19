@@ -35,6 +35,7 @@ public class DrumMag extends Subsystem {
   private int currentPosition;
   private boolean finishedRotating; // Used to prevent currentPosition from endlessly incrementing
 
+  //Boolean array for cell1 - cell5 (passed to DrumControl)
   boolean[] cellLimits;
 
   public DrumMag() {
