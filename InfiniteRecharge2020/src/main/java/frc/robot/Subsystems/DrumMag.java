@@ -24,11 +24,11 @@ import frc.robot.Commands.DrumControl;
 public class DrumMag extends Subsystem {
   private DigitalInput cell1, cell2, cell3, cell4, cell5;
   private DigitalInput kickerSwitch;
-  private DigitalInput genevaLimit;
-  private DigitalInput homingLimit;
+  private DigitalInput genevaSwitch;
+  private DigitalInput homingSwitch;
   private TalonSRX genevaMotor;
-  private Solenoid puncher1;
-  private Solenoid puncher2;
+  private Solenoid kicker1;
+  private Solenoid kicker2;
 
   private int magMode;
   private boolean target; // Used in findDesiredPosition()
@@ -45,14 +45,14 @@ public class DrumMag extends Subsystem {
     cell4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
     cell5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
 
-    puncher1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
-    puncher2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
+    kicker1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
+    kicker2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
 
     kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
 
-    genevaLimit = new DigitalInput(RobotMap.GENEVA_LIMIT);
+    genevaSwitch = new DigitalInput(RobotMap.GENEVA_LIMIT);
 
-    homingLimit = new DigitalInput(RobotMap.HOMING_LIMIT);
+    homingSwitch = new DigitalInput(RobotMap.HOMING_LIMIT);
 
     genevaMotor = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
@@ -76,8 +76,8 @@ public class DrumMag extends Subsystem {
 
   // This will punch or retract the solenoid depending on what is passed
   public void punchBall(boolean status) {
-    puncher1.set(status);
-    puncher2.set(status);
+    kicker1.set(status);
+    kicker2.set(status);
   }
 
   // Rotates 36 degrees (one geneva turn)
@@ -163,12 +163,12 @@ public class DrumMag extends Subsystem {
 
   // Gets limit status
   public boolean getGenevaLimit() {
-    return genevaLimit.get();
+    return genevaSwitch.get();
   }
 
   // Gets limit status
   public boolean getHomingLimit() {
-    return homingLimit.get();
+    return homingSwitch.get();
   }
 
   // Resets position to 0 (called when homing limit is true)

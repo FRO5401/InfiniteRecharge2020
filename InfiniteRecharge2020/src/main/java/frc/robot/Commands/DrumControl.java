@@ -15,13 +15,16 @@ public class DrumControl extends Command {
   boolean[] cellLimit = new boolean[5];
   int desiredPosition;
   int position;
+
+  //Buttons
   boolean changeMode;
   boolean override;
-  boolean homingReset;
+  boolean kick;
+
+  //Limits
+  boolean homingLimit;
   boolean kickerLimit;
-  boolean genevaOnLimit;
-  boolean puncher;
-  double overrideAxis;
+  boolean genevaLimit;
 
   public DrumControl() {
     requires(Robot.drummag);
@@ -41,18 +44,17 @@ public class DrumControl extends Command {
 
     // Limits
     cellLimit = Robot.drummag.getCellLimits(); // cell limit array
-    homingReset = Robot.drummag.getHomingLimit();
+    homingLimit = Robot.drummag.getHomingLimit();
     kickerLimit = Robot.drummag.getKickerLimit();
-    genevaOnLimit = Robot.drummag.getGenevaLimit();
+    genevaLimit = Robot.drummag.getGenevaLimit();
 
     // Buttons
     changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
     override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_L3);
-    overrideAxis = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_X);
-    puncher = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+    kick = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
     // Puncher, yay! This will only let you punch the ball if the geneva is on limit
-    if (puncher && genevaOnLimit) {
+    if (kick && genevaLimit) {
       Robot.drummag.punchBall(true);
     } else {
       Robot.drummag.punchBall(false);
@@ -63,7 +65,7 @@ public class DrumControl extends Command {
       Robot.drummag.changeMode();
     }
 
-    if (homingReset) { // Resets position when homing limit is tripped
+    if (homingLimit) { // Resets position when homing limit is tripped
       Robot.drummag.resetPosition();
     }
 
@@ -77,7 +79,7 @@ public class DrumControl extends Command {
       else if (!kickerLimit) { // Prevents drummag from moving while kicker is deployed
         if (position != desiredPosition) { // Moves until at desired position
           Robot.drummag.rotate();
-          if (genevaOnLimit == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
+          if (genevaLimit == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
             Robot.drummag.switchFinishedRotating();
           }
         } 
