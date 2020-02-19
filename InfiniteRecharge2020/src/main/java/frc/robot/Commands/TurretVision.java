@@ -32,11 +32,13 @@ public class TurretVision extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        /*
         readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
 
         if (readyButton) {
             Robot.turret.readyTurret();
         }
+        */
     }
 
     // Make this return true when this Command no longer needs to run execute()
