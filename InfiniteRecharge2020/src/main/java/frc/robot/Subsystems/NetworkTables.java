@@ -41,7 +41,7 @@ public class NetworkTables extends Subsystem {
 
   public void updateValue() {
     inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("SmartDashboard");
+    table = inst.getTable("Green");
     xEntry = table.getEntry("cX");
     yEntry = table.getEntry("cY");
 

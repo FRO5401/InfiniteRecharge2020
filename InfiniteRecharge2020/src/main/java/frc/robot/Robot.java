@@ -8,10 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.*;
+import frc.robot.Autonomous.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,8 +23,6 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
 
   public static DriveBase drivebase;
   public static Turret turret;
@@ -32,9 +32,10 @@ public class Robot extends TimedRobot {
 
   public static OI oi;
 
-
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private static final String kDefaultAuto = "Default";
+  private static final String DriveStraight = "Drive Straight";
+  private Command autoSelected;
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,10 +43,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-    
+    chooser.setDefaultOption("Do Nothing", new DoNothing());
+    chooser.addOption("Drive Straight", new DriveStraight());
+    SmartDashboard.putData("Auto choices", chooser);
+
     turret = new Turret();
     drivebase = new DriveBase();
     networktables = new NetworkTables();
@@ -65,12 +66,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.networktables.reportValues();
+   // Robot.networktables.reportValues();
     Robot.turret.reportTurretInfeedSensors();
     Robot.shooter.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
 
-    Robot.networktables.updateValue();
+   // Robot.networktables.updateValue();
   }
 
   /**
@@ -87,9 +88,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    Robot.drivebase.resetEncoders();
+    autoSelected = chooser.getSelected();
+    if(autoSelected != null) {
+      autoSelected.start();
+    }
   }
 
   /**
@@ -98,15 +101,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
-    }
   }
 
   /**
