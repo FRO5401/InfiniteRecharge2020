@@ -12,8 +12,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.*;
@@ -130,6 +128,7 @@ public class Turret extends Subsystem {
   public void overrideTurret(double joystickSpeed) {
     turretPidEnabled = false;
     joystickSpeed *= RobotMap.TURRET_SPEED_SENSITIVITY;
+    joystickSpeed *= -1;
     turretTalon.set(ControlMode.PercentOutput, joystickSpeed); 
   }
 
