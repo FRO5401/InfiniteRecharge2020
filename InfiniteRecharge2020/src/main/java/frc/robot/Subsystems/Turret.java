@@ -111,17 +111,17 @@ public class Turret extends Subsystem {
 
   // Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
-    turretTalon.set(ControlMode.Velocity, RobotMap.TURRET_TURN_SPEED);
+    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED);
   }
 
   // Will set the motor such that the turret rotates right
   public void rotateTurretRight() {
-    turretTalon.set(ControlMode.Velocity, RobotMap.TURRET_TURN_SPEED * -1);
+    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED * -1);
   }
 
   // Will end the rotation of the turret motor
   public void stopRotation() {
-    turretTalon.set(ControlMode.Velocity, 0);
+    turretTalon.set(ControlMode.PercentOutput, 0);
   }
 
   // Override the movement
