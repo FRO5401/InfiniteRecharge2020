@@ -83,7 +83,7 @@ public class RobotMap {
   public static final int TURRET_TALON = 10;
   public static final int T_STOP_LEFT = 45;
   public static final int T_STOP_RIGHT = -45;
-  public static final double TURRET_SPEED_SENSITIVITY = 0.5;
+  public static final double TURRET_SPEED_SENSITIVITY = 0.3;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
