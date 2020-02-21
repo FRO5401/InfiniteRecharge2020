@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.Commands.CompressorToggle;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -68,8 +69,7 @@ public class OI {
     Button xboxR3_Operator		  	= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_R3);
 
   public OI(){
-      
-     
+    xboxY_Driver.whenPressed(new CompressorToggle());
   }
   public double xboxAxis(Joystick xboxController, int xboxAxis){
     return xboxController.getRawAxis(xboxAxis);

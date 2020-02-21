@@ -132,6 +132,7 @@ public class Turret extends Subsystem {
   }
 
   // Will find the current angle of the turret
+  // TODO
   public double getTurretAngle() {
     turretAngle = turretTalon.getSensorCollection().getQuadraturePosition();
     return turretAngle;
@@ -139,7 +140,7 @@ public class Turret extends Subsystem {
 
   // Creates a left limit
   public boolean getLimitLeft() {
-    if (getTurretAngle() < -45) {
+    if (getTurretAngle() < RobotMap.T_STOP_LEFT) {
       return true;
     } else {
       return false;
@@ -148,7 +149,7 @@ public class Turret extends Subsystem {
 
   // Creates a right limit
   public boolean getLimitRight() {
-    if (getTurretAngle() > 45) {
+    if (getTurretAngle() > RobotMap.T_STOP_RIGHT) {
       return true;
     } else {
       return false;

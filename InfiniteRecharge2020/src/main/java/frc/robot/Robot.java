@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +27,8 @@ public class Robot extends TimedRobot {
   public static DriveBase drivebase;
   public static Turret turret;
   public static NetworkTables networktables;
+  public static Shooter shooter;
+  public static CompressorSubsystem compressorsubsystem;
 
   public static OI oi;
 
@@ -44,6 +45,13 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    
+    turret = new Turret();
+    drivebase = new DriveBase();
+    networktables = new NetworkTables();
+    compressorsubsystem = new CompressorSubsystem();
+    shooter = new Shooter();
+    oi = new OI();
   }
 
   /**
@@ -57,7 +65,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Scheduler.getInstance().run();
+    Robot.networktables.reportValues();
+    Robot.turret.reportTurretInfeedSensors();
+    Robot.shooter.reportValues();
+    Robot.compressorsubsystem.reportCompressorStatus();
+
+    Robot.networktables.updateValue();
   }
 
   /**
@@ -84,6 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
     switch (m_autoSelected) {
     case kCustomAuto:
       // Put custom auto code here

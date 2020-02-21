@@ -27,16 +27,14 @@ public class RobotMap {
   /*** Constants ***/
   // OI
   public static final double AXIS_THRESHOLD = 0.25;
-  public static final int ELEVATOR_BUTTON_SHIFT_HIGH = 1;
-  public static final int ELEVATOR_BUTTON_SHIFT_LOW = 2;
-  public static final int ELEVATOR_BUTTON_COLLAPSE = 3;
-  public static final int ELEVATOR_BUTTON_RISE = 4;
 
-  // DriveBase
-  public static final double LOW_GEAR_LEFT_DPP = 0.1466004558282468; // These are for practice bot, skewed a lot
-  public static final double LOW_GEAR_RIGHT_DPP = 0.1568175312974026;
-  public static final double HIGH_GEAR_LEFT_DPP = 0;
-  public static final double HIGH_GEAR_RIGHT_DPP = 0;
+  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 1.09;
+  public static final double SPEED_ADJUSTMENT_LEFT_BACKWARD = 1.09;
+  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; // TODO: Make smaller until skew is gone
+  public static final double LOW_GEAR_RIGHT_DPP = 0.000618865317636; // Low gear dpp 2020
+  public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462;
+  public static final double HIGH_GEAR_LEFT_DPP = 0.000650533437419; // High gear skews left
+  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; // High gear dpp 2020
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
@@ -74,16 +72,23 @@ public class RobotMap {
 
   /*** Motors ***/
   // DriveBase
-  public static final int DRIVE_MOTOR_RIGHT_1 = 0;
+  public static final int DRIVE_MOTOR_RIGHT_1 = 1;
+  public static final int DRIVE_MOTOR_RIGHT_2 = 3;
+  public static final int DRIVE_MOTOR_RIGHT_3 = 5;
+
   public static final int DRIVE_MOTOR_LEFT_1 = 2;
-  public static final int DRIVE_MOTOR_RIGHT_2 = 1;
-  public static final int DRIVE_MOTOR_LEFT_2 = 3;
+  public static final int DRIVE_MOTOR_LEFT_2 = 4;
+  public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
   // Turret
-  public static final int TURRET_TALON = 2;
-  public static final int T_STOP_LEFT = 45;
-  public static final int T_STOP_RIGHT = -45;
-  public static final double TURRET_SPEED_SENSITIVITY = 0;
+  public static final int TURRET_TALON = 10;
+  public static final int T_STOP_LEFT = 90;
+  public static final int T_STOP_RIGHT = -90;
+  public static final double TURRET_SPEED_SENSITIVITY = 0.35;
+
+  // Shooter
+  public static final int SHOOTER_MASTER_CHANNEL = 7;
+  public static final int SHOOTER_SLAVE_CHANNEL = 8;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
@@ -93,9 +98,6 @@ public class RobotMap {
 
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
-
-  // Hatch Mechanism
-  public static final int HATCH_EXTENDER = 2;
 
   /*** Sensors ***/
   // Encoders
