@@ -47,11 +47,7 @@ public class NetworkTables extends Subsystem {
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ex) {
-      System.out.println("interrupted");
-    }
+    
 
     x = xEntry.getDouble(0.0);
     y = yEntry.getDouble(0.0);

@@ -9,6 +9,7 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
@@ -103,6 +104,20 @@ public class DriveBase extends Subsystem {
     rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+  }
+
+  public void visionMove(){
+    if(Robot.networktables.getXValue() > 200 && Robot.networktables.getXValue() < 500){
+      autoDrive(.5 , .5);
+    }
+    
+    if(Robot.networktables.getXValue() < 200){
+      autoDrive(.5 , 0);
+    }
+    
+    if(Robot.networktables.getXValue() > 500){
+      autoDrive(0 , .5);
+    }
   }
 
   // Sets SC's to 0.

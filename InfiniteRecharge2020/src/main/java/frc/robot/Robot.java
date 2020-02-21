@@ -75,8 +75,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Robot.drivebase.reportDriveBaseSensors();
+
+    
     Robot.networktables.reportValues();
     Robot.networktables.updateValue();
+
+    Robot.drivebase.visionMove();
   }
 
   /**
@@ -133,6 +137,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
