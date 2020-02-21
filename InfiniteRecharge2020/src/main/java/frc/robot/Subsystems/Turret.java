@@ -128,7 +128,7 @@ public class Turret extends Subsystem {
   public void overrideTurret(double joystickSpeed) {
     turretPidEnabled = false;
     joystickSpeed *= (-1 * RobotMap.TURRET_SPEED_SENSITIVITY);
-    turretTalon.set(ControlMode.Velocity, joystickSpeed);
+    turretTalon.set(ControlMode.PercentOutput, joystickSpeed);
   }
 
   // Will find the current angle of the turret
