@@ -16,8 +16,8 @@ import frc.robot.RobotMap;
  */
 public class TurretVision extends Command {
 
-    public boolean readyButton;
-    public double xVision;
+    boolean readyButton;
+    double xVision;
 
     public TurretVision() {
         // Use requires() here to declare subsystem dependencies

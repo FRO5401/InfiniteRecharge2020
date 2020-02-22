@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", chooser);
 
     turret = new Turret();
-    drivebase = new DriveBase();
-    networktables = new NetworkTables();
+//    drivebase = new DriveBase();
+//    networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
     oi = new OI();
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Robot.drivebase.resetEncoders();
+//    Robot.drivebase.resetEncoders();
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
