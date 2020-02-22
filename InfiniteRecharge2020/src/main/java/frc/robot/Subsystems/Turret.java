@@ -29,7 +29,7 @@ public class Turret extends Subsystem {
   private int loopIndex, slotIndex;
   private final double CENTERPOINT = 0;
   private double TURRET_kF = 0;
-  private double TURRET_kP = 0;
+  private double TURRET_kP = 1;
   private double TURRET_kI = 0;
   private double TURRET_kD = 0;
   private double turretAngle = 45;
@@ -114,35 +114,42 @@ public class Turret extends Subsystem {
   public void visionMove(){
     if (visionEnabled == true) {
       if(Robot.networktables.getPPXValue() > 200 && Robot.networktables.getPPXValue() < 500){
-        stopRotation();
-      }
-      
-      if(Robot.networktables.getBXValue() < 200){
+        overrideTurret(0);
+      } else if(Robot.networktables.getPPXValue() < 200){
         rotateTurretLeft();
-      }
-      
-      if(Robot.networktables.getBXValue() > 500){
+      }else if(Robot.networktables.getPPXValue() > 500){
         rotateTurretRight();
       }
     }  
   }
 
   public void enableVision() {
-    visionEnabled = true;
+      visionEnabled = true;
+      System.out.print("true");
+  }
+
+  public void disableVision() {
+      visionEnabled = false;
+      System.out.print("false");
   }
 
   // Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
-    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED);
+    System.out.println("Left");
+    System.out.println(RobotMap.TURRET_SPEED_SENSITIVITY);
+    double Turnspeed = RobotMap.TURRET_TURN_SPEED * -1;
+    turretTalon.set(ControlMode.PercentOutput, Turnspeed / 2);
   }
 
   // Will set the motor such that the turret rotates right
   public void rotateTurretRight() {
-    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED * -1);
+    System.out.println("Right");
+    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED / 2);
   }
 
   // Will end the rotation of the turret motor
   public void stopRotation() {
+    System.out.println("STOP");
     turretTalon.set(ControlMode.PercentOutput, 0);
   }
 
@@ -151,14 +158,14 @@ public class Turret extends Subsystem {
     visionEnabled = false;
     turretPidEnabled = false;
     joystickSpeed *= RobotMap.TURRET_SPEED_SENSITIVITY;
-    joystickSpeed *= -1;
+//    joystickSpeed *= -1;
+    System.out.println(joystickSpeed);
     turretTalon.set(ControlMode.PercentOutput, joystickSpeed);
   }
 
   // Will find the current angle of the turret
-  // TODO
   public double getTurretAngle() {
-    turretAngle = turretTalon.getSensorCollection().getQuadraturePosition();
+    turretAngle = turretTalon.getSensorCollection().getQuadraturePosition() / RobotMap.TURRET_ANGLE_PER_PULSE;
     return turretAngle;
   }
 
@@ -180,6 +187,19 @@ public class Turret extends Subsystem {
     }
   }
 
+  public void goToAngle(double desiredAngle){
+/*    if(desiredAngle < getTurretAngle()){
+      rotateTurretLeft();
+    }
+    else if(desiredAngle > getTurretAngle()){
+      rotateTurretRight();
+    }
+    else{
+      overrideTurret(0.0);
+    } */
+    turretTalon.set(ControlMode.Position, desiredAngle * RobotMap.TURRET_ANGLE_PER_PULSE); 
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -191,6 +211,7 @@ public class Turret extends Subsystem {
   public void reportTurretInfeedSensors() {
     SmartDashboard.putBoolean("Left Limit Turret", getLimitLeft());
     SmartDashboard.putBoolean("Right Limit Turret", getLimitRight());
-    SmartDashboard.putNumber("Turret Direction", turretTalon.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Turret Direction", turretTalon.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Turret Angle", getTurretAngle());
   }
 }

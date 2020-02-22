@@ -48,8 +48,8 @@ public class NetworkTables extends Subsystem {
 
   public void updateValue() {
     inst = NetworkTableInstance.getDefault();
-    ballTable = inst.getTable("Ball");
-    powerPortTable = inst.getTable("Power Port");
+    ballTable = inst.getTable("SmartDashboard");
+    powerPortTable = inst.getTable("PowerPort");
     ballXEntry = ballTable.getEntry("cX");
     ballYEntry = ballTable.getEntry("cY");
     powerPortXEntry = powerPortTable.getEntry("cX");

@@ -43,7 +43,7 @@ public class RobotMap {
 
   // Turret
   public static final double TURRET_TURN_SPEED = .35;
-  public static final double TURRET_ANGLE_PER_PULSE = 0;
+  public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
 
   /*** Operator Interfaces ***/
   // Controllers

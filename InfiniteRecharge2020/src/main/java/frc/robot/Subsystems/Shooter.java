@@ -44,7 +44,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("CLICK BOX FOR CLICKING", 5401);
 
         kF = 0;
-        kP = 0;
+        kP = 1;
         kI = 0;
         kD = 0;
 
@@ -64,7 +64,7 @@ public class Shooter extends Subsystem {
     }
 
     public void stop() {
-        shooterMaster.set(TalonFXControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
+        shooterMaster.set(TalonFXControlMode.Velocity, 0.0); //Change back to velocity after testing master/slave
     }
 
     public double getTargetSpeed() {
@@ -79,7 +79,7 @@ public class Shooter extends Subsystem {
     }
 
     public void runMotors() {
-        shooterMaster.set(TalonFXControlMode.PercentOutput, 1.0); //Change back to velocity after testing master/slave
+        shooterMaster.set(TalonFXControlMode.Velocity, 21000); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 

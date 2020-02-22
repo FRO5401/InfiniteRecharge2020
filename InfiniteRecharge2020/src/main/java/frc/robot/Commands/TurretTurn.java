@@ -22,7 +22,13 @@ public class TurretTurn extends Command {
   boolean limitLeft;
   boolean resetButton;
   boolean overrideToggle;
+  boolean visionEnabled;
+  boolean visionDisabled;
   double turretLeftRight;
+  boolean readyButton;
+  double xVision;
+  int dPad;
+  boolean resetPosition;
 
   // Constructor that finds the subsystem
   public TurretTurn() {
@@ -43,19 +49,35 @@ public class TurretTurn extends Command {
 //    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
-    //limitRight = Robot.turret.getLimitRight(); TODO change these
+    visionEnabled =Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
+    visionDisabled = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_BACK);
+    resetPosition = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+    
+    //limitRight = Robot.turret.getLimitRight(); TODO: Set these limits
     //limitLeft = Robot.turret.getLimitLeft();
     limitRight = false;
     limitLeft = false;
 
     // Checks if the reset button has been pushed and then resets the turret angle
     // if it was pushed
-    if (resetButton) {
+/*    if (resetButton) {
       Robot.turret.resetTurretAngle();
+    }*/
+    
+    //For PID testing
+    if(visionEnabled){
+      Robot.turret.enableVision();
     }
 
+    if(visionDisabled){
+      Robot.turret.disableVision();
+    }
+
+    if (resetPosition){
+      Robot.turret.goToAngle(0.0);
+    }
     // Checks to see if the ready button was pushed
-    if (overrideToggle) {
+    else if (overrideToggle) {
       // Checks to see if the limits have not been breached
       if (limitLeft == false && limitRight == false) {
         // This happens when the turret is moving normally
@@ -90,7 +112,7 @@ public class TurretTurn extends Command {
       } else {
         Robot.turret.stopRotation();
       }
-    } else {
+    } else{
       Robot.turret.stopRotation();
     }
 

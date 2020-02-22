@@ -22,7 +22,6 @@ public class TurretVision extends Command {
 
     public TurretVision() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.turret);
         requires(Robot.networktables);
     }
 

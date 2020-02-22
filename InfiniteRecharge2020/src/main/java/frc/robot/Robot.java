@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", chooser);
 
     turret = new Turret();
-    drivebase = new DriveBase();
+//  drivebase = new DriveBase();
     networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
@@ -72,7 +72,8 @@ public class Robot extends TimedRobot {
     Robot.compressorsubsystem.reportCompressorStatus();
 
     Robot.networktables.updateValue();
-    Robot.drivebase.visionMove();
+    Robot.turret.visionMove();
+    //Robot.drivebase.visionMove();
   }
 
   /**

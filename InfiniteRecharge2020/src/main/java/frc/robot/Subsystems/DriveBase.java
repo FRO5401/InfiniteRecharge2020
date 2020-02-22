@@ -105,7 +105,7 @@ public class DriveBase extends Subsystem {
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
   }
-
+/*
   public void visionMove(){
     if(Robot.networktables.getBXValue() > 200 && Robot.networktables.getBXValue() < 500){
       autoDrive(.5 , .5);
@@ -119,7 +119,7 @@ public class DriveBase extends Subsystem {
       autoDrive(0 , .5);
     }
   }
-
+*/
   // Sets SC's to 0.
   public void stopMotors() {
     leftDrive1.set(ControlMode.PercentOutput, 0);
