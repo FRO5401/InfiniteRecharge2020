@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", chooser);
 
     turret = new Turret();
-//    drivebase = new DriveBase();
-//    networktables = new NetworkTables();
+    drivebase = new DriveBase();
+    networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
     oi = new OI();
@@ -66,12 +66,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-   // Robot.networktables.reportValues();
+    Robot.networktables.reportValues();
     Robot.turret.reportTurretInfeedSensors();
     Robot.shooter.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
 
-   // Robot.networktables.updateValue();
+    Robot.networktables.updateValue();
+    Robot.drivebase.visionMove();
   }
 
   /**

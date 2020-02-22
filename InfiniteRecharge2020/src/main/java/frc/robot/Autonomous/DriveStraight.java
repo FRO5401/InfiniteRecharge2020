@@ -21,7 +21,7 @@ public class DriveStraight extends CommandGroup {
 
   public DriveStraight() {
     try {
-      x = Robot.networktables.getXValue();
+      x = Robot.networktables.getBXValue();
     }
     catch (NullPointerException ex){
       x = 0;

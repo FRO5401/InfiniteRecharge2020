@@ -42,7 +42,7 @@ public class RobotMap {
   public static final double SPIN_SENSITIVITY = 0.8;
 
   // Turret
-  public static final double TURRET_TURN_SPEED = .4;
+  public static final double TURRET_TURN_SPEED = .35;
   public static final double TURRET_ANGLE_PER_PULSE = 0;
 
   /*** Operator Interfaces ***/

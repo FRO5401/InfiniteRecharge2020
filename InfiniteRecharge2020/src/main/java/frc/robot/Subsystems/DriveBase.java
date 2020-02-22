@@ -107,15 +107,15 @@ public class DriveBase extends Subsystem {
   }
 
   public void visionMove(){
-    if(Robot.networktables.getXValue() > 200 && Robot.networktables.getXValue() < 500){
+    if(Robot.networktables.getBXValue() > 200 && Robot.networktables.getBXValue() < 500){
       autoDrive(.5 , .5);
     }
     
-    if(Robot.networktables.getXValue() < 200){
+    if(Robot.networktables.getBXValue() < 200){
       autoDrive(.5 , 0);
     }
     
-    if(Robot.networktables.getXValue() > 500){
+    if(Robot.networktables.getBXValue() > 500){
       autoDrive(0 , .5);
     }
   }

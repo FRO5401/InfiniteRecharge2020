@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Commands.*;
 
@@ -37,6 +38,7 @@ public class Turret extends Subsystem {
   private int TURRET_PID_THRESHOLD = 2;
   private double targetLocation;
   private boolean turretPidEnabled;
+  private boolean visionEnabled;
 
   // Creates the actual robot parts
   TalonSRX turretTalon;
@@ -109,6 +111,26 @@ public class Turret extends Subsystem {
     setPoint(position + distance);
   }
 
+  public void visionMove(){
+    if (visionEnabled == true) {
+      if(Robot.networktables.getPPXValue() > 200 && Robot.networktables.getPPXValue() < 500){
+        stopRotation();
+      }
+      
+      if(Robot.networktables.getBXValue() < 200){
+        rotateTurretLeft();
+      }
+      
+      if(Robot.networktables.getBXValue() > 500){
+        rotateTurretRight();
+      }
+    }  
+  }
+
+  public void enableVision() {
+    visionEnabled = true;
+  }
+
   // Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
     turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED);
@@ -126,6 +148,7 @@ public class Turret extends Subsystem {
 
   // Override the movement
   public void overrideTurret(double joystickSpeed) {
+    visionEnabled = false;
     turretPidEnabled = false;
     joystickSpeed *= RobotMap.TURRET_SPEED_SENSITIVITY;
     joystickSpeed *= -1;

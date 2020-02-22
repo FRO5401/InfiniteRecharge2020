@@ -18,6 +18,7 @@ public class TurretVision extends Command {
 
     boolean readyButton;
     double xVision;
+    int dPad;
 
     public TurretVision() {
         // Use requires() here to declare subsystem dependencies
@@ -33,8 +34,16 @@ public class TurretVision extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        /* readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-        xVision = Robot.networktables.getXValue();
+        //For Pid testing
+         dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
+
+        //For PID testing
+        if(dPad == 90){
+            Robot.turret.enableVision();
+        }
+        /*
+        readyButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+        xVision = Robot.networktables.getBXValue();
 
         if (readyButton) {
             Robot.turret.setTargetLocation(xVision);

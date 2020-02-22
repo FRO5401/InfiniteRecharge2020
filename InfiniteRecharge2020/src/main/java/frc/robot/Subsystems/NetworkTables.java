@@ -19,12 +19,17 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class NetworkTables extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  NetworkTable table;
+  NetworkTable ballTable;
+  NetworkTable powerPortTable;
   NetworkTableInstance inst;
-  NetworkTableEntry xEntry;
-  NetworkTableEntry yEntry;
-  private static double x;
-  private static double y;
+  NetworkTableEntry ballXEntry;
+  NetworkTableEntry ballYEntry;
+  NetworkTableEntry powerPortXEntry;
+  NetworkTableEntry powerPortYEntry;
+  private static double ballX;
+  private static double ballY;
+  private static double powerPortX;
+  private static double powerPortY;
 
   @Override
   public void initDefaultCommand() {
@@ -35,36 +40,54 @@ public class NetworkTables extends Subsystem {
   }
 
   public NetworkTables() {
-    x = 0;
-    y = 0;
+    ballX = 0;
+    ballY = 0;
+    powerPortX = 0;
+    powerPortY = 0;
   }
 
   public void updateValue() {
     inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("Green");
-    xEntry = table.getEntry("cX");
-    yEntry = table.getEntry("cY");
+    ballTable = inst.getTable("Ball");
+    powerPortTable = inst.getTable("Power Port");
+    ballXEntry = ballTable.getEntry("cX");
+    ballYEntry = ballTable.getEntry("cY");
+    powerPortXEntry = powerPortTable.getEntry("cX");
+    powerPortYEntry = powerPortTable.getEntry("cY");
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
     
 
-    x = xEntry.getDouble(0.0);
-    y = yEntry.getDouble(0.0);
-    System.out.println("X: " + x + " Y: " + y);
+    ballX = ballXEntry.getDouble(0.0);
+    ballY = ballYEntry.getDouble(0.0);
+    powerPortX = powerPortXEntry.getDouble(0.0);
+    powerPortY = powerPortYEntry.getDouble(0.0);
+    System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
+    System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
 
-  public double getXValue() {
-    return x;
+  public double getBXValue() {
+    return ballX;
   }
 
-  public double getYValue() {
-    return y;
+  public double getBYValue() {
+    return ballY;
+  }
+
+  public double getPPXValue(){
+    return powerPortX;
+  }
+
+  public double getPPYValue(){
+    return powerPortY;
   }
 
   public void reportValues()
   {
-    SmartDashboard.putNumber("Current X", getXValue());
-    SmartDashboard.putNumber("Current Y", getYValue());
+    SmartDashboard.putNumber("Current Ball X", getBXValue());
+    SmartDashboard.putNumber("Current Ball Y", getBYValue());
+    SmartDashboard.putNumber("Current Power Port X", getPPXValue());
+    SmartDashboard.putNumber("Current Power Port Y", getPPYValue());
   }
 }
