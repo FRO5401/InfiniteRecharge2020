@@ -85,6 +85,7 @@ public class RobotMap {
   public static final int T_STOP_LEFT = 90;
   public static final int T_STOP_RIGHT = -90;
   public static final double TURRET_SPEED_SENSITIVITY = 0.35;
+  public static final double TURRET_ANGLE_LIMIT = 90;
 
   // Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 7;

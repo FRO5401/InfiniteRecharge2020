@@ -135,16 +135,17 @@ public class Turret extends Subsystem {
 
   // Will set the motor such that the turret rotates left
   public void rotateTurretLeft() {
-    System.out.println("Left");
-    System.out.println(RobotMap.TURRET_SPEED_SENSITIVITY);
-    double Turnspeed = RobotMap.TURRET_TURN_SPEED * -1;
-    turretTalon.set(ControlMode.PercentOutput, Turnspeed / 2);
+    if(getTurretAngle() > (RobotMap.TURRET_ANGLE_LIMIT * -1)){
+      double turnspeed = RobotMap.TURRET_TURN_SPEED * -1;
+      turretTalon.set(ControlMode.PercentOutput, turnspeed / 2);
+    }
   }
 
   // Will set the motor such that the turret rotates right
   public void rotateTurretRight() {
-    System.out.println("Right");
-    turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED / 2);
+    if(getTurretAngle() < RobotMap.TURRET_ANGLE_LIMIT){
+      turretTalon.set(ControlMode.PercentOutput, RobotMap.TURRET_TURN_SPEED / 2);
+    }
   }
 
   // Will end the rotation of the turret motor
