@@ -35,7 +35,7 @@ public class Turret extends Subsystem {
   private double turretAngle = 45;
   private double resetAngle = 0;
   private int TIMEOUT_LIMIT_MS = 10;
-  private int TURRET_PID_THRESHOLD = 2;
+  private int TURRET_PID_THRESHOLD = (int) (2.0 * RobotMap.TURRET_ANGLE_PER_PULSE);
   private double targetLocation;
   private boolean turretPidEnabled;
   private boolean visionEnabled;
@@ -150,7 +150,6 @@ public class Turret extends Subsystem {
 
   // Will end the rotation of the turret motor
   public void stopRotation() {
-    System.out.println("STOP");
     turretTalon.set(ControlMode.PercentOutput, 0);
   }
 
