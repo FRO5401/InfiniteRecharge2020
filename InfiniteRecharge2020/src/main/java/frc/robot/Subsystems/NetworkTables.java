@@ -16,25 +16,18 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class NetworkTables extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  
   NetworkTable ballTable;
   NetworkTable powerPortTable;
   NetworkTableInstance inst;
-  NetworkTableEntry ballXEntry;
-  NetworkTableEntry ballYEntry;
-  NetworkTableEntry powerPortXEntry;
-  NetworkTableEntry powerPortYEntry;
-  private static double ballX;
-  private static double ballY;
-  private static double powerPortX;
-  private static double powerPortY;
+  NetworkTableEntry ballXEntry, ballYEntry;
+  NetworkTableEntry powerPortXEntry, powerPortYEntry;
+  private static double ballX, ballY;
+  private static double powerPortX, powerPortY;
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-
+  
   }
 
   public NetworkTables() {
@@ -55,7 +48,6 @@ public class NetworkTables extends Subsystem {
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
-    
 
     ballX = ballXEntry.getDouble(0.0);
     ballY = ballYEntry.getDouble(0.0);

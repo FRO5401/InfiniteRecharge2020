@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 /**
  * An example command. You can replace me with your own command.
  */
-public class TurretTurn extends Command {
+public class TurretControl extends Command {
 
   // Creates the limits, turn functions, and buttons needed for the program.
   boolean limitRight;
@@ -24,14 +24,14 @@ public class TurretTurn extends Command {
   boolean overrideToggle;
   boolean visionEnabled;
   boolean visionDisabled;
-  double turretLeftRight;
+  double turretRotate;
   boolean readyButton;
   double xVision;
   int dPad;
   boolean resetPosition;
 
   // Constructor that finds the subsystem
-  public TurretTurn() {
+  public TurretControl() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.turret);
   }
@@ -40,79 +40,39 @@ public class TurretTurn extends Command {
   @Override
   protected void initialize() {
     Robot.turret.turretSetTalonNeutralMode(NeutralMode.Brake);
+    Robot.turret.resetTurretAngle();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Creates instances of the buttons
-//    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-    turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
+
+    turretRotate = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
     visionEnabled =Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
     visionDisabled = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_BACK);
     resetPosition = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
-    
-    //limitRight = Robot.turret.getLimitRight(); TODO: Set these limits
-    //limitLeft = Robot.turret.getLimitLeft();
-    limitRight = false;
-    limitLeft = false;
-
-    // Checks if the reset button has been pushed and then resets the turret angle
-    // if it was pushed
-/*    if (resetButton) {
-      Robot.turret.resetTurretAngle();
-    }*/
-    
-    //For PID testing
-    if(visionEnabled){
-      Robot.turret.enableVision();
-    }
-
-    if(visionDisabled){
-      Robot.turret.disableVision();
-    }
 
     if (resetPosition){
       Robot.turret.goToAngle(0.0);
     }
+
     // Checks to see if the ready button was pushed
     else if (overrideToggle) {
-      // Checks to see if the limits have not been breached
-      if (limitLeft == false && limitRight == false) {
-        // This happens when the turret is moving normally
-        if (turretLeftRight > RobotMap.AXIS_THRESHOLD || turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
-          Robot.turret.overrideTurret(turretLeftRight);
-        } else {
-          Robot.turret.overrideTurret(0);
-        }
-      }
+      //Disables vision if on
+      Robot.turret.disableVision();
 
-      // Checks to see if limitLeft has been breached
-      else if (limitLeft == true && limitRight == false) {
-
-        // Will only let movement occur right
-        if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
-          Robot.turret.overrideTurret(turretLeftRight);
-        } else {
-          Robot.turret.overrideTurret(0);
-        }
-      }
-
-      // Checks to see if limitRight has been breached
-      else if (limitLeft == false && limitRight == true) {
-
-        // Will only let movement occur left
-        if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
-          Robot.turret.overrideTurret(turretLeftRight);
-
-        } else {
-          Robot.turret.overrideTurret(0);
-        }
-      } else {
+      //Allows turret to move if Joystick axis is above treshold
+      if (turretRotate > RobotMap.AXIS_THRESHOLD || turretRotate < (-1 * RobotMap.AXIS_THRESHOLD)) {
+        Robot.turret.moveTurret(turretRotate);
+      } 
+      else {
         Robot.turret.stopRotation();
       }
-    } else{
+    }
+
+    //If the turret isn't recieving commands, don't move!!
+    else{
       Robot.turret.stopRotation();
     }
 

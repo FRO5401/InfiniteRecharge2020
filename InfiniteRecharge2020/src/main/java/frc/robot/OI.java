@@ -69,8 +69,10 @@ public class OI {
     Button xboxR3_Operator		  	= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_R3);
 
   public OI(){
+    //This is the compressor subsystem to disable/enable to compressor for air use
     xboxY_Driver.whenPressed(new CompressorToggle());
   }
+
   public double xboxAxis(Joystick xboxController, int xboxAxis){
     return xboxController.getRawAxis(xboxAxis);
   }

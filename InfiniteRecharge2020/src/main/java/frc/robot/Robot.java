@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     Robot.compressorsubsystem.reportCompressorStatus();
 
     Robot.networktables.updateValue();
-    Robot.turret.visionMove();
+    Robot.turret.turretVision();
     //Robot.drivebase.visionMove();
   }
 
