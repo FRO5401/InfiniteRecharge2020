@@ -21,11 +21,11 @@ public class SubsystemTest extends Subsystem {
   // here. Call these from Commands.
 
   public SubsystemTest(){
-    cell1 = new DigitalInput(7); 
+    cell1 = new DigitalInput(5); 
     cell2 = new DigitalInput(6);
-    cell3 = new DigitalInput(5);
-    cell4 = new DigitalInput(4);
-    cell5 = new DigitalInput(3);
+    cell3 = new DigitalInput(0);
+    cell4 = new DigitalInput(8);
+    cell5 = new DigitalInput(9);
   }
   
   public void reportStuff(){

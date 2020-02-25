@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     compressorsubsystem = new CompressorSubsystem();
-    drivebase = new DriveBase();
+    //drivebase = new DriveBase();
     subsystem = new SubsystemTest();
     
     oi = new OI();
@@ -61,7 +61,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
+//    Robot.drivebase.reportDriveBaseSensors();
+    Robot.subsystem.reportStuff();
   }
 
   /**
