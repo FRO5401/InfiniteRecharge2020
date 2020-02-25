@@ -35,7 +35,7 @@ public class Turret extends Subsystem {
   private double turretAngle = 45;
   private double resetAngle = 0;
   private int TIMEOUT_LIMIT_MS = 10;
-  private int TURRET_PID_THRESHOLD = (int) (2.0 * RobotMap.TURRET_ANGLE_PER_PULSE);
+  private int TURRET_PID_THRESHOLD = (int) (1.0 * RobotMap.TURRET_ANGLE_PER_PULSE);
   private double targetLocation;
   private boolean turretPidEnabled;
   private boolean visionEnabled;
