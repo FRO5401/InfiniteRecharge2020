@@ -63,10 +63,6 @@ public class Shooter extends Subsystem {
 
     }
 
-    public void stop() {
-        shooterMaster.set(TalonFXControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
-    }
-
     public double getTargetSpeed() {
         return MOTOR_SPEED;
     }
@@ -81,6 +77,10 @@ public class Shooter extends Subsystem {
     public void runMotors() {
         shooterMaster.set(TalonFXControlMode.PercentOutput, .8); //Change back to velocity after testing master/slave
         //Make first velocity 1
+    }
+
+    public void stopMotors() {
+        shooterMaster.set(TalonFXControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
     }
 
     public double getVelocity() {

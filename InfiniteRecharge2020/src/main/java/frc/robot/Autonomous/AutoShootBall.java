@@ -16,37 +16,32 @@ import frc.robot.RobotMap;
  * This command is also used as a "BaselineOnly" command
  */
 
-public class AutoDrive extends Command {
+public class AutoShootBall extends Command {
 
-	private double desiredDistance;
-	private double autoDriveSpeed;
-	private boolean doneTraveling;
-	private double distanceTraveled;
+    private int ballCount;
+	private boolean magEmpty;
 	private double heading;
 
-	public AutoDrive(double DistanceInput, double SpeedInput) {
+	public AutoShootBall() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
 
-		desiredDistance = DistanceInput;
-
-		autoDriveSpeed = SpeedInput;
-		doneTraveling = true;
-		distanceTraveled = 0;
+        //ballCount = Robot.drummag.ballCount();
+        magEmpty = true;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 
+        //Robot.drummag.magMode = 1;
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
 
-		doneTraveling = false;
-		distanceTraveled = 0;
-
+		magEmpty = false;
+		
 		SmartDashboard.putNumber("heading", heading);
 
 	}
@@ -54,35 +49,50 @@ public class AutoDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-			doneTraveling = false;
-		} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-		} else {
-			Robot.drivebase.stopMotors();
-			doneTraveling = true;
-		}
+    /*
+        if(ballCount == 0){
+            magEmpty = true;
+        }
+        else if(ballCount > 0){
+            if(position = desiredPosition){
+                //Robot.drummag.punchBall(true);
+                if(currentBall == false){
+                    //Robot.drummag.punchBall(false);
+                }
+                else{
+                    //Robot.drummag.punchBall(false);
+                }
+                if(Robot.drummag.kickerLimit == true){
+                    //Robot.drummag.findDesiredPosition();
+                    //Robot.drummag.rotate();
+                else{
+
+                }
+                magEmpty = false;
+            }
+        }
+    */
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return doneTraveling;
+		return magEmpty;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.drivebase.stopMotors();
+        Robot.drivebase.stopMotors();
+        Robot.shooter.stopMotors();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.drivebase.stopMotors();
+        Robot.drivebase.stopMotors();
+        Robot.shooter.stopMotors();
 	}
 
 }

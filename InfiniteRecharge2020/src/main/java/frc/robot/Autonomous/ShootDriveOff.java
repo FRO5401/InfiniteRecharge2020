@@ -18,8 +18,7 @@ public class ShootDriveOff extends CommandGroup {
   public ShootDriveOff() {
     Robot.shooter.runMotors(); 
     Robot.turret.enableVision(); 
-        //Do this 3 times to empty the mag and shoot 3 times
-    //Robot.ballPuncher.set(true);
+    addSequential(new AutoShootBall());
     addSequential(new AutoDrive(75, 0.3));
 
     // Add Commands here:

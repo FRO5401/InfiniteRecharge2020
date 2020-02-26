@@ -47,7 +47,7 @@ public class ShooterMechanism extends Command {
     }
 
     if(controlShooter == true && (Robot.shooter.getVelocity() > 2000)) {
-      Robot.shooter.stop();
+      Robot.shooter.stopMotors();
     }
 
     if(controlShooter == true && (Robot.shooter.getVelocity() < 2000)) {
@@ -59,12 +59,12 @@ public class ShooterMechanism extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end () {
-    Robot.shooter.stop();
+    Robot.shooter.stopMotors();
   }
 
   @Override
   public void interrupted(){
-    Robot.shooter.stop();
+    Robot.shooter.stopMotors();
   }
 
   // Returns true when the command should end.

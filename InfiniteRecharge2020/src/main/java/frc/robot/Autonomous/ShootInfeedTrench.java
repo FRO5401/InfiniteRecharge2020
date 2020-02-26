@@ -18,15 +18,13 @@ public class ShootInfeedTrench extends CommandGroup {
   public ShootInfeedTrench() {
     Robot.shooter.runMotors(); 
     Robot.turret.enableVision(); 
-        //Do this 3 times to empty the mag and shoot 3 times
-    //Robot.ballPuncher.set(true);
+    addSequential(new AutoShootBall());
     addSequential(new AutoTurn(-50, 0.6));
     addSequential(new AutoBallInfeed(0.6));
-    addSequential(new AutoDrive(-75, 0.6));
     Robot.shooter.runMotors(); 
     Robot.turret.enableVision();    
-        //Do this 'x' amount of times until mag is empty 
-    //Robot.ballPuncher.set(true);
+    addSequential(new AutoDrive(-75, 0.6));
+    addSequential(new AutoShootBall());
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
