@@ -31,7 +31,7 @@ public class DrumMag extends Subsystem {
   private Solenoid kicker1;
   private Solenoid kicker2;
 
-  private int magMode;
+  public int magMode;
   private boolean target; // Used in findDesiredPosition()
   private int currentPosition;
   private boolean finishedRotating; // Used to prevent currentPosition from endlessly incrementing
@@ -130,6 +130,18 @@ public class DrumMag extends Subsystem {
     cellLimits[3] = cell4.get();
     cellLimits[4] = cell5.get();
     return cellLimits;
+  }
+
+  //Counts the number of balls in the magazine (called once in the beginning of a Command Group class, loop MIGHT be okay if run once)
+  public int ballCount(){
+    int count = 0;
+    for(int i = 0; i < cellLimits.length; i++){
+      if(cellLimits[i]){
+        count++;
+      }
+    }
+    return count;
+
   }
 
   // Gets position for use in commands
