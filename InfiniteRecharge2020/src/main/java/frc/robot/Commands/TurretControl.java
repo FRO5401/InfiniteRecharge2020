@@ -18,17 +18,14 @@ import frc.robot.RobotMap;
 public class TurretControl extends Command {
 
   // Creates the limits, turn functions, and buttons needed for the program.
-  boolean limitRight;
-  boolean limitLeft;
+  boolean limitRight, limitLeft;
   boolean resetButton;
   boolean overrideToggle;
-  boolean visionEnabled;
-  boolean visionDisabled;
+  boolean controlVision;
   double turretRotate;
-  boolean readyButton;
+  boolean resetPosition;
   double xVision;
   int dPad;
-  boolean resetPosition;
 
   // Constructor that finds the subsystem
   public TurretControl() {
@@ -40,17 +37,15 @@ public class TurretControl extends Command {
   @Override
   protected void initialize() {
     Robot.turret.turretSetTalonNeutralMode(NeutralMode.Brake);
-    Robot.turret.resetTurretAngle();
+    //Robot.turret.resetTurretAngle();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
-    turretRotate = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
-    visionEnabled =Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
-    visionDisabled = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_BACK);
+    controlVision = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
     resetPosition = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
     if (resetPosition){
@@ -60,6 +55,7 @@ public class TurretControl extends Command {
     // Checks to see if the ready button was pushed
     else if (overrideToggle) {
       //Disables vision if on
+      System.out.println("override");
       Robot.turret.disableVision();
 
       //Allows turret to move if Joystick axis is above treshold
@@ -73,6 +69,7 @@ public class TurretControl extends Command {
 
     //If the turret isn't recieving commands, don't move!!
     else{
+      System.out.println("no override");
       Robot.turret.stopRotation();
     }
 

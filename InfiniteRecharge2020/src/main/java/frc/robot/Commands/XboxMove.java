@@ -33,8 +33,9 @@ public class XboxMove extends Command {
   boolean gearShiftHigh;
   boolean gearShiftLow;
 
-    /* //Testing Buttons (TODO: Remove for Comp)
+     //Testing Buttons (TODO: Remove for Comp)
   boolean resetSensors;
+  /*
   boolean speedConstant1;
   boolean speedConstant2;
   boolean speedConstant3;
@@ -69,18 +70,21 @@ public class XboxMove extends Command {
     precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
     gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
-    /* 
+
+    resetSensors = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
+    
       //TODO: Remove these testing buttons for competition.
-    resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_Y);
+    /*resetSensors
     speedConstant1 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
     speedConstant2 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
     speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
       //TODO: Remove this testing method for competition.
+    */
     if(resetSensors){
-      Robot.drivebase.resetEncoders();
-      Robot.drivebase.resetGyro();
+      Robot.drivebase.resetSensors();
+      System.out.println("reset sensors");
     }    
-     */
+     
     /*** Gear Shifting ***/
       //Press for High Gear
     if(gearShiftHigh){

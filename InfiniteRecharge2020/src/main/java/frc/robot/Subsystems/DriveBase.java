@@ -97,6 +97,29 @@ public class DriveBase extends Subsystem {
     }
   }
 
+  public void autoTurn(double desiredAngle, double autoTurnSpeed) {
+    navxGyro.reset();
+
+    double angleTraveled;
+    boolean doneTraveling = false;
+    angleTraveled = Robot.drivebase.getGyroAngle();
+    
+    if(doneTraveling == false) {
+        if ((angleTraveled) <= (desiredAngle - RobotMap.ANGLE_THRESHOLD) && desiredAngle > 0){
+			  Robot.drivebase.autoDrive(autoTurnSpeed, (-1 * autoTurnSpeed));
+			  doneTraveling = false;
+		  }
+		  else if(angleTraveled >= (desiredAngle + RobotMap.ANGLE_THRESHOLD) && desiredAngle < 0){
+        Robot.drivebase.autoDrive((-1 * autoTurnSpeed), autoTurnSpeed);
+        doneTraveling = false;
+		  }
+		  else{
+			  Robot.drivebase.stopMotors();
+			  doneTraveling = true;
+      }
+    }
+  }
+
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
     leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
@@ -105,21 +128,27 @@ public class DriveBase extends Subsystem {
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
   }
-/*
-  public void visionMove(){
+
+  public boolean checkCentered(){
+
     if(Robot.networktables.getBXValue() > 200 && Robot.networktables.getBXValue() < 500){
       autoDrive(.5 , .5);
+      return true;
     }
     
     if(Robot.networktables.getBXValue() < 200){
       autoDrive(.5 , 0);
+      return false;
     }
     
     if(Robot.networktables.getBXValue() > 500){
       autoDrive(0 , .5);
+      return false;
     }
+
+    return false;
   }
-*/
+
   // Sets SC's to 0.
   public void stopMotors() {
     leftDrive1.set(ControlMode.PercentOutput, 0);
@@ -179,9 +208,18 @@ public class DriveBase extends Subsystem {
     return pitch;
   }
 
-  
+  //resets sensors 
+  public void resetSensors() {
+    leftEncoder.reset();
+    rightEncoder.reset();
 
-  
+    leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
+    rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
+
+    Robot.turret.turretTalon.getSensorCollection().setQuadraturePosition(0, 10);
+
+    navxGyro.reset();
+  }
 
   // Reports all information from drivebase to SmartDashboard
   public void reportDriveBaseSensors() {
@@ -204,19 +242,5 @@ public class DriveBase extends Subsystem {
     SmartDashboard.putNumber("Right Talon1 Position", rightDrive1.getSelectedSensorPosition());
     SmartDashboard.putNumber("Right VSP2 Speed", rightDrive2.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Right VSP3 Speed", rightDrive3.getSelectedSensorVelocity());
-  }
-
-  // Resets the Encoders.
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-
-    leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
-    rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
-  }
-
-  // Resets the Gyro.
-  public void resetGyro() {
-    navxGyro.reset();
   }
 }

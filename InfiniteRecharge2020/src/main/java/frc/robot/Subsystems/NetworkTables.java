@@ -20,9 +20,9 @@ public class NetworkTables extends Subsystem {
   NetworkTable ballTable;
   NetworkTable powerPortTable;
   NetworkTableInstance inst;
-  NetworkTableEntry ballXEntry, ballYEntry;
+  NetworkTableEntry ballXEntry, ballYEntry, ballDEntry;
   NetworkTableEntry powerPortXEntry, powerPortYEntry;
-  private static double ballX, ballY;
+  private static double ballX, ballY, radius, ballDistance;
   private static double powerPortX, powerPortY;
 
   @Override
@@ -33,6 +33,7 @@ public class NetworkTables extends Subsystem {
   public NetworkTables() {
     ballX = 0;
     ballY = 0;
+    ballDistance = 0;
     powerPortX = 0;
     powerPortY = 0;
   }
@@ -43,6 +44,7 @@ public class NetworkTables extends Subsystem {
     powerPortTable = inst.getTable("PowerPort");
     ballXEntry = ballTable.getEntry("cX");
     ballYEntry = ballTable.getEntry("cY");
+    ballDEntry = ballTable.getEntry("ballDistance");
     powerPortXEntry = powerPortTable.getEntry("cX");
     powerPortYEntry = powerPortTable.getEntry("cY");
 
@@ -51,9 +53,11 @@ public class NetworkTables extends Subsystem {
 
     ballX = ballXEntry.getDouble(0.0);
     ballY = ballYEntry.getDouble(0.0);
+    ballDistance = ballDEntry.getDouble(0.0);
     powerPortX = powerPortXEntry.getDouble(0.0);
     powerPortY = powerPortYEntry.getDouble(0.0);
     System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
+    System.out.println("The Ball is" + ballDistance + "away");
     System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
 
@@ -63,6 +67,10 @@ public class NetworkTables extends Subsystem {
 
   public double getBYValue() {
     return ballY;
+  }
+
+  public double getBallDistance(){
+    return ballDistance;
   }
 
   public double getPPXValue(){
