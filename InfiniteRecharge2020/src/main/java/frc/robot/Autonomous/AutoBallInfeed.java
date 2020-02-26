@@ -67,22 +67,26 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		//distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if(isCentered == true) {
-                if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-			    Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-			    doneTraveling = false;
-		    } else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-			    Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-		    } else {
-			    Robot.drivebase.stopMotors();
-			    doneTraveling = true;
-            }
-        }
-        else {
-            Robot.drivebase.autoTurn(desiredAngle, autoDriveSpeed);
-        }
-
+		if(Robot.networktables.radius == 0){ //If no ball is recognized, scan area
+			Robot.drivebase.autoTurn(90, 0.8);
+			Robot.drivebase.autoTurn(-180, 0.8);
+		}
+		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
+			if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
+            	    if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
+			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			    	doneTraveling = false;
+		    	} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
+			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+		    	} else {
+			    	Robot.drivebase.stopMotors();
+			    	doneTraveling = true;
+            	}
+        	}
+        	else {
+            	Robot.drivebase.autoTurn(desiredAngle, autoDriveSpeed); //Turn until the ball that is recognized is straight ahead
+        	}
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

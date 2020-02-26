@@ -22,7 +22,8 @@ public class NetworkTables extends Subsystem {
   NetworkTableInstance inst;
   NetworkTableEntry ballXEntry, ballYEntry, ballDEntry;
   NetworkTableEntry powerPortXEntry, powerPortYEntry;
-  private static double ballX, ballY, radius, ballDistance;
+  private static double ballX, ballY, ballDistance;
+  public double radius;
   private static double powerPortX, powerPortY;
 
   @Override

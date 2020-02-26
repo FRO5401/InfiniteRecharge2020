@@ -7,15 +7,27 @@
 
 package frc.robot.Autonomous;
 
+import frc.robot.*;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveStraight extends CommandGroup {
+public class ShootInfeedTrench extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
-    addSequential(new AutoDrive(75, 0.5));
+  public ShootInfeedTrench() {
+    Robot.shooter.runMotors(); 
+    Robot.turret.enableVision(); 
+        //Do this 3 times to empty the mag and shoot 3 times
+    //Robot.ballPuncher.set(true);
+    addSequential(new AutoTurn(-50, 0.6));
+    addSequential(new AutoBallInfeed(0.6));
+    addSequential(new AutoDrive(-75, 0.6));
+    Robot.shooter.runMotors(); 
+    Robot.turret.enableVision();    
+        //Do this 'x' amount of times until mag is empty 
+    //Robot.ballPuncher.set(true);
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
