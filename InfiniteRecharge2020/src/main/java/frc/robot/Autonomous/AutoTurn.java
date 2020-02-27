@@ -34,7 +34,6 @@ public class AutoTurn extends Command {
     Robot.drivebase.resetSensors();
     doneTraveling = false;
     angleTraveled = 0;
-
   }
 
   // Called repeatedly when this Command is scheduled to run

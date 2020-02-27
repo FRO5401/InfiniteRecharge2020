@@ -23,12 +23,11 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String DriveStraight = "Drive Straight";
   private Command autoSelected;
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   public static CompressorSubsystem compressorsubsystem;
+  public static NetworkTables networktables;
   public static DriveBase drivebase;
   public static OI oi;
 
@@ -47,6 +46,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();
+    networktables = new NetworkTables();
     drivebase = new DriveBase();
     
     oi = new OI();
@@ -81,7 +81,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Robot.drivebase.resetSensors();
-    Robot.drivebase.resetGyro();
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();

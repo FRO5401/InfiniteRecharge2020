@@ -72,7 +72,6 @@ public class XboxMove extends Command {
         //TODO: Remove this testing method for competition. */
       if(resetSensors){
         Robot.drivebase.resetSensors();
-        Robot.drivebase.resetGyro();
       }    
       /*** Gear Shifting ***/
         //Press for High Gear

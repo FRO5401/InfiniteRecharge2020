@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+
 /**
  * This command is also used as a "BaselineOnly" command
  */
@@ -22,165 +23,66 @@ public class AutoDrive extends Command {
 	private boolean doneTraveling;
 	private double distanceTraveled;
 	private double heading;
-	private double drift;
-	private double kP_Drift;
-	private double velocitySample2;
-	private final double autoDistThresh;
-	private double navXPitchInit;
-	private double navXPitch;	
 
-	//MAKE SURE SPEED BACKWARDS IS NEGATIVE IN ADD SEQUENTIAL
-    public AutoDrive(double DistanceInput, double SpeedInput) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-		//requires(Robot.drivebase);
-		
-    	desiredDistance = DistanceInput;
-		//Distance is 127 inches not considering robot size
-		
-    	autoDriveSpeed = SpeedInput;
-    	doneTraveling = false;
-    	distanceTraveled = 0;
-//    	heading = Robot.drivebase.getGyroAngle();
-    	kP_Drift = 0.0;
-		velocitySample2 = 0;
-		//Final Variables
-		
-    	autoDistThresh = 2;    
+	public AutoDrive(double DistanceInput, double SpeedInput) {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		// requires(Robot.drivebase);
 
-    }
+		desiredDistance = DistanceInput;
 
-    // Called just before this Command runs the first time
-    @Override
+		autoDriveSpeed = SpeedInput;
+		doneTraveling = true;
+		distanceTraveled = 0;
+	}
+
+	// Called just before this Command runs the first time
+	@Override
 	protected void initialize() {
+
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
-//    	heading = Robot.drivebase.getGyroAngle();
-//    	drift = 0;
-    	doneTraveling = false;
+
+		doneTraveling = false;
 		distanceTraveled = 0;
-//		navXPitchInit = Robot.drivebase.getGyroPitch();
 
-    	//System.out.println("AutoDriveInitializing");
-    	//System.out.println("Angle when starting DriveShift:" + Robot.drivebase.getGyroAngle());
-//    	SmartDashboard.putNumber("heading", heading);
-//    	Robot.drivebase.shiftGearHighToLow();
+		SmartDashboard.putNumber("heading", heading);
 
-    }
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
+	// Called repeatedly when this Command is scheduled to run
+	@Override
 	protected void execute() {
-		//TODO: Change this to read encoder average instead of just right encoder
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if ((distanceTraveled) <= (desiredDistance) && desiredDistance > 0){
+		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 			doneTraveling = false;
-		}
-		else if(distanceTraveled >= (desiredDistance) && desiredDistance < 0){
+		} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-			doneTraveling = false;
-		}
-		else{
+		} else {
 			Robot.drivebase.stopMotors();
 			doneTraveling = true;
 		}
-		//Resets pitch if Z axis changes too much
-/*		navXPitch = Robot.drivebase.getGyroPitch();
-		if ((navXPitch - navXPitchInit) > 1.0){
-			Robot.drivebase.resetGyro();
-		}
-*/
-		//Driving
-/*    	if (Math.abs(desiredDistance) <= autoDistThresh){
-    		//DesiredDistance too small!
-    		doneTraveling = true;
+	}
 
-    	}
-
-    	else {
-//    		drift = Robot.drivebase.getGyroAngle() - heading;
-//    		SmartDashboard.putNumber("Drift", drift);
-
-    			if ((desiredDistance > 0) && (distanceTraveled < (Math.abs(desiredDistance) - autoDistThresh))){ //DesiredDistance is positive, go forward
-    				//Drive Forward
-    				System.out.print(distanceTraveled + " Positive Marker");
-
-  					if (drift > .5){ //Currently assumes we always drift right while going forwards
-    					Robot.drivebase.drive(autoDriveSpeed + (kP_Drift * (drift / 2)), autoDriveSpeed);
-						System.out.print(distanceTraveled);//Adjust right motor when driving forward
-						
-    				} else if (drift < -.5){
-						//Robot.drivebase.drive(autoDriveSpeed - (kP_Drift * drift), autoDriveSpeed);
-						//System.out.print(distanceTraveled);//Adjust right motor when driving forward
-						
-						Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed + (kP_Drift * (drift / 2)));
-						//Works with kP_Drift as 0.1, must be added because drift is negative
-    				}
-
-    				else {
-    					System.out.print(distanceTraveled);
-    					Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed);
-
-    				}
-
-    				doneTraveling = false;
-
-    			}
-    			else if ((desiredDistance < 0) && (distanceTraveled > (autoDistThresh - Math.abs(desiredDistance)))){ //DesiredDistance is negative, go backward
-
-    				//Drive Backward
-    				System.out.print(distanceTraveled + " Neg Marker");
-
-    				if (drift > .5){ //Currently assumes we always drift left (while looking backward as the front) while going backwards
-
-    					Robot.drivebase.drive(-autoDriveSpeed, -(autoDriveSpeed + (kP_Drift * drift)));//Adjusts left motor when driving backwards
-    				}
-
-    				else if (drift < -.5){
-    					Robot.drivebase.drive(-autoDriveSpeed + (kP_Drift * drift), -autoDriveSpeed);
-
-    				}
-
-    				else {
-    					Robot.drivebase.drive(-autoDriveSpeed, -autoDriveSpeed);
-
-					}
-					
-    				doneTraveling = false;
-
-    			}
-    			else { //error, exactly 0, or done
-    				//Finished
-					doneTraveling = true;		
-
-    			}
-    		distanceTraveled = (Robot.drivebase.getEncoderDistance(0)); //XXX This shouldn't be calling a constant number
-    		//Changed above from 3 to 1.  There is no valid encoder 3, so this was probably always returning a 0 dist travelled KJM
-    	}	*/
-
-    }
-
-    // Make this return true when this Command no longer needs to run execute() 
-    @Override
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
 	protected boolean isFinished() {
-        System.out.print("Should be finished");
-    	return doneTraveling;
-    }
+		return doneTraveling;
+	}
 
-    // Called once after isFinished returns true
-    @Override
+	// Called once after isFinished returns true
+	@Override
 	protected void end() {
-    	Robot.drivebase.stopMotors();
-    	//System.out.println("Angle when EXITING DriveShift:" + Robot.drivebase.getGyroAngle());
-    }
+		Robot.drivebase.stopMotors();
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
 	protected void interrupted() {
-    	Robot.drivebase.stopMotors();
-    }
+		Robot.drivebase.stopMotors();
+	}
 
 }
