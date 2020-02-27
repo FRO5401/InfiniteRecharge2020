@@ -24,6 +24,8 @@ public class AutoBallInfeed extends Command {
 	private double distanceTraveled;
 	private double heading;
 	private double radius;
+
+	private final double turnThresh;
     
     private boolean isCentered;
 
@@ -39,6 +41,8 @@ public class AutoBallInfeed extends Command {
 		autoDriveSpeed = SpeedInput;
 		doneTraveling = true;
 		distanceTraveled = 0;
+
+		turnThresh = 3;
 		// heading = Robot.drivebase.getGyroAngle();
 
 	}
@@ -89,10 +93,10 @@ public class AutoBallInfeed extends Command {
             	}
         	}
         	else { //Turn until the ball that is recognized is straight ahead
-				if(Robot.networktables.getBXValue() > 0){
+				if(Robot.networktables.getBXValue() > (turnThresh * -1)){
 					Robot.drivebase.autoTurn(5, autoDriveSpeed);
 				}
-            	else if(Robot.networktables.getBXValue() < 0){
+            	else if(Robot.networktables.getBXValue() < turnThresh){
 					Robot.drivebase.autoTurn(-5, autoDriveSpeed);
 				}
         	}
