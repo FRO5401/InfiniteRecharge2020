@@ -36,6 +36,9 @@ public class AutoShootBall extends Command {
 	@Override
 	protected void initialize() {
 
+        Robot.turret.enableVision();
+        Robot.shooter.runMotors();
+
         Robot.drummag.magMode = 1;
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
@@ -107,6 +110,7 @@ public class AutoShootBall extends Command {
 	protected void end() {
         Robot.drivebase.stopMotors();
         Robot.shooter.stopMotors();
+        Robot.turret.disableVision();
 	}
 
 	// Called when another command which requires one or more of the same

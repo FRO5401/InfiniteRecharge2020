@@ -15,11 +15,8 @@ public class ShootDriveOff extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ShootDriveOff() {
-    //addSequential(new AutoRotateMag());
-    Robot.shooter.runMotors(); 
-    //Robot.turret.enableVision();
-    //addSequential(new AutoShootBall());
+  public ShootDriveOff() { 
+    addSequential(new AutoShootBall());
     addSequential(new AutoDrive(75, 0.5));
     
   

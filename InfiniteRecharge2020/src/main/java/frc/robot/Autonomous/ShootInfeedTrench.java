@@ -15,14 +15,10 @@ public class ShootInfeedTrench extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public ShootInfeedTrench() {
-    Robot.shooter.runMotors(); 
-    Robot.turret.enableVision(); 
+  public ShootInfeedTrench() { 
     addSequential(new AutoShootBall());
     addSequential(new AutoTurn(-50, 0.6));
-    addSequential(new AutoBallInfeed(0.6));
-    Robot.shooter.runMotors(); 
-    Robot.turret.enableVision();    
+    addSequential(new AutoBallInfeed(0.6));  
     addSequential(new AutoDrive(-75, 0.6));
     addSequential(new AutoShootBall());
 
