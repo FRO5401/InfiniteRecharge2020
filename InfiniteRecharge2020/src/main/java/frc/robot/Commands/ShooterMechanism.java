@@ -46,11 +46,11 @@ public class ShooterMechanism extends Command {
       Robot.shooter.getPIDInput();
     }
 
-    if(controlShooter == true && (Robot.shooter.getVelocity() > 2000)) {
+    if(controlShooter == true && (Robot.shooter.getVelocity() > 500)) {
       Robot.shooter.stopMotors();
     }
 
-    if(controlShooter == true && (Robot.shooter.getVelocity() < 2000)) {
+    if(controlShooter == true && (Robot.shooter.getVelocity() < 500)) {
       Robot.shooter.runMotors();
     }
 
