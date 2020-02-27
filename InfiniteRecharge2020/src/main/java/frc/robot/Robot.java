@@ -38,8 +38,6 @@ public class Robot extends TimedRobot {
 
   public double matchTime;
 
-  private static final String kDefaultAuto = "Default";
-  private static final String DriveStraight = "Drive Straight";
   private Command autoSelected;
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -54,7 +52,6 @@ public class Robot extends TimedRobot {
     chooser.addOption("ShootDrveOff", new ShootDriveOff());
     SmartDashboard.putData("Auto choices", chooser);
 
-    timer = new Timer();
 
     turret = new Turret();
 //  drivebase = new DriveBase();
@@ -76,7 +73,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    matchTime = timer.getMatchTime();
+    matchTime = Timer.getMatchTime();
     SmartDashboard.putNumber("Match Time (sec)", timer.get());
     Robot.networktables.reportValues();
     Robot.turret.reportTurretInfeedSensors();
@@ -123,7 +120,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
       Scheduler.getInstance().run();
-      if(timer.getMatchTime() <= 10.0){
+      if(Timer.getMatchTime() <= 10.0){
         Robot.shooter.runMotors();
       }
   }
