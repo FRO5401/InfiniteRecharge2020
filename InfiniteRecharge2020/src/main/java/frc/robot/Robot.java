@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2019-2020 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,12 +7,14 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import edu.wpi.first.wpilibj.command.Scheduler;
-
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystems.*;
 
 /**
@@ -23,14 +25,18 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
+  public static CompressorSubsystem compressorsubsystem;
+
+  public static Timer timer;
+
   public static OI oi;
+
+  public double matchTime;
+
+  private Command autoSelected;
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -38,13 +44,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData("Auto choices", chooser);
 
-    compressorsubsystem = new CompressorSubsystem();
+
     drivebase = new DriveBase();
-    
+    compressorsubsystem = new CompressorSubsystem();
+
     oi = new OI();
   }
 
@@ -59,6 +64,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    matchTime = Timer.getMatchTime();
+    SmartDashboard.putNumber("Match Time (sec)", matchTime);
+    Robot.compressorsubsystem.reportCompressorStatus();
+
+    //Robot.drivebase.visionMove();
   }
 
   /**
@@ -75,9 +85,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+//    Robot.drivebase.resetEncoders();
+    autoSelected = chooser.getSelected();
+    if(autoSelected != null) {
+      autoSelected.start();
+    }
   }
 
   /**
@@ -85,19 +97,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
-    }
+    Scheduler.getInstance().run();
   }
 
   @Override
   public void teleopInit() {
+    Robot.compressorsubsystem.startCompressor();
   }
 
   /**
@@ -105,8 +110,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-    //Robot.drivebase.drive(0.5, 0.5);
+      Scheduler.getInstance().run();
+      if(Timer.getMatchTime() <= 10.0 & Timer.getMatchTime() > -1){
+        Robot.drivebase.DriveMotorRight2.set(ControlMode.PercentOutput, 0.5);
+      }
   }
 
   /**

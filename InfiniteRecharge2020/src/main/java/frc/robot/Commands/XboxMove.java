@@ -7,6 +7,8 @@
 
 package frc.robot.Commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
@@ -20,6 +22,8 @@ public class XboxMove extends Command {
     double reverse;
   
       //Input Buttons
+    boolean motorTest;
+
     boolean rotate; 
     boolean brake;
     boolean precision;
@@ -54,6 +58,8 @@ public class XboxMove extends Command {
     protected void execute() {
       /*** Read Inputs ***/
         //Axes
+      motorTest = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
+
       turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
       throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
       reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
@@ -96,6 +102,14 @@ public class XboxMove extends Command {
       else if(shoot == false){
         Robot.drivebase.stopMotors();
       }
+
+      if(motorTest == true){
+        Robot.drivebase.DriveMotorRight2.set(ControlMode.PercentOutput, 0.5);
+      }
+      else if(motorTest == false){
+        Robot.drivebase.DriveMotorRight2.set(ControlMode.PercentOutput, 0.0);
+      }
+
 
       /*** Precision ***/
         //Hold for Precision Speed

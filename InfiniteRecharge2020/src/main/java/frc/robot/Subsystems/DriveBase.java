@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -29,6 +30,8 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveBase extends Subsystem {
   // Motors
   private TalonFX testPWM, falcon;
+
+  public VictorSPX DriveMotorRight2;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -42,6 +45,8 @@ public class DriveBase extends Subsystem {
     // Instantiate Motors
     testPWM = new TalonFX(7);
     falcon = new TalonFX(8);
+
+    DriveMotorRight2 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
