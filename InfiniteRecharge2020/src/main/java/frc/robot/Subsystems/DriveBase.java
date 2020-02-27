@@ -127,12 +127,12 @@ public class DriveBase extends Subsystem {
 
   public boolean checkCentered(){
 
-    if(Robot.networktables.getBXValue() > 200 && Robot.networktables.getBXValue() < 500){
+    if(Robot.networktables.getBXValue() >= 270 && Robot.networktables.getBXValue() <= 370){
       //autoDrive(.5 , .5);
       return true;
     }
     
-    if(Robot.networktables.getBXValue() < 200 || Robot.networktables.getBXValue() > 500){
+    if(Robot.networktables.getBXValue() < 270 || Robot.networktables.getBXValue() > 370){
       //autoDrive(.5 , 0);
       return false;
     }

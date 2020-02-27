@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Drive Turn Around", new DriveTurnAround());
     chooser.addOption("Line Up Score", new LineUpScore());
     chooser.addOption("Station 3 Start", new Station3Start());
+    chooser.addOption("Ball Center Test", new BallCenterTest());
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();
@@ -64,6 +65,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Robot.drivebase.reportDriveBaseSensors();
+    Robot.networktables.updateValue();
+    Robot.networktables.reportValues();
+    Robot.compressorsubsystem.reportCompressorStatus();
+
   }
 
   /**

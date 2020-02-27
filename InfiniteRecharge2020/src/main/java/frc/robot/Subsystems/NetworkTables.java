@@ -59,7 +59,7 @@ public class NetworkTables extends Subsystem {
     powerPortX = powerPortXEntry.getDouble(0.0);
     powerPortY = powerPortYEntry.getDouble(0.0);
     System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
-    System.out.println("The Ball is" + ballDistance + "away");
+    System.out.println("The Ball is " + ballDistance + "away");
     System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
 

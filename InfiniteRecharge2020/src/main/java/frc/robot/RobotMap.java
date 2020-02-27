@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2019-2020 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -27,34 +27,26 @@ public class RobotMap {
   /*** Constants ***/
   // OI
   public static final double AXIS_THRESHOLD = 0.25;
-  public static final int ELEVATOR_BUTTON_SHIFT_HIGH = 1;
-  public static final int ELEVATOR_BUTTON_SHIFT_LOW = 2;
-  public static final int ELEVATOR_BUTTON_COLLAPSE = 3;
-  public static final int ELEVATOR_BUTTON_RISE = 4;
 
-  // DriveBase
-  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 1.25; //Change back to 1.09 if test fails
+  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 1.09;
   public static final double SPEED_ADJUSTMENT_LEFT_BACKWARD = 1.09;
-  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; //TODO: Make smaller until skew is gone
-  public static final double LOW_GEAR_RIGHT_DPP  = 0.000618865317636; //Low gear dpp 2020
+  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; // TODO: Make smaller until skew is gone
+  public static final double LOW_GEAR_RIGHT_DPP = 0.000618865317636; // Low gear dpp 2020
   public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462;
   public static final double HIGH_GEAR_LEFT_DPP = 0.000650533437419; // High gear skews left
-  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; //High gear dpp 2020
+  public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; // High gear dpp 2020
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // CarriageInfeed
-  public static final double CARRIAGE_FEEDER_SPEED = .4;
-  public static final double CARRIAGE_ANGLE_PER_PULSE = 0;
-
-  // Elevator
-  public static final int TIMEOUT_LIMIT_IN_Ms = 10;
-  public static final int ELEVATOR_THRESHOLD_FOR_PID = 0;
-  public static final double ELEVATOR_SPEED_SENSITIVITY = .4;
-
+  // Turret
+  /*
+  public static final double TURRET_TURN_SPEED = .35;
+  public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
+  */
+  
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;
@@ -90,14 +82,42 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_2 = 4;
   public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
-  // CarriageInfeed
-  public static final int CARRIAGE_FEED_ROLLERS = 4;
-  public static final int CARRIAGE_TALON_CHANNEL = 2;
-  public static final int C_STOP_T = 7;
+  // Turret
+  /*
+  public static final int TURRET_TALON = 10;
+  public static final int T_STOP_LEFT = 90;
+  public static final int T_STOP_RIGHT = -90;
+  public static final double TURRET_SPEED_SENSITIVITY = 0.35;
+  public static final double TURRET_ANGLE_LIMIT = 90;
+  */
 
-  // Elevator
-  public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
-  public static final int ELEVATOR_TALON_SLAVE_CHANNEL = 1;
+  // Shooter
+  //public static final int SHOOTER_MASTER_CHANNEL = 7;
+  //public static final int SHOOTER_SLAVE_CHANNEL = 8;
+
+  //DrumMag
+  //public static final int MAGAZINE_TALON_CHANNEL = 0;
+
+  
+  // Limits
+  /*
+  public static final int MAGAZINE_STOP_1 = 0;
+  public static final int MAGAZINE_STOP_2 = 0;
+  public static final int MAGAZINE_STOP_3 = 0;
+  public static final int MAGAZINE_STOP_4 = 0;
+  public static final int MAGAZINE_STOP_5 = 0;
+
+  public static final int GENEVA_LIMIT = 0;
+  public static final int HOMING_LIMIT = 0;
+  */
+
+  //Channels
+  /* 
+  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 2;
+  public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
+
+  public static final int KICKER_DEPLOYED = 0;
+  */
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
@@ -108,14 +128,6 @@ public class RobotMap {
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
 
-  // Elevator
-  public static final int ELEVATOR_GEAR_SHIFTER = 4;
-  public static final int ELEVATOR_COLLAPSE_TOP = 5;
-  public static final int ELEVATOR_COLLAPSE_BOTTOM = 1;
-
-  // Hatch Mechanism
-  public static final int HATCH_EXTENDER = 2;
-
   /*** Sensors ***/
   // Encoders
   public static final int DRIVE_ENC_LEFT_A = 3;
@@ -123,16 +135,8 @@ public class RobotMap {
   public static final int DRIVE_ENC_LEFT_B = 4;
   public static final int DRIVE_ENC_RIGHT_B = 2;
 
-  // Elevator
-  public static final int E_STOP_HIGH = 5;
-  public static final int E_STOP_LOW = 6;
-
-  // DOUBLE SOLENOIDS ELEVATOR
-  public static final int BOTTOM_ELEVATOR_OUT = 6;
-  public static final int BOTTOM_EVEVATOR_IN = 7;
-
   /*** Autonomous ***/
-  public static final int ANGLE_THRESHOLD = 6;
+  public static final int ANGLE_THRESHOLD = 2;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
 }
