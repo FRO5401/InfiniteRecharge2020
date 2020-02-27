@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystems.*;
 import frc.robot.Autonomous.*;
 
@@ -31,7 +32,11 @@ public class Robot extends TimedRobot {
   public static Shooter shooter;
   public static CompressorSubsystem compressorsubsystem;
 
+  public static Timer timer;
+
   public static OI oi;
+
+  public double matchTime;
 
   private static final String kDefaultAuto = "Default";
   private static final String DriveStraight = "Drive Straight";
@@ -48,6 +53,8 @@ public class Robot extends TimedRobot {
     chooser.addOption("Drive Straight", new DriveStraight());
     chooser.addOption("ShootDrveOff", new ShootDriveOff());
     SmartDashboard.putData("Auto choices", chooser);
+
+    timer = new Timer();
 
     turret = new Turret();
 //  drivebase = new DriveBase();
@@ -69,6 +76,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    matchTime = timer.getMatchTime();
+    SmartDashboard.putNumber("Match Time (sec)", timer.get());
     Robot.networktables.reportValues();
     Robot.turret.reportTurretInfeedSensors();
     Robot.shooter.reportValues();
@@ -114,6 +123,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
       Scheduler.getInstance().run();
+      if(timer.getMatchTime() <= 10.0){
+        Robot.shooter.runMotors();
+      }
   }
 
   /**
