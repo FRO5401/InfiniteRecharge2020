@@ -40,6 +40,8 @@ public class DrumMag extends Subsystem {
   boolean[] cellLimits;
 
   public DrumMag() {
+    //currentPosition = 0; TODO: Check if this line is needed
+
     // PLACEHOLDERS FOR PORTS
     cell1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
     cell2 = new DigitalInput(RobotMap.MAGAZINE_STOP_2);
