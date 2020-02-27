@@ -18,10 +18,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -132,20 +128,14 @@ public class DriveBase extends Subsystem {
   public boolean checkCentered(){
 
     if(Robot.networktables.getBXValue() > 200 && Robot.networktables.getBXValue() < 500){
-      autoDrive(.5 , .5);
+      //autoDrive(.5 , .5);
       return true;
     }
     
-    if(Robot.networktables.getBXValue() < 200){
-      autoDrive(.5 , 0);
+    if(Robot.networktables.getBXValue() < 200 || Robot.networktables.getBXValue() > 500){
+      //autoDrive(.5 , 0);
       return false;
     }
-    
-    if(Robot.networktables.getBXValue() > 500){
-      autoDrive(0 , .5);
-      return false;
-    }
-
     return false;
   }
 

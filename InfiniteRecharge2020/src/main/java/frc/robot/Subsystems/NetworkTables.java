@@ -54,6 +54,7 @@ public class NetworkTables extends Subsystem {
 
     ballX = ballXEntry.getDouble(0.0);
     ballY = ballYEntry.getDouble(0.0);
+    radius = 0;
     ballDistance = ballDEntry.getDouble(0.0);
     powerPortX = powerPortXEntry.getDouble(0.0);
     powerPortY = powerPortYEntry.getDouble(0.0);
@@ -72,6 +73,10 @@ public class NetworkTables extends Subsystem {
 
   public double getBallDistance(){
     return ballDistance;
+  }
+
+  public double getBallRadius(){
+    return radius;
   }
 
   public double getPPXValue(){

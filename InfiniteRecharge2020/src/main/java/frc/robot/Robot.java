@@ -25,6 +25,7 @@ import frc.robot.Autonomous.*;
 public class Robot extends TimedRobot {
 
   public static DriveBase drivebase;
+  public static DrumMag drummag;
   public static Turret turret;
   public static NetworkTables networktables;
   public static Shooter shooter;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
+    chooser.addOption("ShootDrveOff", new ShootDriveOff());
     SmartDashboard.putData("Auto choices", chooser);
 
     turret = new Turret();
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
     networktables = new NetworkTables();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
+    drummag = new DrumMag();
     oi = new OI();
   }
 

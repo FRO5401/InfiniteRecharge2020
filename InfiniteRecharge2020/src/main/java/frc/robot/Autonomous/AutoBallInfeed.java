@@ -10,7 +10,6 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 /**
  * This command is also used as a "BaselineOnly" command
@@ -23,7 +22,8 @@ public class AutoBallInfeed extends Command {
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
 	private double distanceTraveled;
-    private double heading;
+	private double heading;
+	private double radius;
     
     private boolean isCentered;
 
@@ -34,7 +34,6 @@ public class AutoBallInfeed extends Command {
 
         desiredDistance = Robot.networktables.getBallDistance();
         desiredAngle = Robot.networktables.getBXValue();
-        isCentered = Robot.drivebase.checkCentered();
 		// Distance is 127 inches not considering robot size
 
 		autoDriveSpeed = SpeedInput;
@@ -67,24 +66,35 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if(Robot.networktables.radius == 0){ //If no ball is recognized, scan area
+		radius = Robot.networktables.getBallRadius();
+		isCentered = Robot.drivebase.checkCentered();
+		
+		if(radius == 0){ //If no ball is recognized, scan area
 			Robot.drivebase.autoTurn(90, 0.8);
 			Robot.drivebase.autoTurn(-180, 0.8);
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
 			if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
-            	    if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
+				//Robot.infeed.startMotors();
+            	if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
 			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 			    	doneTraveling = false;
-		    	} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
+				} 
+				else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
 			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-		    	} else {
+				} 
+				else {
 			    	Robot.drivebase.stopMotors();
 			    	doneTraveling = true;
             	}
         	}
-        	else {
-            	Robot.drivebase.autoTurn(desiredAngle, autoDriveSpeed); //Turn until the ball that is recognized is straight ahead
+        	else { //Turn until the ball that is recognized is straight ahead
+				if(Robot.networktables.getBXValue() > 0){
+					Robot.drivebase.autoTurn(5, autoDriveSpeed);
+				}
+            	else if(Robot.networktables.getBXValue() < 0){
+					Robot.drivebase.autoTurn(-5, autoDriveSpeed);
+				}
         	}
 		}
 	}

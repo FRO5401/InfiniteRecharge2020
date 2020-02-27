@@ -9,8 +9,7 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.*;
 
 /**
  * This command is also used as a "BaselineOnly" command
@@ -19,6 +18,8 @@ import frc.robot.RobotMap;
 public class AutoShootBall extends Command {
 
     private int ballCount;
+    private int position;
+    private int desiredPosition;
 	private boolean magEmpty;
 	private double heading;
 
@@ -27,7 +28,7 @@ public class AutoShootBall extends Command {
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
 
-        //ballCount = Robot.drummag.ballCount();
+        ballCount = Robot.drummag.ballCount();
         magEmpty = true;
 	}
 
@@ -35,7 +36,7 @@ public class AutoShootBall extends Command {
 	@Override
 	protected void initialize() {
 
-        //Robot.drummag.magMode = 1;
+        Robot.drummag.magMode = 1;
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
@@ -49,30 +50,51 @@ public class AutoShootBall extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-    /*
+        desiredPosition = Robot.drummag.findDesiredPosition();
+        position = Robot.drummag.getPosition(); 
+
         if(ballCount == 0){
             magEmpty = true;
         }
         else if(ballCount > 0){
-            if(position = desiredPosition){
-                //Robot.drummag.punchBall(true);
-                if(currentBall == false){
-                    //Robot.drummag.punchBall(false);
+            if(position == desiredPosition){
+                Robot.drummag.punchBall(true);
+                if(position != desiredPosition && Robot.drummag.getKickerLimit() == false){
+                    Robot.drummag.punchBall(false);
                 }
-                else{
-                    //Robot.drummag.punchBall(false);
-                }
-                if(Robot.drummag.kickerLimit == true){
-                    //Robot.drummag.findDesiredPosition();
-                    //Robot.drummag.rotate();
-                else{
-
-                }
-                magEmpty = false;
             }
+            else{
+                if(Robot.drummag.getKickerLimit() == true){
+                    Robot.drummag.rotate();
+                    if (Robot.drummag.getGenevaLimit() == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
+                        Robot.drummag.switchFinishedRotating();
+                    }
+                }
+            }
+            magEmpty = false;   
         }
-    */
 	}
+        //if(ballCount == 0){
+            //magEmpty = true;
+        //}
+        //else if(ballCount > 0){
+            /*magEmpty = false;
+            if (Robot.drummag.getKickerLimit() == false) { // Stops drummag if kicker is deployed (robot will break if spun while deployed)
+            Robot.drummag.stop();
+            }    
+
+            else if (Robot.drummag.getKickerLimit() == true) { // Prevents drummag from moving while kicker is deployed    
+                if (Robot.drummag.getPosition() != Robot.drummag.findDesiredPosition()) { // Moves until at desired position
+                    Robot.drummag.rotate();    
+                    if (Robot.drummag.getGenevaLimit() == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
+                    Robot.drummag.switchFinishedRotating();    
+                    }
+                } 
+            }
+            */
+        
+        
+        
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
