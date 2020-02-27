@@ -52,6 +52,9 @@ public class RobotMap {
   public static final int ELEVATOR_THRESHOLD_FOR_PID = 0;
   public static final double ELEVATOR_SPEED_SENSITIVITY = .4;
 
+  //Climber
+  public static final double CLIMBER_DPP = 0.0;
+
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;
@@ -93,6 +96,10 @@ public class RobotMap {
   public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
   public static final int ELEVATOR_TALON_SLAVE_CHANNEL = 1;
 
+  //Climber
+  public static final int WINCHLEFT_TALON_CHANNEL = 0;
+  public static final int WINCHRIGHT_TALON_CHANNEL = 1;
+
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
   // Solenoids have just one constant.
@@ -124,6 +131,10 @@ public class RobotMap {
   // DOUBLE SOLENOIDS ELEVATOR
   public static final int BOTTOM_ELEVATOR_OUT = 6;
   public static final int BOTTOM_EVEVATOR_IN = 7;
+
+  //Climber Solenoids
+  public static final int CLIMBERLEFT_CHANNEL = 0;
+  public static final int CLIMBERRIGHT_CHANNEL = 1;
 
   /*** Autonomous ***/
   public static final int ANGLE_THRESHOLD = 2;
