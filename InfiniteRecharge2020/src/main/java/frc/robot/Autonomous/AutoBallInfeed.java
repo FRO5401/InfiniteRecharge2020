@@ -35,7 +35,6 @@ public class AutoBallInfeed extends Command {
 		// requires(Robot.drivebase);
 
         desiredDistance = Robot.networktables.getBallDistance();
-        desiredAngle = Robot.networktables.getBXValue();
 		// Distance is 127 inches not considering robot size
 
 		autoDriveSpeed = SpeedInput;
@@ -72,6 +71,7 @@ public class AutoBallInfeed extends Command {
 	protected void execute() {
 		radius = Robot.networktables.getBallRadius();
 		isCentered = Robot.drivebase.checkCentered();
+		desiredAngle = Robot.networktables.getBXValue();
 		
 		if(radius == 0){ //If no ball is recognized, scan area
 			Robot.drivebase.autoTurn(90, 0.8);
@@ -93,11 +93,11 @@ public class AutoBallInfeed extends Command {
             	}
         	}
         	else { //Turn until the ball that is recognized is straight ahead
-				if(Robot.networktables.getBXValue() > (turnThresh * -1)){
-					Robot.drivebase.autoTurn(5, autoDriveSpeed);
-				}
-            	else if(Robot.networktables.getBXValue() < turnThresh){
+				if(desiredAngle < (turnThresh * -1)){
 					Robot.drivebase.autoTurn(-5, autoDriveSpeed);
+				}
+            	else if(desiredAngle > turnThresh){
+					Robot.drivebase.autoTurn(5, autoDriveSpeed);
 				}
         	}
 		}
