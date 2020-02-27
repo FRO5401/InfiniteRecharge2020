@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -30,10 +31,11 @@ public class Robot extends TimedRobot {
   public static Shooter shooter;
   public static CompressorSubsystem compressorsubsystem;
 
+  public static Timer timer;
+  public double matchTime;
+
   public static OI oi;
 
-  private static final String kDefaultAuto = "Default";
-  private static final String DriveStraight = "Drive Straight";
   private Command autoSelected;
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -46,6 +48,8 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
     SmartDashboard.putData("Auto choices", chooser);
+
+    matchTime = Timer.getMatchTime();
 
     turret = new Turret();
 //  drivebase = new DriveBase();
@@ -74,6 +78,8 @@ public class Robot extends TimedRobot {
     Robot.networktables.updateValue();
     Robot.turret.turretVision();
     //Robot.drivebase.visionMove();
+
+    SmartDashboard.putNumber("Match Time (sec)", matchTime);
   }
 
   /**
@@ -111,6 +117,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
       Scheduler.getInstance().run();
+      if(matchTime < 7 & matchTime > -1){
+        Robot.shooter.runMotors();
+      }
   }
 
   /**
