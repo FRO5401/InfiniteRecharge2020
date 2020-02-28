@@ -8,6 +8,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
@@ -17,6 +18,9 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
 import edu.wpi.first.wpilibj.VictorSP;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -24,7 +28,7 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class DriveBase extends Subsystem {
   // Motors
-  private VictorSP testPWM;
+  private TalonSRX testPWM;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -36,7 +40,7 @@ public class DriveBase extends Subsystem {
 
   public DriveBase() {
     // Instantiate Motors
-    testPWM = new VictorSP(0);
+    testPWM = new TalonSRX(10);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -55,11 +59,11 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    testPWM.set(leftDriveDesired * .55);
+    testPWM.set(ControlMode.PercentOutput, 0.31);
   }
 
   public void stopMotors(){
-    testPWM.set(0);
+    testPWM.set(ControlMode.PercentOutput, 0);
   }
 
   // Set shifter to low.
@@ -99,5 +103,9 @@ public class DriveBase extends Subsystem {
   // Resets the Gyro.
   public void resetGyro() {
     navxGyro.reset();
+  }
+
+  public void reportDriveBaseSensors(){
+    SmartDashboard.putNumber("Bruh encoder", testPWM.getSelectedSensorVelocity());
   }
 }
