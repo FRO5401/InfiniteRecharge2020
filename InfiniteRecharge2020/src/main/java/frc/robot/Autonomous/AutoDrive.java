@@ -18,6 +18,7 @@ import frc.robot.RobotMap;
 
 public class AutoDrive extends Command {
 
+	private double angle;
 	private double desiredDistance;
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
@@ -54,12 +55,13 @@ public class AutoDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		angle = Robot.drivebase.getGyroAngle();
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
 		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
 		} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
+			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 		} else {
 			Robot.drivebase.stopMotors();
 			doneTraveling = true;

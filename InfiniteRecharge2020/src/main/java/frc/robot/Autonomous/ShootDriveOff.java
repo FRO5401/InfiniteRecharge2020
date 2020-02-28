@@ -10,22 +10,21 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class Station3Start extends CommandGroup {
+public class ShootDriveOff extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public Station3Start() {
-    addSequential(new AutoDrive(90, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoTurn(-65, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(100, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-100, -0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoTurn(65, 0.4));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-50, -0.4));
+  public ShootDriveOff() { 
+    //addSequential(new AutoShootBall());
+    addSequential(new AutoDrive(75, 0.5));
+    
+  /*Robot.shooter.runMotors(); 
+    Robot.turret.enableVision(); 
+    //Robot.drummag.punchBall(true);
+    //addSequential(new AutoShootBall());
+    addSequential(new AutoDrive(75, 0.3));
+  */
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

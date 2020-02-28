@@ -9,7 +9,9 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
+
 
 /**
  * This command is also used as a "BaselineOnly" command
@@ -23,7 +25,10 @@ public class AutoBallInfeed extends Command {
 	private boolean doneTraveling;
 	private double distanceTraveled;
 	private double heading;
-	private double radius;
+    private double radius;
+    
+    private double startTime;
+    private double currentTime;
 
 	private final double turnThresh;
     
@@ -41,7 +46,7 @@ public class AutoBallInfeed extends Command {
 		doneTraveling = true;
 		distanceTraveled = 0;
 
-		turnThresh = 3;
+		turnThresh = 5;
 		// heading = Robot.drivebase.getGyroAngle();
 
 	}
@@ -49,6 +54,7 @@ public class AutoBallInfeed extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+        startTime = Timer.getMatchTime();
 
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
@@ -69,37 +75,56 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+        System.out.println("yes");
+        currentTime = Timer.getMatchTime();
+        SmartDashboard.putNumber("Time elapsed", startTime - currentTime);
+
 		radius = Robot.networktables.getBallRadius();
 		isCentered = Robot.drivebase.checkCentered();
-		desiredAngle = Robot.networktables.getBXValue();
-		
-		if(radius == 0){ //If no ball is recognized, scan area
-			Robot.drivebase.autoTurn(90, 0.5);
+        desiredAngle = Robot.networktables.getBXValue();
+        
+        if((startTime - currentTime >= 3) & (radius == 0)){//If no ball has been found after 3 seconds, go back to original angle and stop
+            
+            if(Robot.drivebase.navxGyro.getAngle() < turnThresh && Robot.drivebase.navxGyro.getAngle() > -turnThresh){
+                doneTraveling = true;
+            }
+            else if(Robot.drivebase.navxGyro.getAngle() > turnThresh){
+                Robot.drivebase.autoTurn(-10, 0.1);
+            }
+            else if(Robot.drivebase.navxGyro.getAngle() < -turnThresh){
+                Robot.drivebase.autoTurn(10, 0.1);
+            }
+            
+        }
+        if(radius == 0){ //If no ball is recognized, scan area
+            if(startTime - currentTime < 3 & radius == 0){
+                Robot.drivebase.autoTurn(360, 0.5);
+            }
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
-			if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
-				//Robot.infeed.startMotors();
-            	if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-			    	doneTraveling = false;
-				} 
-				else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-			    	Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
-				} 
-				else {
-			    	Robot.drivebase.stopMotors();
-			    	doneTraveling = true;
-            	}
-        	}
-        	else { //Turn until the ball that is recognized is straight ahead
-				if(desiredAngle < (turnThresh * -1)){
-					Robot.drivebase.autoTurn(-5, autoDriveSpeed);
-				}
-            	else if(desiredAngle > turnThresh){
-					Robot.drivebase.autoTurn(5, autoDriveSpeed);
-				}
-        	}
-		}
+		    if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
+			    //Robot.infeed.startMotors();
+                if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
+		    	    Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed);
+		    	    doneTraveling = false;
+			    } 
+			    else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
+		    	    Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed);
+			    } 
+			    else {
+		    	    Robot.drivebase.stopMotors();
+		    	    doneTraveling = true;
+                }
+            }
+    	    else { //Turn until the ball that is recognized is straight ahead
+			    if(desiredAngle < (turnThresh * -1)){
+				    Robot.drivebase.autoTurn(-5, autoDriveSpeed);
+			    }
+        	    else if(desiredAngle > turnThresh){
+				    Robot.drivebase.autoTurn(5, autoDriveSpeed);
+			    }
+            }
+        }
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -40,7 +40,7 @@ public class DriveBase extends Subsystem {
   // Sensors
   private Encoder leftEncoder;
   private Encoder rightEncoder;
-  private AHRS navxGyro;
+  public AHRS navxGyro;
 
   public DriveBase() {
     // Instantiate Motors
@@ -66,33 +66,63 @@ public class DriveBase extends Subsystem {
   }
 
   // Sets victors to desired speed giving from XboxMove.
-  public void autoDrive(double leftDriveDesired, double rightDriveDesired) {
-    // Left inverted in accordance to physical wiring.
-    // Logic for fixing drift, will be different for comp bot
-    if (leftDriveDesired > 0 && rightDriveDesired > 0) {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    } else if (leftDriveDesired < 0 && rightDriveDesired < 0) {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    } else {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
-      leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
-      leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-      rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-      rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+  public void autoDrive(double leftDriveDesired, double rightDriveDesired, double angle) {
+    if (leftDriveDesired > 0 && rightDriveDesired > 0){ //driving forwards
+      if (angle > 0){ //drifting right
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+      }
+      else if (angle < 0){ //drifting left
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      } 
+      else{
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
+    }
+    else if (leftDriveDesired < 0 && rightDriveDesired < 0){ //driving backwards
+      if (angle > 0){ //drifting right
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
+      else if (angle < 0){ //drifting left
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.03);
+      } 
+      else{
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+      }
+    }
+    else{ //When leftDrive1 and rightDrive1 are zero
+      stopMotors();      
     }
   }
-
   public void autoTurn(double desiredAngle, double autoTurnSpeed) {
     navxGyro.reset();
 
@@ -102,11 +132,11 @@ public class DriveBase extends Subsystem {
     
     if(doneTraveling == false) {
         if ((angleTraveled) <= (desiredAngle - RobotMap.ANGLE_THRESHOLD) && desiredAngle > 0){
-			  Robot.drivebase.autoDrive(autoTurnSpeed, (-1 * autoTurnSpeed));
+			  Robot.drivebase.autoDrive(autoTurnSpeed, (-1 * autoTurnSpeed), getGyroAngle());
 			  doneTraveling = false;
 		  }
 		  else if(angleTraveled >= (desiredAngle + RobotMap.ANGLE_THRESHOLD) && desiredAngle < 0){
-        Robot.drivebase.autoDrive((-1 * autoTurnSpeed), autoTurnSpeed);
+        Robot.drivebase.autoDrive((-1 * autoTurnSpeed), autoTurnSpeed, getGyroAngle());
         doneTraveling = false;
 		  }
 		  else{

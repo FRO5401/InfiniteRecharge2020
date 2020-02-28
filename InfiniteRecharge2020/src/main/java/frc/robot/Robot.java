@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,6 +27,9 @@ public class Robot extends TimedRobot {
   private Command autoSelected;
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
+  public static Timer timer;
+  public double matchTime;
+
   public static CompressorSubsystem compressorsubsystem;
   public static NetworkTables networktables;
   public static DriveBase drivebase;
@@ -41,16 +45,18 @@ public class Robot extends TimedRobot {
     chooser.addOption("Drive Straight", new DriveStraight());
     chooser.addOption("Test Turn", new TestTurn());
     chooser.addOption("Drive Turn Around", new DriveTurnAround());
-    chooser.addOption("Line Up Score", new LineUpScore());
-    chooser.addOption("Station 3 Start", new Station3Start());
+    chooser.addOption("Shoot Drive Off", new ShootDriveOff());
+    chooser.addOption("Shoot Infeed Trench", new ShootInfeedTrench());
     chooser.addOption("Ball Center Test", new BallCenterTest());
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();
     networktables = new NetworkTables();
     drivebase = new DriveBase();
+    timer = new Timer();
     
     oi = new OI();
+
   }
 
   /**
@@ -64,6 +70,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    matchTime = Timer.getMatchTime();
+    SmartDashboard.putNumber("Match Time (sec)", matchTime);
+
     Robot.drivebase.reportDriveBaseSensors();
     Robot.networktables.updateValue();
     Robot.networktables.reportValues();
@@ -124,7 +133,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
+    /*
+    if(matchTime >= 10){
+      Robot.shooter.runMotors();
+    }
+    */
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
