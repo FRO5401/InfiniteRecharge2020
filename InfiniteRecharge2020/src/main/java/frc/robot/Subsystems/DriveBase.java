@@ -67,12 +67,12 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
-    leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
-    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
-    rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
-    rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, -1 * leftDriveDesired);
+    leftDrive2.set(ControlMode.PercentOutput, -1 * leftDriveDesired);
+    leftDrive3.set(ControlMode.PercentOutput, -1 * leftDriveDesired);
+    rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
+    rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
+    rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
   }
 
   // Sets SC's to 0.
