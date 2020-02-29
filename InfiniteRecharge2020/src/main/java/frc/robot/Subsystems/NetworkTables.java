@@ -20,7 +20,7 @@ public class NetworkTables extends Subsystem {
   NetworkTable ballTable;
   NetworkTable powerPortTable;
   NetworkTableInstance inst;
-  NetworkTableEntry ballXEntry, ballYEntry, ballDEntry;
+  NetworkTableEntry ballXEntry, ballYEntry, ballDEntry, ballREntry;
   NetworkTableEntry powerPortXEntry, powerPortYEntry;
   private static double ballX, ballY, ballDistance;
   public double radius;
@@ -41,25 +41,27 @@ public class NetworkTables extends Subsystem {
 
   public void updateValue() {
     inst = NetworkTableInstance.getDefault();
-    ballTable = inst.getTable("SmartDashboard");
+    ballTable = inst.getTable("BallTable");
     powerPortTable = inst.getTable("PowerPort");
-    //ballXEntry = ballTable.getEntry("cX");
-    //ballYEntry = ballTable.getEntry("cY");
-    //ballDEntry = ballTable.getEntry("ballDistance");
+    ballXEntry = ballTable.getEntry("cX");
+    ballYEntry = ballTable.getEntry("cY");
+    ballDEntry = ballTable.getEntry("ballDistance");
+    ballREntry = ballTable.getEntry("radius");
     powerPortXEntry = powerPortTable.getEntry("cX");
     powerPortYEntry = powerPortTable.getEntry("cY");
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
 
-    //ballX = ballXEntry.getDouble(0.0);
-    //ballY = ballYEntry.getDouble(0.0);
-    radius = 0;
-    //ballDistance = ballDEntry.getDouble(0.0);
-    powerPortX = powerPortXEntry.getDouble(0.0);
-    powerPortY = powerPortYEntry.getDouble(0.0);
-    //System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
-    //System.out.println("The Ball is " + ballDistance + "away");
+    ballX = ballXEntry.getDouble(0.0);
+    ballY = ballYEntry.getDouble(0.0);
+    radius = ballREntry.getDouble(0.0);
+    ballDistance = ballDEntry.getDouble(0.0);
+    //powerPortX = powerPortXEntry.getDouble(0.0);
+    //powerPortY = powerPortYEntry.getDouble(0.0);
+    System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
+    System.out.println("The Ball is " + ballDistance + " away");
+    System.out.println("The radius is " + radius);
     //System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
 
@@ -79,6 +81,18 @@ public class NetworkTables extends Subsystem {
     return radius;
   }
 
+  public boolean checkCentered(){
+
+    if(getBXValue() >= 350 && getBXValue() <= 450){
+      return true;
+    }
+    
+    else if(getBXValue() < 350 || getBXValue() > 450){
+      return false;
+    }
+    return false;
+  }
+
   public double getPPXValue(){
     return powerPortX;
   }
@@ -93,5 +107,6 @@ public class NetworkTables extends Subsystem {
     SmartDashboard.putNumber("Current Ball Y", getBYValue());
     SmartDashboard.putNumber("Current Power Port X", getPPXValue());
     SmartDashboard.putNumber("Current Power Port Y", getPPYValue());
+    SmartDashboard.putNumber("Current Ball radius", getBallRadius());
   }
 }

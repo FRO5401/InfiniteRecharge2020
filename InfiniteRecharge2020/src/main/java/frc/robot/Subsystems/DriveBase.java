@@ -153,20 +153,6 @@ public class DriveBase extends Subsystem {
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
   }
 
-  public boolean checkCentered(){
-
-    if(Robot.networktables.getBXValue() >= 270 && Robot.networktables.getBXValue() <= 370){
-      //autoDrive(.5 , .5);
-      return true;
-    }
-    
-    if(Robot.networktables.getBXValue() < 270 || Robot.networktables.getBXValue() > 370){
-      //autoDrive(.5 , 0);
-      return false;
-    }
-    return false;
-  }
-
   // Sets SC's to 0.
   public void stopMotors() {
     leftDrive1.set(ControlMode.PercentOutput, 0);

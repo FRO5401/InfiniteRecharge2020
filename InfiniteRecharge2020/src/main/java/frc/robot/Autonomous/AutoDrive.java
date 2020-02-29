@@ -8,7 +8,6 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -47,8 +46,6 @@ public class AutoDrive extends Command {
 
 		doneTraveling = false;
 		distanceTraveled = 0;
-
-		SmartDashboard.putNumber("heading", heading);
 
 	}
 
