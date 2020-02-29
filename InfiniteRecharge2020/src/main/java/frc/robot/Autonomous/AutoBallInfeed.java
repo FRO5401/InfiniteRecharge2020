@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 
-import frc.robot.Autonomous.*;
-
 /**
  * This command is also used as a "BaselineOnly" command
  */
@@ -25,7 +23,6 @@ public class AutoBallInfeed extends Command {
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
 	private double distanceTraveled;
-	private double heading;
     private double radius;
     
     private double startTime;
@@ -41,14 +38,11 @@ public class AutoBallInfeed extends Command {
 		// requires(Robot.drivebase);
 
         //desiredDistance = Robot.networktables.getBallDistance();
-		// Distance is 127 inches not considering robot size
 
 		autoDriveSpeed = SpeedInput;
 		distanceTraveled = 0;
 
-		turnThresh = 5;
-		// heading = Robot.drivebase.getGyroAngle();
-
+		turnThresh = 10;
 	}
 
 	// Called just before this Command runs the first time
@@ -57,7 +51,7 @@ public class AutoBallInfeed extends Command {
 		System.out.println("yes");
         startTime = Timer.getMatchTime();
 
-		//Robot.drivebase.resetSensors();
+		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
 		doneTraveling = false;
@@ -74,7 +68,6 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		//System.out.println(" yes");
 		currentTime = Timer.getMatchTime();
 		double timeElapsed = startTime - currentTime;
         SmartDashboard.putNumber("Time elapsed", timeElapsed);
@@ -86,14 +79,19 @@ public class AutoBallInfeed extends Command {
 		
         if(radius == 0){ //If no ball is recognized, scan area
 			if(timeElapsed >= 3){//If no ball has been found after 3 seconds, go back to original angle and stop
-
-				Robot.drivebase.stopMotors();
-				doneTraveling = true;
+				if(Robot.drivebase.navxGyro.getAngle() > (Robot.drivebase.navxGyro.getAngle() % 360)){
+					Robot.drivebase.drive(-1 * autoDriveSpeed/2, autoDriveSpeed/2);
+				}
+				else if(Robot.drivebase.navxGyro.getAngle() < (Robot.drivebase.navxGyro.getAngle() % 360)){
+					Robot.drivebase.drive(autoDriveSpeed/2, -1 * autoDriveSpeed/2);
+				}
+				else{
+					Robot.drivebase.stopMotors();
+					doneTraveling = true;
+				}	
 			}
-			else if((timeElapsed) < 3 & radius == 0){
-				//System.out.println("time has not been reached");
-                //Robot.drivebase.autoTurn(90, 0.5);//////I think this is not finishing when 3 seconds is up, so make sure it does somehow
-				Robot.drivebase.drive(autoDriveSpeed, -1 * autoDriveSpeed);
+			else if((timeElapsed) < 3){
+				Robot.drivebase.drive(0.6, (-1 * 0.6));
 			}
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
