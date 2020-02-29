@@ -8,6 +8,7 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class BallCenterTest extends CommandGroup {
   /**
@@ -15,6 +16,8 @@ public class BallCenterTest extends CommandGroup {
    */
   public BallCenterTest() {
     addSequential(new AutoBallInfeed(0.5));
+    addSequential(new WaitCommand(1));
+    addSequential(new AutoDrive(20, 0.3));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
