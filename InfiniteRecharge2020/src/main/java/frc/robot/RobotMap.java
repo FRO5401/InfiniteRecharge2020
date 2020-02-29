@@ -54,7 +54,7 @@ public class RobotMap {
 
   public static final int KICKER_DEPLOYED = 0;
 
-  public static final int GENEVA_LIMIT = 0;
+  public static final int GENEVA_LIMIT = 7;
 
   public static final int HOMING_LIMIT = 0;
 
@@ -96,7 +96,7 @@ public class RobotMap {
   public static final int C_STOP_T = 7;
 
   // Magazine
-  public static final int MAGAZINE_TALON_CHANNEL = 0;
+  public static final int MAGAZINE_TALON_CHANNEL = 10;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
