@@ -70,32 +70,30 @@ public class DrumControl extends Command {
       Robot.drummag.resetPosition();
     }
 
-    if (!override) { // If NOT Override button
-      desiredPosition = Robot.drummag.findDesiredPosition(); // Updates desired position
+    if(kickerLimit == true){
+      if (!override) { // If NOT Override button
+        desiredPosition = Robot.drummag.findDesiredPosition(); // Updates desired position
 
-      if (kickerLimit == false) { // Stops drummag if kicker is deployed (robot will break if spun while deployed)
-        Robot.drummag.stop();
-      }
-
-      else if (kickerLimit == true) { // Prevents drummag from moving while kicker is deployed
         if (position != desiredPosition) { // Moves until at desired position
           Robot.drummag.rotate();
           if (genevaLimit == false) { // Robot.drummag.finishedRotating will become false once geneve is off limit
             Robot.drummag.switchFinishedRotating();
-          }
-        } 
+          } 
+        }
         else { // When position reaches desired position
           Robot.drummag.stop();
-
         }
       }
-    } else if (override) {
+      else if (override) {
       // TODO: Override Control (keep in mind kicker must not be deployed before
       // spinning)
       // Override control should still be incremented
+      }
+    }
+    else if(kickerLimit == false){
+      Robot.drummag.stop();
     }
   }
-
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
