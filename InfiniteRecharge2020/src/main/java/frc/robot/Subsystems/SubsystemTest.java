@@ -8,6 +8,7 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Commands.CommandTest;
@@ -17,23 +18,29 @@ import frc.robot.Commands.CommandTest;
  */
 public class SubsystemTest extends Subsystem {
   DigitalInput cell1, cell2, cell3, cell4, cell5;
+  Solenoid kicker;
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   public SubsystemTest(){
-    cell1 = new DigitalInput(5); 
+    kicker = new Solenoid(0);
+   /* cell1 = new DigitalInput(5); 
     cell2 = new DigitalInput(6);
     cell3 = new DigitalInput(0);
     cell4 = new DigitalInput(8);
-    cell5 = new DigitalInput(9);
+    cell5 = new DigitalInput(9); */
+  }
+
+  public void setKicker(boolean status){
+    kicker.set(status);
   }
   
   public void reportStuff(){
-    SmartDashboard.putBoolean("Slot 1", cell1.get());
+/*    SmartDashboard.putBoolean("Slot 1", cell1.get());
     SmartDashboard.putBoolean("Slot 2", cell2.get());
     SmartDashboard.putBoolean("Slot 3", cell3.get());
     SmartDashboard.putBoolean("Slot 4", cell4.get());
-    SmartDashboard.putBoolean("Slot 5", cell5.get());
+    SmartDashboard.putBoolean("Slot 5", cell5.get()); */
   }
 
   @Override

@@ -9,8 +9,12 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class CommandTest extends Command {
+
+  boolean deployKicker;
+  
   public CommandTest() {
     requires(Robot.subsystem);
     // Use requires() here to declare subsystem dependencies
@@ -20,12 +24,21 @@ public class CommandTest extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    deployKicker = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.subsystem.reportStuff();
+    if(deployKicker == true){
+      Robot.subsystem.setKicker(true);
+    }
+    else{
+      Robot.subsystem.setKicker(false);
+    }
+//    Robot.subsystem.reportStuff();
+
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
