@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.DrumControl;
 
@@ -189,8 +190,14 @@ public class DrumMag extends Subsystem {
 
   // Resets position to 0 (called when homing limit is true)
   public void resetPosition() {
-    currentPosition = 5; //Resets currentPosition to infeed 1 because the limit is there
+    currentPosition = 0; //Resets currentPosition to infeed 1 because the limit is there
     //TODO: Make sure homing reset is correct. The ideal position is Shooter 1
+  }
+
+  public void reportSensors(){
+    SmartDashboard.putBoolean("Geneva Limit", getGenevaLimit());
+    //TODO: Add reports here
+    SmartDashboard.putNumber("Position", currentPosition);
   }
 
   @Override

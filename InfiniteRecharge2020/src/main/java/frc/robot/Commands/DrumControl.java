@@ -20,6 +20,9 @@ public class DrumControl extends Command {
   boolean changeMode;
   boolean override;
   boolean kick;
+  
+  //Axis
+  double overrideAxis;
 
   //Limits
   boolean homingLimit;
@@ -53,6 +56,7 @@ public class DrumControl extends Command {
     changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
     override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_L3);
     kick = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+    overrideAxis = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_X);
 
     // Puncher, yay! This will only let you punch the ball if the geneva is on limit
     if (kick && genevaLimit) {
@@ -85,9 +89,12 @@ public class DrumControl extends Command {
         }
       }
       else if (override) {
-      // TODO: Override Control (keep in mind kicker must not be deployed before
-      // spinning)
-      // Override control should still be incremented
+        if(overrideAxis > RobotMap.AXIS_THRESHOLD){
+          Robot.drummag.rotate();
+          if(genevaLimit == false){
+            Robot.drummag.switchFinishedRotating();
+          }
+        }
       }
     }
     else if(kickerLimit == false){
