@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 
+import frc.robot.Autonomous.*;
 
 /**
  * This command is also used as a "BaselineOnly" command
@@ -43,7 +44,6 @@ public class AutoBallInfeed extends Command {
 		// Distance is 127 inches not considering robot size
 
 		autoDriveSpeed = SpeedInput;
-		doneTraveling = true;
 		distanceTraveled = 0;
 
 		turnThresh = 5;
@@ -54,12 +54,12 @@ public class AutoBallInfeed extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		System.out.println("yes");
         startTime = Timer.getMatchTime();
 
-		Robot.drivebase.resetSensors();
+		//Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
-		// heading = Robot.drivebase.getGyroAngle();
 		doneTraveling = false;
 		distanceTraveled = 0;
 		// navXPitchInit = Robot.drivebase.getGyroPitch();
@@ -67,7 +67,6 @@ public class AutoBallInfeed extends Command {
 		// System.out.println("AutoDriveInitializing");
 		// System.out.println("Angle when starting DriveShift:" +
 		// Robot.drivebase.getGyroAngle());
-		SmartDashboard.putNumber("heading", heading);
 		// Robot.drivebase.shiftGearHighToLow();
 
 	}
@@ -75,7 +74,7 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        System.out.println("yes");
+		//System.out.println(" yes");
         currentTime = Timer.getMatchTime();
         SmartDashboard.putNumber("Time elapsed", startTime - currentTime);
 
@@ -83,22 +82,28 @@ public class AutoBallInfeed extends Command {
 		isCentered = Robot.drivebase.checkCentered();
         desiredAngle = Robot.networktables.getBXValue();
         
-        if((startTime - currentTime >= 3) & (radius == 0)){//If no ball has been found after 3 seconds, go back to original angle and stop
+        //if((startTime - currentTime >= 3) & (radius == 0)){//If no ball has been found after 3 seconds, go back to original angle and stop
+            //System.out.println("time has been reached");
+            //if(Robot.drivebase.navxGyro.getAngle() < turnThresh && Robot.drivebase.navxGyro.getAngle() > -turnThresh){
+    
+            //}
+            //else if(Robot.drivebase.navxGyro.getAngle() > turnThresh){
+               // Robot.drivebase.autoTurn(-10, 0.1);
+            //}
+            //else if(Robot.drivebase.navxGyro.getAngle() < -turnThresh){
+              //  Robot.drivebase.autoTurn(10, 0.1);
+            //}
             
-            if(Robot.drivebase.navxGyro.getAngle() < turnThresh && Robot.drivebase.navxGyro.getAngle() > -turnThresh){
-                doneTraveling = true;
-            }
-            else if(Robot.drivebase.navxGyro.getAngle() > turnThresh){
-                Robot.drivebase.autoTurn(-10, 0.1);
-            }
-            else if(Robot.drivebase.navxGyro.getAngle() < -turnThresh){
-                Robot.drivebase.autoTurn(10, 0.1);
-            }
-            
-        }
+        //}
         if(radius == 0){ //If no ball is recognized, scan area
-            if(startTime - currentTime < 3 & radius == 0){
-                Robot.drivebase.autoTurn(360, 0.5);
+			if(startTime - currentTime >= 3){//If no ball has been found after 3 seconds, go back to original angle and stop
+
+				Robot.drivebase.stopMotors();
+				doneTraveling = true;
+			}
+			else if((startTime - currentTime) < 3 & radius == 0){
+				//System.out.println("time has not been reached");
+                Robot.drivebase.autoTurn(90, 0.5);//////I think this is not finishing when 3 seconds is up, so make sure it does somehow
             }
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
@@ -130,7 +135,9 @@ public class AutoBallInfeed extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		if(doneTraveling == true){
 		System.out.print("Should be finished");
+		}
 		return doneTraveling;
 	}
 

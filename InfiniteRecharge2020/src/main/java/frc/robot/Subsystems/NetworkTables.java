@@ -43,24 +43,24 @@ public class NetworkTables extends Subsystem {
     inst = NetworkTableInstance.getDefault();
     ballTable = inst.getTable("SmartDashboard");
     powerPortTable = inst.getTable("PowerPort");
-    ballXEntry = ballTable.getEntry("cX");
-    ballYEntry = ballTable.getEntry("cY");
-    ballDEntry = ballTable.getEntry("ballDistance");
+    //ballXEntry = ballTable.getEntry("cX");
+    //ballYEntry = ballTable.getEntry("cY");
+    //ballDEntry = ballTable.getEntry("ballDistance");
     powerPortXEntry = powerPortTable.getEntry("cX");
     powerPortYEntry = powerPortTable.getEntry("cY");
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
 
-    ballX = ballXEntry.getDouble(0.0);
-    ballY = ballYEntry.getDouble(0.0);
+    //ballX = ballXEntry.getDouble(0.0);
+    //ballY = ballYEntry.getDouble(0.0);
     radius = 0;
-    ballDistance = ballDEntry.getDouble(0.0);
+    //ballDistance = ballDEntry.getDouble(0.0);
     powerPortX = powerPortXEntry.getDouble(0.0);
     powerPortY = powerPortYEntry.getDouble(0.0);
-    System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
-    System.out.println("The Ball is " + ballDistance + "away");
-    System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
+    //System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
+    //System.out.println("The Ball is " + ballDistance + "away");
+    //System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
 
   public double getBXValue() {

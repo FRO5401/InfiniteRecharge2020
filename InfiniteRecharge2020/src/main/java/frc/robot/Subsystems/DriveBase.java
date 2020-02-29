@@ -128,21 +128,19 @@ public class DriveBase extends Subsystem {
 
     double angleTraveled;
     boolean doneTraveling = false;
-    angleTraveled = Robot.drivebase.getGyroAngle();
     
-    if(doneTraveling == false) {
-        if ((angleTraveled) <= (desiredAngle - RobotMap.ANGLE_THRESHOLD) && desiredAngle > 0){
-			  Robot.drivebase.autoDrive(autoTurnSpeed, (-1 * autoTurnSpeed), getGyroAngle());
-			  doneTraveling = false;
-		  }
-		  else if(angleTraveled >= (desiredAngle + RobotMap.ANGLE_THRESHOLD) && desiredAngle < 0){
-        Robot.drivebase.autoDrive((-1 * autoTurnSpeed), autoTurnSpeed, getGyroAngle());
-        doneTraveling = false;
-		  }
-		  else{
-			  Robot.drivebase.stopMotors();
-			  doneTraveling = true;
-      }
+    angleTraveled = Robot.drivebase.getGyroAngle();
+    if ((angleTraveled) <= (desiredAngle) && desiredAngle > 0){
+			Robot.drivebase.drive(autoTurnSpeed, (-1 * autoTurnSpeed));
+			doneTraveling = false;
+		}
+		else if(angleTraveled >= (desiredAngle) && desiredAngle < 0){
+      Robot.drivebase.drive((-1 * autoTurnSpeed), autoTurnSpeed);
+      doneTraveling = false;
+		}
+		else{
+			Robot.drivebase.stopMotors();
+			doneTraveling = true;
     }
   }
 

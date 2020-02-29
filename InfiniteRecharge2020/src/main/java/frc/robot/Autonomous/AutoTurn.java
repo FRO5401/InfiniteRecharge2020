@@ -10,19 +10,18 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.Subsystems.DriveBase;
 
 public class AutoTurn extends Command {
 
   private double desiredAngle;
 	private double autoTurnSpeed;
-	private boolean doneTraveling;
+	public boolean isFinished;
 	private double angleTraveled;
   public AutoTurn(double angleInput, double speedInput) {
     
     desiredAngle = angleInput;
     autoTurnSpeed = speedInput;
-    doneTraveling = false;
+    isFinished = false;
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -32,7 +31,7 @@ public class AutoTurn extends Command {
   @Override
   protected void initialize() {
     Robot.drivebase.resetSensors();
-    doneTraveling = false;
+    isFinished = false;
     angleTraveled = 0;
   }
 
@@ -42,15 +41,15 @@ public class AutoTurn extends Command {
     angleTraveled = Robot.drivebase.getGyroAngle();
     if ((angleTraveled) <= (desiredAngle - RobotMap.ANGLE_THRESHOLD) && desiredAngle > 0){
 			Robot.drivebase.drive(autoTurnSpeed, (-1 * autoTurnSpeed));
-			doneTraveling = false;
+			isFinished = false;
 		}
 		else if(angleTraveled >= (desiredAngle + RobotMap.ANGLE_THRESHOLD) && desiredAngle < 0){
       Robot.drivebase.drive((-1 * autoTurnSpeed), autoTurnSpeed);
-      doneTraveling = false;
+      isFinished = false;
 		}
 		else{
 			Robot.drivebase.stopMotors();
-			doneTraveling = true;
+			isFinished = true;
 		}
   }
 
@@ -58,7 +57,7 @@ public class AutoTurn extends Command {
   @Override
   protected boolean isFinished() {
     System.out.print("Done turning.");
-    return doneTraveling;
+    return isFinished;
   }
 
   // Called once after isFinished returns true
