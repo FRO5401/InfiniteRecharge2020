@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.DrumControl;
 
@@ -27,7 +28,7 @@ public class DrumMag extends Subsystem {
   private DigitalInput kickerSwitch;
   private DigitalInput genevaSwitch;
   private DigitalInput homingSwitch;
-  private VictorSPX genevaMotor;
+  private TalonSRX genevaMotor;
   private Solenoid kicker1;
   private Solenoid kicker2;
 
@@ -43,33 +44,33 @@ public class DrumMag extends Subsystem {
     //currentPosition = 0; TODO: Check if this line is needed
 
     // PLACEHOLDERS FOR PORTS
-    cell1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
+/*    cell1 = new DigitalInput(RobotMap.MAGAZINE_STOP_1);
     cell2 = new DigitalInput(RobotMap.MAGAZINE_STOP_2);
     cell3 = new DigitalInput(RobotMap.MAGAZINE_STOP_3);
     cell4 = new DigitalInput(RobotMap.MAGAZINE_STOP_4);
-    cell5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5);
+    cell5 = new DigitalInput(RobotMap.MAGAZINE_STOP_5); */
 
-    kicker1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
-    kicker2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
+//    kicker1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
+//    kicker2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
 
-    kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
+//    kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
 
     genevaSwitch = new DigitalInput(RobotMap.GENEVA_LIMIT);
 
-    homingSwitch = new DigitalInput(RobotMap.HOMING_LIMIT);
+//    homingSwitch = new DigitalInput(RobotMap.HOMING_LIMIT);
 
-    genevaMotor = new VictorSPX(RobotMap.MAGAZINE_TALON_CHANNEL);
+    genevaMotor = new TalonSRX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     magMode = 1; // Initializes in shooter mode
     target = true; // Target must be true for shooter mode (looking for where ball is present)
     finishedRotating = true; // Starts true
 
     // Will check to see if the ball is in the mag.
-    cellLimits[0] = cell1.get();
+/*    cellLimits[0] = cell1.get();
     cellLimits[1] = cell1.get();
     cellLimits[2] = cell1.get();
     cellLimits[3] = cell1.get();
-    cellLimits[4] = cell1.get();
+    cellLimits[4] = cell1.get(); */
 
   }
 
@@ -79,14 +80,14 @@ public class DrumMag extends Subsystem {
   }
 
   // This will punch or retract the solenoid depending on what is passed
-  public void punchBall(boolean status) {
+/*  public void punchBall(boolean status) {
     kicker1.set(status);
     kicker2.set(status);
-  }
+  } */
 
   // Rotates 36 degrees (one geneva turn)
   public void rotate() {
-    genevaMotor.set(ControlMode.PercentOutput, 0.1); // Slow speed for testing
+    genevaMotor.set(ControlMode.PercentOutput, 0.4); // Slow speed for testing
 
     if (getGenevaLimit() && (finishedRotating == false)) { 
       incrementPosition(); // Finishes moving, increments position
@@ -99,6 +100,10 @@ public class DrumMag extends Subsystem {
     finishedRotating = false;
   }
 
+  public boolean getFinishedRotating(){
+    return finishedRotating;
+  }
+
   // Stops drummag motor
   public void stop() {
     genevaMotor.set(ControlMode.PercentOutput, 0.0);
@@ -106,7 +111,7 @@ public class DrumMag extends Subsystem {
   }
 
   // Finds position to turn to next
-  public int findDesiredPosition() {
+/*  public int findDesiredPosition() {
     int desiredPosition;
     getCellLimits();
     if (magMode == 1) {
@@ -122,15 +127,15 @@ public class DrumMag extends Subsystem {
     // to
     desiredPosition = ((2 * firstValueIndex) + (1 - magMode) * 5) % 10;
     return desiredPosition;
-  }
+  } */
 
   // Gets power cell status
   public boolean[] getCellLimits() {
-    cellLimits[0] = cell1.get();
+  /*  cellLimits[0] = cell1.get();
     cellLimits[1] = cell2.get();
     cellLimits[2] = cell3.get();
     cellLimits[3] = cell4.get();
-    cellLimits[4] = cell5.get();
+    cellLimits[4] = cell5.get(); */
     return cellLimits;
   }
 
@@ -173,9 +178,9 @@ public class DrumMag extends Subsystem {
   }
 
   // Gets limit status
-  public boolean getKickerLimit() {
+/*  public boolean getKickerLimit() {
     return kickerSwitch.get();
-  }
+  } */
 
   // Gets limit status
   public boolean getGenevaLimit() {
@@ -183,14 +188,18 @@ public class DrumMag extends Subsystem {
   }
 
   // Gets limit status
-  public boolean getHomingLimit() {
+/*  public boolean getHomingLimit() {
     return homingSwitch.get();
-  }
+  } */
 
   // Resets position to 0 (called when homing limit is true)
   public void resetPosition() {
     currentPosition = 5; //Resets currentPosition to infeed 1 because the limit is there
     //TODO: Make sure homing reset is correct. The ideal position is Shooter 1
+  }
+
+  public void reportSensors(){
+    SmartDashboard.putBoolean("Geneva Limit", getGenevaLimit());
   }
 
   @Override
