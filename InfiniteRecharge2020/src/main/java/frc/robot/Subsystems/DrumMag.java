@@ -53,7 +53,7 @@ public class DrumMag extends Subsystem {
     kicker1 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_1_CHANNEL); //TODO: Make kicker the universal name, not "puncher"
     kicker2 = new Solenoid(RobotMap.MAGAZINE_CELL_EJECTOR_2_CHANNEL);
 
-    kickerSwitch = new DigitalInput(RobotMap.KICKER_DEPLOYED);
+    kickerSwitch = new DigitalInput(RobotMap.KICKER_SWITCH);
 
     genevaSwitch = new DigitalInput(RobotMap.GENEVA_LIMIT);
 
@@ -119,10 +119,12 @@ public class DrumMag extends Subsystem {
     // variable target
     int firstValueIndex = IntStream.range(0, cellLimits.length).filter(i -> target == cellLimits[i]).findFirst()
         .orElse(-1);
-    // This math makes desiredPosition equal the next position the mag needs to go
-    // to
-    desiredPosition = ((2 * firstValueIndex) + (1 - magMode) * 5) % 10;
-    return desiredPosition;
+    // This math makes desiredPosition equal the next position the mag needs to go to
+    if (firstValueIndex == -1){
+      changeMode();
+    }
+      desiredPosition = ((2 * firstValueIndex) + (1 - magMode) * 5) % 10;
+      return desiredPosition;
   }
 
   // Gets power cell status

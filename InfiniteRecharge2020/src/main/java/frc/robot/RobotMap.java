@@ -46,17 +46,17 @@ public class RobotMap {
   public static final double MAGAZINE_SPEED_SENSITIVITY = .5;
 
   // Limits
-  public static final int MAGAZINE_STOP_1 = 0;
-  public static final int MAGAZINE_STOP_2 = 0;
-  public static final int MAGAZINE_STOP_3 = 0;
-  public static final int MAGAZINE_STOP_4 = 0;
-  public static final int MAGAZINE_STOP_5 = 0;
+  public static final int MAGAZINE_STOP_1 = 7;
+  public static final int MAGAZINE_STOP_2 = 6;
+  public static final int MAGAZINE_STOP_3 = 5;
+  public static final int MAGAZINE_STOP_4 = 4;
+  public static final int MAGAZINE_STOP_5 = 3;
 
-  public static final int KICKER_DEPLOYED = 0;
+  public static final int KICKER_SWITCH = 1;
 
-  public static final int GENEVA_LIMIT = 0;
+  public static final int GENEVA_LIMIT = 2;
 
-  public static final int HOMING_LIMIT = 0;
+  public static final int HOMING_LIMIT = 8;
 
   /*** Operator Interfaces ***/
   // Controllers
