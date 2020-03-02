@@ -55,6 +55,7 @@ public class DriveBase extends Subsystem {
 
     // Instantiate Sensors
     navxGyro = new AHRS(I2C.Port.kMXP);
+    //TODO: Encoders can be read without instantiation through speed controllers. Delete if not used.
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
   }
