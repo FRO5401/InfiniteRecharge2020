@@ -88,8 +88,8 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
   //Infeed
-  public static final int INFEED_MOTOR_1 = 0;
-  public static final int INFEED_MOTOR_2 = 0;
+  public static final int INFEED_MOTOR_1 = 13;
+  public static final int INFEED_MOTOR_2 = 15;
 
   // Elevator
   public static final int ELEVATOR_TALON_MASTER_CHANNEL = 0;
@@ -105,7 +105,7 @@ public class RobotMap {
   public static final int GEAR_SHIFTER = 0;
 
   //Infeed
-  public static final int INFEED_DEPLOY = 0;
+  public static final int INFEED_DEPLOY = 2;
 
   // Elevator
   public static final int ELEVATOR_GEAR_SHIFTER = 4;
