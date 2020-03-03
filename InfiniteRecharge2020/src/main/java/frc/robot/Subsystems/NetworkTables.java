@@ -37,6 +37,7 @@ public class NetworkTables extends Subsystem {
     ballDistance = 0;
     powerPortX = 0;
     powerPortY = 0;
+    radius = 0;
   }
 
   public void updateValue() {
@@ -55,7 +56,7 @@ public class NetworkTables extends Subsystem {
 
     ballX = ballXEntry.getDouble(0.0);
     ballY = ballYEntry.getDouble(0.0);
-    radius = ballREntry.getDouble(0.0);
+    radius = (ballX == 0 && ballY == 0) ? 0 : ballREntry.getDouble(0.0);
     ballDistance = ballDEntry.getDouble(0.0);
     //powerPortX = powerPortXEntry.getDouble(0.0);
     //powerPortY = powerPortYEntry.getDouble(0.0);
@@ -81,13 +82,20 @@ public class NetworkTables extends Subsystem {
     return radius;
   }
 
+  public void resetValues(){
+    ballX = 0;
+    ballY = 0;
+    ballDistance = 0;
+    radius = 0;
+  }
+
   public boolean checkCentered(){
 
     if(getBXValue() >= 350 && getBXValue() <= 450){
       return true;
     }
     
-    else if(getBXValue() < 350 || getBXValue() > 450){
+    else if(((getBXValue() < 350) & (getBXValue() > 0)) || ((getBXValue() > 450) & (getBXValue() < 800))){
       return false;
     }
     return false;
@@ -108,5 +116,6 @@ public class NetworkTables extends Subsystem {
     SmartDashboard.putNumber("Current Power Port X", getPPXValue());
     SmartDashboard.putNumber("Current Power Port Y", getPPYValue());
     SmartDashboard.putNumber("Current Ball radius", getBallRadius());
+    SmartDashboard.putNumber("Ball Distance", getBallDistance());
   }
 }

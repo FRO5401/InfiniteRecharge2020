@@ -28,8 +28,6 @@ public class AutoBallInfeed extends Command {
     
     private double startTime;
     private double currentTime;
-
-	private final double turnThresh;
     
     private boolean isCentered;
 
@@ -38,34 +36,34 @@ public class AutoBallInfeed extends Command {
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
 
-		try {
+		/*try {
 			desiredDistance = Robot.networktables.getBallDistance();
 		}
 		catch (NullPointerException e)
 		{
 			desiredDistance = 0;
-		}	
+		}	*/
 
 		autoDriveSpeed = SpeedInput;
 		distanceTraveled = 0;
-
-		turnThresh = 10;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		System.out.println("yes");
+
 		startTime = Timer.getMatchTime();
 		
-		ballLocation = Robot.networktables.getBXValue();
-
+		Robot.networktables.resetValues();
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
-		doneTraveling = false;
-		distanceTraveled = 0;
 
+		ballLocation = Robot.networktables.getBXValue();
+
+		doneTraveling = false;
+		isCentered = false;
+		distanceTraveled = 0;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -76,17 +74,26 @@ public class AutoBallInfeed extends Command {
         SmartDashboard.putNumber("Time elapsed", timeElapsed);
 
 		radius = Robot.networktables.getBallRadius();
-		isCentered = Robot.networktables.checkCentered();
-        currentAngle = Robot.networktables.getBXValue();
-			
+
+		if(isCentered == false){
+			isCentered = Robot.networktables.checkCentered();
+			currentAngle = Robot.networktables.getBXValue();
+			try {
+				desiredDistance = Robot.networktables.getBallDistance();
+			}
+			catch (NullPointerException e) {
+				desiredDistance = 0;
+			} 
+		}
 		
-        if(radius == 0){ //If no ball is recognized, scan area
+		if(radius == 0){ //If no ball is recognized, scan area
+			isCentered = false;
 			if(timeElapsed >= 3){//If no ball has been found after 3 seconds, go back to original angle and stop
-				if(Robot.drivebase.navxGyro.getAngle() > (Robot.drivebase.navxGyro.getAngle() % 360)){
-					Robot.drivebase.drive(-1 * autoDriveSpeed/2, autoDriveSpeed/2);
+				if(Robot.drivebase.navxGyro.getAngle() > (Robot.drivebase.navxGyro.getAngle() % 366)){
+					Robot.drivebase.drive(-1 * autoDriveSpeed/4, autoDriveSpeed/4);
 				}
-				else if(Robot.drivebase.navxGyro.getAngle() < (Robot.drivebase.navxGyro.getAngle() % 360)){
-					Robot.drivebase.drive(autoDriveSpeed/2, -1 * autoDriveSpeed/2);
+				else if(Robot.drivebase.navxGyro.getAngle() < (Robot.drivebase.navxGyro.getAngle() % 366)){
+					Robot.drivebase.drive(autoDriveSpeed/4, -1 * autoDriveSpeed/4);
 				}
 				else{
 					Robot.drivebase.stopMotors();
@@ -94,30 +101,32 @@ public class AutoBallInfeed extends Command {
 				}	
 			}
 			else if((timeElapsed) < 3){
-				Robot.drivebase.drive(0.6, (-1 * 0.6));
+				Robot.drivebase.drive(0.5, (-1 * 0.5));
 			}
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
 		    if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
-			    //Robot.infeed.startMotors();
+				//Robot.infeed.startMotors();
+				/*
                 if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-		    	    Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, Robot.drivebase.navxGyro.getAngle());
+		    	    Robot.drivebase.autoDrive(autoDriveSpeed/3, autoDriveSpeed/3, Robot.drivebase.navxGyro.getAngle());
 		    	    doneTraveling = false;
 			    } 
 			    else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-		    	    Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, Robot.drivebase.navxGyro.getAngle());
+		    	    Robot.drivebase.autoDrive(autoDriveSpeed/3, autoDriveSpeed/3, Robot.drivebase.navxGyro.getAngle());
 			    } 
 			    else {
+					*/
 		    	    Robot.drivebase.stopMotors();
 		    	    doneTraveling = true;
-                }
+                //}
             }
     	    else { //Turn until the ball that is recognized is straight ahead
 			    if(currentAngle < ballLocation){
-				    Robot.drivebase.drive(autoDriveSpeed/2, (-1 * autoDriveSpeed/2));
+				    Robot.drivebase.drive(autoDriveSpeed/3, (-1 * autoDriveSpeed/3));
 			    }
         	    else if(currentAngle > ballLocation){
-				    Robot.drivebase.drive((-1 * autoDriveSpeed/2), autoDriveSpeed/2);
+				    Robot.drivebase.drive((-1 * autoDriveSpeed/3), autoDriveSpeed/3);
 			    }
             }
         }
