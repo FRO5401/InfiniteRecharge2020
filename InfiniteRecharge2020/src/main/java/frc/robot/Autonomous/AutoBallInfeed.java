@@ -90,43 +90,39 @@ public class AutoBallInfeed extends Command {
 			isCentered = false;
 			if(timeElapsed >= 3){//If no ball has been found after 3 seconds, go back to original angle and stop
 				if(Robot.drivebase.navxGyro.getAngle() > (Robot.drivebase.navxGyro.getAngle() % 366)){
-					Robot.drivebase.drive(-1 * autoDriveSpeed/4, autoDriveSpeed/4);
+					Robot.drivebase.drive(-1 * autoDriveSpeed, autoDriveSpeed);
 				}
 				else if(Robot.drivebase.navxGyro.getAngle() < (Robot.drivebase.navxGyro.getAngle() % 366)){
-					Robot.drivebase.drive(autoDriveSpeed/4, -1 * autoDriveSpeed/4);
+					Robot.drivebase.drive(autoDriveSpeed, -1 * autoDriveSpeed);
 				}
 				else{
 					Robot.drivebase.stopMotors();
 					doneTraveling = true;
+					Robot.drivebase.navxGyro.reset();
 				}	
 			}
 			else if((timeElapsed) < 3){
-				Robot.drivebase.drive(0.5, (-1 * 0.5));
+				Robot.drivebase.drive(0.2, (-1 * 0.2));
 			}
 		}
 		else if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
 		    if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
 				//Robot.infeed.startMotors();
-				/*
-                if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
-		    	    Robot.drivebase.autoDrive(autoDriveSpeed/3, autoDriveSpeed/3, Robot.drivebase.navxGyro.getAngle());
-		    	    doneTraveling = false;
-			    } 
-			    else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-		    	    Robot.drivebase.autoDrive(autoDriveSpeed/3, autoDriveSpeed/3, Robot.drivebase.navxGyro.getAngle());
-			    } 
-			    else {
-					*/
+
+				if(radius < 200){
+					Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, Robot.drivebase.navxGyro.getAngle());
+				}
+				else{
 		    	    Robot.drivebase.stopMotors();
-		    	    doneTraveling = true;
-                //}
+					doneTraveling = true;
+				}
             }
     	    else { //Turn until the ball that is recognized is straight ahead
 			    if(currentAngle < ballLocation){
-				    Robot.drivebase.drive(autoDriveSpeed/3, (-1 * autoDriveSpeed/3));
+				    Robot.drivebase.drive(autoDriveSpeed, (-1 * autoDriveSpeed));
 			    }
         	    else if(currentAngle > ballLocation){
-				    Robot.drivebase.drive((-1 * autoDriveSpeed/3), autoDriveSpeed/3);
+				    Robot.drivebase.drive((-1 * autoDriveSpeed), autoDriveSpeed);
 			    }
             }
         }
