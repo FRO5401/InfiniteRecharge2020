@@ -30,6 +30,10 @@ public class Robot extends TimedRobot {
 
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
+  public static Shooter shooter;
+  public static Turret turret;
+  public static DrumMag drummag;
+  public static Infeed infeed;
   public static OI oi;
 
   /**
@@ -42,8 +46,12 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
+    compressorsubsystem = new CompressorSubsystem();
+    drummag = new DrumMag();
+    turret = new Turret();
+    shooter = new Shooter();
+    infeed = new Infeed();
     
     oi = new OI();
   }

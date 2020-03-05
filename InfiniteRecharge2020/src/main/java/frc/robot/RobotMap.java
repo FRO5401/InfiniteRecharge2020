@@ -39,6 +39,14 @@ public class RobotMap {
   public static final double HIGH_GEAR_LEFT_DPP = 0.1568175312974026;
   public static final double HIGH_GEAR_RIGHT_DPP = 0.1466004558282468;
 
+  //Turret
+  public static final double TURRET_TURN_SPEED = .35;
+  public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
+  public static final double TURRET_SPEED_SENSITIVITY = 0.35;
+  
+  //Infeed
+  public static final double INFEED_SPEED = 0.55;
+
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
@@ -80,18 +88,18 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Magazine
-  public static final int GENEVA_MOTOR = 17;
+  public static final int MAGAZINE_TALON_CHANNEL = 0;
 
   //Infeed
   public static final int INFEED_MOTOR_LEFT = 13;
   public static final int INFEED_MOTOR_RIGHT = 15;
 
   //Shooter
-  public static final int SHOOTER_MOTOR_LEFT = 19;
-  public static final int SHOOTER_MOTOR_RIGHT = 21;
+  public static final int SHOOTER_MASTER_CHANNEL = 7;
+  public static final int SHOOTER_SLAVE_CHANNEL = 8;
 
   //Turret
-  public static final int TURRET_MOTOR = 23;
+  public static final int TURRET_TALON = 10;
 
   //Climber
   public static final int CLIMB_MOTOR_1 = 27;
@@ -103,8 +111,33 @@ public class RobotMap {
   // PCM (Pneumatic Control Module)
   public static final int PCM_ID = 0;
 
-  // DriveBase
+  //DriveBase
   public static final int GEAR_SHIFTER = 0;
+
+  //DrumMag
+  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 2;
+  public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
+  
+  //Infeed
+  public static final int INFEED_DEPLOY = 2;
+
+  /*** Limits ***/
+  public static final int MAGAZINE_STOP_1 = 7;
+  public static final int MAGAZINE_STOP_2 = 6;
+  public static final int MAGAZINE_STOP_3 = 5;
+  public static final int MAGAZINE_STOP_4 = 4;
+  public static final int MAGAZINE_STOP_5 = 3;
+  
+  public static final int KICKER_SWITCH = 1;
+  
+  public static final int GENEVA_LIMIT = 2;
+  
+  public static final int HOMING_LIMIT = 8;
+
+  //Turret Soft Limit
+  public static final int T_STOP_LEFT = 90;
+  public static final int T_STOP_RIGHT = -90;
+
 
   /*** Sensors ***/
   //Encoders
