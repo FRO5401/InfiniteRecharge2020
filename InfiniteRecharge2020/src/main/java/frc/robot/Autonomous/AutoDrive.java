@@ -22,7 +22,6 @@ public class AutoDrive extends Command {
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
 	private double distanceTraveled;
-	private double heading;
 
 	public AutoDrive(double DistanceInput, double SpeedInput) {
 		// Use requires() here to declare subsystem dependencies

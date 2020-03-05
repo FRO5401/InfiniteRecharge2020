@@ -19,7 +19,7 @@ public class ShootInfeedTrench extends CommandGroup {
     addSequential(new WaitCommand(3));
     addSequential(new AutoTurn(-20, 0.6));
     addSequential(new WaitCommand(3));
-    addSequential(new AutoBallInfeed(0.6));  
+    addSequential(new AutoVisionCenter(0.6));  
     addSequential(new AutoDrive(-40, 0.6));
     //addSequential(new AutoShootBall());
 

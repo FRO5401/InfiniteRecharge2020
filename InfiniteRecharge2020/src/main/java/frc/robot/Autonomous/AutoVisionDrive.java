@@ -9,6 +9,7 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * This command is also used as a "BaselineOnly" command
@@ -31,7 +32,7 @@ public class AutoVisionDrive extends Command {
 		autoDriveSpeed = SpeedInput;
 		doneTraveling = true;
         distanceTraveled = 0;
-        //ballCount = 0;
+        //initialCount = 0;
 	}
 
 	// Called just before this Command runs the first time
@@ -45,22 +46,28 @@ public class AutoVisionDrive extends Command {
 		doneTraveling = false;
 		distanceTraveled = 0;
 
+		try {
+			desiredDistance = (Robot.networktables.getBallDistance());
+		}
+		catch (NullPointerException e) {
+			desiredDistance = 0;
+		} 
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		angle = Robot.drivebase.navxGyro.getAngle();
+		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
         //Robot.infeed.runMotors();
-        desiredDistance = (Robot.networktables.getBallDistance() - 5);
 
-		if ((distanceTraveled) <= (desiredDistance)) {
+		if ((distanceTraveled) <= (desiredDistance - 3)) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
-		} else if (distanceTraveled >= (desiredDistance)) {
-            Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
-            doneTraveling = false;
-		} else {
-            //if(Robot.drummag.getBallCount() > ballCount){
+		} 
+		else {
+            //if(Robot.drummag.getBallCount() > initialCount){
 			    Robot.drivebase.stopMotors();
                 doneTraveling = true;
             //}

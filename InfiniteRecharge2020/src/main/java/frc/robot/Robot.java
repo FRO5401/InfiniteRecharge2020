@@ -94,10 +94,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Robot.networktables.resetValues();
     Robot.drivebase.resetSensors();
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
+
     }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
   }
@@ -124,6 +126,7 @@ public class Robot extends TimedRobot {
     Robot.drivebase.resetSensors();
     if (autoSelected != null){
       autoSelected.cancel();
+    Robot.networktables.resetValues();
     }
   }
 

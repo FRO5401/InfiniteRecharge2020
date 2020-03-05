@@ -15,9 +15,10 @@ public class BallCenterTest extends CommandGroup {
    * Add your docs here.
    */
   public BallCenterTest() {
-    addSequential(new AutoBallInfeed(0.2));
+    addSequential(new AutoVisionCenter(0.2));
     addSequential(new WaitCommand(1));
-    addSequential(new AutoVisionDrive(0.3));
+    addSequential(new AutoVisionDrive(0.2));
+    //addSequential(new AutoVisionDrive(0.3));
     //addSequential(new AutoDrive(35, 0.3));
 
     // Add Commands here:

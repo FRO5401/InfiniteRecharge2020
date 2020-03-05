@@ -22,9 +22,10 @@ public class NetworkTables extends Subsystem {
   NetworkTableInstance inst;
   NetworkTableEntry ballXEntry, ballYEntry, ballDEntry, ballREntry;
   NetworkTableEntry powerPortXEntry, powerPortYEntry;
-  private static double ballX, ballY, ballDistance;
+  private static double ballX, ballY, inches;
   public double radius;
   private static double powerPortX, powerPortY;
+  public int leftBound, rightBound;
 
   @Override
   public void initDefaultCommand() {
@@ -34,10 +35,12 @@ public class NetworkTables extends Subsystem {
   public NetworkTables() {
     ballX = 0;
     ballY = 0;
-    ballDistance = 0;
+    inches = 0;
     powerPortX = 0;
     powerPortY = 0;
     radius = 0;
+    leftBound = 260;
+    rightBound = 380;
   }
 
   public void updateValue() {
@@ -46,7 +49,7 @@ public class NetworkTables extends Subsystem {
     powerPortTable = inst.getTable("PowerPort");
     ballXEntry = ballTable.getEntry("cX");
     ballYEntry = ballTable.getEntry("cY");
-    ballDEntry = ballTable.getEntry("ballDistance");
+    ballDEntry = ballTable.getEntry("inches");
     ballREntry = ballTable.getEntry("radius");
     powerPortXEntry = powerPortTable.getEntry("cX");
     powerPortYEntry = powerPortTable.getEntry("cY");
@@ -57,11 +60,11 @@ public class NetworkTables extends Subsystem {
     ballX = ballXEntry.getDouble(0.0);
     ballY = ballYEntry.getDouble(0.0);
     radius = (ballX == 0 && ballY == 0) ? 0 : ballREntry.getDouble(0.0);
-    ballDistance = ballDEntry.getDouble(0.0);
+    inches = (ballX == 0 && ballY == 0) ? 0 : ballDEntry.getDouble(0.0);
     //powerPortX = powerPortXEntry.getDouble(0.0);
     //powerPortY = powerPortYEntry.getDouble(0.0);
     System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
-    System.out.println("The Ball is " + ballDistance + " away");
+    System.out.println("The Ball is " + inches + " away");
     System.out.println("The radius is " + radius);
     //System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
   }
@@ -75,7 +78,7 @@ public class NetworkTables extends Subsystem {
   }
 
   public double getBallDistance(){
-    return ballDistance;
+    return inches;
   }
 
   public double getBallRadius(){
@@ -85,17 +88,16 @@ public class NetworkTables extends Subsystem {
   public void resetValues(){
     ballX = 0;
     ballY = 0;
-    ballDistance = 0;
+    inches = 0;
     radius = 0;
   }
 
   public boolean checkCentered(){
-
-    if(getBXValue() >= 350 && getBXValue() <= 450){
+    if(getBXValue() >= leftBound && getBXValue() <= rightBound){
       return true;
     }
     
-    else if(((getBXValue() < 350) & (getBXValue() > 0)) || ((getBXValue() > 450) & (getBXValue() < 800))){
+    else if(((getBXValue() < leftBound) & (getBXValue() > 0)) || ((getBXValue() > rightBound) & (getBXValue() < 640))){
       return false;
     }
     return false;

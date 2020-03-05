@@ -13,27 +13,18 @@ import frc.robot.RobotMap;
 
 public class XboxMove extends Command {
   
-  /*** Variables ***/
-    //Input Axes
     double turn;
     double throttle;
     double reverse;
   
-      //Input Buttons
     boolean rotate; 
     boolean brake;
     boolean precision;
     boolean gearShiftHigh;
     boolean gearShiftLow;
     boolean resetSensors;
+    boolean resetVision;
   
-      /* //Testing Buttons (TODO: Remove for Comp)
-    boolean resetSensors;
-    boolean speedConstant1;
-    boolean speedConstant2;
-    boolean speedConstant3;
-   */
-      //Instance Vars
     double left;
     double right; 
     double sensitivity;
@@ -64,21 +55,22 @@ public class XboxMove extends Command {
       gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
       gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
        
-        //TODO: Remove these testing buttons for competition.
       resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
-/*      speedConstant1 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
-      speedConstant2 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
-      speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
-        //TODO: Remove this testing method for competition. */
+      resetVision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
+
+
+      if(resetVision){
+        Robot.networktables.resetValues();
+      }
+
       if(resetSensors){
         Robot.drivebase.resetSensors();
       }    
-      /*** Gear Shifting ***/
-        //Press for High Gear
+
       if(gearShiftHigh){
         Robot.drivebase.shiftLowToHigh();
       }
-        //Press for Low Gear
+
       else if(gearShiftLow){
         Robot.drivebase.shiftHighToLow();
       }
