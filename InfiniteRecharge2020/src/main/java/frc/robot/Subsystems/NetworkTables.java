@@ -46,7 +46,7 @@ public class NetworkTables extends Subsystem {
     powerPortTable = inst.getTable("PowerPort");
     ballXEntry = ballTable.getEntry("cX");
     ballYEntry = ballTable.getEntry("cY");
-    ballDEntry = ballTable.getEntry("ballDistance");
+    ballDEntry = ballTable.getEntry("inches");
     ballREntry = ballTable.getEntry("radius");
     powerPortXEntry = powerPortTable.getEntry("cX");
     powerPortYEntry = powerPortTable.getEntry("cY");

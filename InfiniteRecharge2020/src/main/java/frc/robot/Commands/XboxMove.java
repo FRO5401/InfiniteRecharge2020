@@ -52,15 +52,15 @@ public class XboxMove extends Command {
     @Override
     protected void execute() {
 
-      if(Robot.networktables.getBXValue() != 0){
+      if(Robot.networktables.getBXValue() != 0 && Robot.networktables.getBallDistance() > 12){
         if(Robot.networktables.getBXValue() > 260 && Robot.networktables.getBXValue() < 380){
-          Robot.drivebase.drive(0.1, 0.1);
+          Robot.drivebase.drive(0.25, 0.25);
         }
         else if(Robot.networktables.getBXValue() < 260){
-          Robot.drivebase.drive(0.1, 0.2);
+          Robot.drivebase.drive(0.25, 0.35);
         }
         else if(Robot.networktables.getBXValue() > 380){
-          Robot.drivebase.drive(0.2, 0.1);
+          Robot.drivebase.drive(0.35, 0.25);
         }
       }
 
