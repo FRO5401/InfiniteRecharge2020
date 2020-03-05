@@ -97,9 +97,9 @@ public class DrumControl extends Command {
         } */
       }
     }
-    else if(kickerLimit == false){
+/*    else if(kickerLimit == false){
       Robot.drummag.stop();
-    }
+    } */
   }
   // Make this return true when this Command no longer needs to run execute()
   @Override
