@@ -10,15 +10,17 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveStraight extends CommandGroup {
+public class BallCenterTest extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
-    addSequential(new AutoDrive(100, 0.3));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-100, -0.3));
-    addSequential(new AutoDrive(0, 0.0));
+  public BallCenterTest() {
+    addSequential(new AutoVisionCenter(0.2));
+    addSequential(new WaitCommand(1));
+    addSequential(new AutoVisionDrive(0.2));
+    //addSequential(new AutoVisionDrive(0.3));
+    //addSequential(new AutoDrive(35, 0.3));
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

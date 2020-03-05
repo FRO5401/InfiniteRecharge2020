@@ -15,24 +15,24 @@ import frc.robot.RobotMap;
  * This command is also used as a "BaselineOnly" command
  */
 
-public class AutoDrive extends Command {
+public class AutoVisionDrive extends Command {
 
+    //private int ballCount;
 	private double angle;
 	private double desiredDistance;
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
 	private double distanceTraveled;
 
-	public AutoDrive(double DistanceInput, double SpeedInput) {
+	public AutoVisionDrive(double SpeedInput) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
 
-		desiredDistance = DistanceInput;
-
 		autoDriveSpeed = SpeedInput;
 		doneTraveling = true;
-		distanceTraveled = 0;
+        distanceTraveled = 0;
+        //initialCount = 0;
 	}
 
 	// Called just before this Command runs the first time
@@ -46,21 +46,31 @@ public class AutoDrive extends Command {
 		doneTraveling = false;
 		distanceTraveled = 0;
 
+		try {
+			desiredDistance = (Robot.networktables.getBallDistance());
+		}
+		catch (NullPointerException e) {
+			desiredDistance = 0;
+		} 
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		angle = Robot.drivebase.getGyroAngle();
+		angle = Robot.drivebase.navxGyro.getAngle();
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
-		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
+        //Robot.infeed.runMotors();
+
+		if ((distanceTraveled) <= (desiredDistance - 3)) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
-		} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
-			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
-		} else {
-			Robot.drivebase.stopMotors();
-			doneTraveling = true;
+		} 
+		else {
+            //if(Robot.drummag.getBallCount() > initialCount){
+			    Robot.drivebase.stopMotors();
+                doneTraveling = true;
+            //}
 		}
 	}
 

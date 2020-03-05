@@ -10,15 +10,21 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveStraight extends CommandGroup {
+public class ShootDriveOff extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
-    addSequential(new AutoDrive(100, 0.3));
-    addSequential(new WaitCommand(0.5));
-    addSequential(new AutoDrive(-100, -0.3));
-    addSequential(new AutoDrive(0, 0.0));
+  public ShootDriveOff() { 
+    //addSequential(new AutoShootBall());
+    addSequential(new AutoDrive(75, 0.5));
+    
+  /*Robot.shooter.runMotors(); 
+    Robot.turret.enableVision(); 
+    //Robot.drummag.punchBall(true);
+    //addSequential(new AutoShootBall());
+    addSequential(new AutoDrive(75, 0.3));
+  */
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

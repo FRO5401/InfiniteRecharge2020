@@ -8,11 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
+import frc.robot.Autonomous.*;
 import frc.robot.Subsystems.*;
 
 /**
@@ -23,17 +24,19 @@ import frc.robot.Subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private Command autoSelected;
+  private final SendableChooser<Command> chooser = new SendableChooser<>();
+
+  public static Timer timer;
+  public double matchTime;
 
   public static CompressorSubsystem compressorsubsystem;
+  public static NetworkTables networktables;
   public static DriveBase drivebase;
+  public static Infeed infeed;
+  public static DrumMag drummag;
   public static Shooter shooter;
   public static Turret turret;
-  public static DrumMag drummag;
-  public static Infeed infeed;
   public static OI oi;
 
   /**
@@ -42,18 +45,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    chooser.setDefaultOption("Do Nothing", new DoNothing());
+    chooser.addOption("Drive Straight", new DriveStraight());
+    chooser.addOption("Test Turn", new TestTurn());
+    chooser.addOption("Drive Turn Around", new DriveTurnAround());
+    chooser.addOption("Shoot Drive Off", new ShootDriveOff());
+    chooser.addOption("Shoot Infeed Trench", new ShootInfeedTrench());
+    chooser.addOption("Ball Center Test", new BallCenterTest());
+    SmartDashboard.putData("Auto choices", chooser);
 
-    drivebase = new DriveBase();
     compressorsubsystem = new CompressorSubsystem();
+    networktables = new NetworkTables();
+    drivebase = new DriveBase();
     drummag = new DrumMag();
     turret = new Turret();
     shooter = new Shooter();
     infeed = new Infeed();
+    timer = new Timer();
     
     oi = new OI();
+
   }
 
   /**
@@ -67,7 +78,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    matchTime = Timer.getMatchTime();
+    SmartDashboard.putNumber("Match Time (sec)", matchTime);
+
     Robot.drivebase.reportDriveBaseSensors();
+    Robot.networktables.updateValue();
+    Robot.networktables.reportValues();
+    Robot.compressorsubsystem.reportCompressorStatus();
+
   }
 
   /**
@@ -84,9 +102,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    Robot.networktables.resetValues();
+    Robot.drivebase.resetSensors();
+    autoSelected = chooser.getSelected();
+    if(autoSelected != null) {
+      autoSelected.start();
+
+    }
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /**
@@ -94,20 +117,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-    case kCustomAuto:
+    Scheduler.getInstance().run();
+/*    switch (autoSelected) {
+    case DriveStraight:
       // Put custom auto code here
       break;
     case kDefaultAuto:
     default:
       // Put default auto code here
-      break;
-    }
+      break;    
+    }     */
   }
 
   @Override
   public void teleopInit() {
-    Robot.drivebase.resetEncoders();
+    Robot.drivebase.resetSensors();
+    if (autoSelected != null){
+      autoSelected.cancel();
+    Robot.networktables.resetValues();
+    }
   }
 
   /**
@@ -116,6 +144,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    /*
+    if(matchTime >= 10){
+      Robot.shooter.runMotors();
+    }
+    */
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
