@@ -39,12 +39,10 @@ public class TurretTurn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Creates instances of the buttons
-//    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
+    
     turretLeftRight = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
     overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
-    //limitRight = Robot.turret.getLimitRight(); TODO change these
-    //limitLeft = Robot.turret.getLimitLeft();
+    resetButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
     limitRight = false;
     limitLeft = false;
 
@@ -68,7 +66,6 @@ public class TurretTurn extends Command {
 
       // Checks to see if limitLeft has been breached
       else if (limitLeft == true && limitRight == false) {
-
         // Will only let movement occur right
         if (turretLeftRight > RobotMap.AXIS_THRESHOLD) {
           Robot.turret.overrideTurret(turretLeftRight);
@@ -79,18 +76,19 @@ public class TurretTurn extends Command {
 
       // Checks to see if limitRight has been breached
       else if (limitLeft == false && limitRight == true) {
-
         // Will only let movement occur left
         if (turretLeftRight < (-1 * RobotMap.AXIS_THRESHOLD)) {
           Robot.turret.overrideTurret(turretLeftRight);
-
-        } else {
+        } 
+        else {
           Robot.turret.overrideTurret(0);
         }
-      } else {
+      } 
+      else {
         Robot.turret.stopRotation();
       }
-    } else {
+    } 
+    else {
       Robot.turret.stopRotation();
     }
 

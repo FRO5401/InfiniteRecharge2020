@@ -88,18 +88,18 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Magazine
-  public static final int MAGAZINE_TALON_CHANNEL = 0;
+  public static final int MAGAZINE_TALON_CHANNEL = 17;
 
   //Infeed
   public static final int INFEED_MOTOR_LEFT = 13;
   public static final int INFEED_MOTOR_RIGHT = 15;
 
   //Shooter
-  public static final int SHOOTER_MASTER_CHANNEL = 7;
-  public static final int SHOOTER_SLAVE_CHANNEL = 8;
+  public static final int SHOOTER_MASTER_CHANNEL = 19;
+  public static final int SHOOTER_SLAVE_CHANNEL = 21;
 
   //Turret
-  public static final int TURRET_TALON = 10;
+  public static final int TURRET_TALON = 23;
 
   //Climber
   public static final int CLIMB_MOTOR_1 = 27;

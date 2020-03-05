@@ -44,38 +44,38 @@ public class DrumControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    position = Robot.drummag.getPosition();
+//    position = Robot.drummag.getPosition();
 
     // Limits
-    cellLimit = Robot.drummag.getCellLimits(); // cell limit array
-    homingLimit = Robot.drummag.getHomingLimit();
-    kickerLimit = Robot.drummag.getKickerLimit();
-    genevaLimit = Robot.drummag.getGenevaLimit();
+//    cellLimit = Robot.drummag.getCellLimits(); // cell limit array
+//    homingLimit = Robot.drummag.getHomingLimit();
+//    kickerLimit = Robot.drummag.getKickerLimit();
+//    genevaLimit = Robot.drummag.getGenevaLimit();
 
     // Buttons
     changeMode = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_START);
     override = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_L3);
-    kick = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+    kick = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
     overrideAxis = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_X);
 
     // Puncher, yay! This will only let you punch the ball if the geneva is on limit
-    if (kick && genevaLimit) {
+    if (kick) {
       Robot.drummag.punchBall(true);
     } else {
       Robot.drummag.punchBall(false);
     }
 
     // Switches between shooter and infeed modes when button is pressed
-    if (changeMode) {
+/*    if (changeMode) {
       Robot.drummag.changeMode();
-    }
+    } */
 
-    if (homingLimit) { // Resets position when homing limit is tripped
+/*    if (homingLimit) { // Resets position when homing limit is tripped
       Robot.drummag.resetPosition();
-    }
+    } */
 
-    if(kickerLimit == true){
-      if (!override) { // If NOT Override button
+//    if(kickerLimit == true){
+/*      if (!override) { // If NOT Override button
         desiredPosition = Robot.drummag.findDesiredPosition(); // Updates desired position
 
         if (position != desiredPosition) { // Moves until at desired position
@@ -87,14 +87,14 @@ public class DrumControl extends Command {
         else { // When position reaches desired position
           Robot.drummag.stop();
         }
-      }
-      else if (override) {
+      } */
+      if (override) {
         if(overrideAxis > RobotMap.AXIS_THRESHOLD){
           Robot.drummag.rotate();
-          if(genevaLimit == false){
+/*          if(genevaLimit == false){
             Robot.drummag.switchFinishedRotating();
-          }
-        }
+          } 
+        } */
       }
     }
     else if(kickerLimit == false){

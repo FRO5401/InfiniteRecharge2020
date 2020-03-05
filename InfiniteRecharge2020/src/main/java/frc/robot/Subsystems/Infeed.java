@@ -23,12 +23,12 @@ public class Infeed extends Subsystem {
   //MIGHT NOT BE VICTOR SP, check with design
   private VictorSPX infeedMotor1;
   private VictorSPX infeedMotor2;
-  private Solenoid deployInfeed;
+  //private Solenoid deployInfeed;
 
   public Infeed(){
     infeedMotor1 = new VictorSPX(RobotMap.INFEED_MOTOR_LEFT);
     infeedMotor2 = new VictorSPX(RobotMap.INFEED_MOTOR_RIGHT);
-    deployInfeed = new Solenoid(RobotMap.INFEED_DEPLOY);
+    //deployInfeed = new Solenoid(RobotMap.INFEED_DEPLOY);
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -41,31 +41,31 @@ public class Infeed extends Subsystem {
   }
 
   //Deploy Infeed
+  /*
   public void deployInfeed(boolean status){
     deployInfeed.set(status);
-  }
+  }*/
 
+  /*
   public boolean getDeployStatus(){
     boolean status = deployInfeed.get();
     return status;
   }
+  */
+  public void runInfeed(){
+    infeedMotor1.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
+    infeedMotor2.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
+  }
 
-  public void runInfeed(String direction){
-    if(direction.equals("IN")){
-      infeedMotor1.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
-      infeedMotor2.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
-    }
-    else if(direction.equals("OUT")){
-      infeedMotor1.set(ControlMode.PercentOutput, -1 * RobotMap.INFEED_SPEED);
-      infeedMotor2.set(ControlMode.PercentOutput, -1 * RobotMap.INFEED_SPEED);
-    }
-    else if(direction.equals("STOP")){
-      infeedMotor1.set(ControlMode.PercentOutput, 0);
-      infeedMotor2.set(ControlMode.PercentOutput, 0);
-    }
-    else{
-      System.out.print("BRUH");
-    }
+  /*
+  public void reverseInfeed(){
+    infeedMotor1.set(ControlMode.PercentOutput, -RobotMap.INFEED_SPEED);
+    infeedMotor2.set(ControlMode.PercentOutput, -RobotMap.INFEED_SPEED);
+  }*/
+
+  public void stopInfeed(){
+    infeedMotor1.set(ControlMode.PercentOutput, 0);
+    infeedMotor2.set(ControlMode.PercentOutput, 0);
   }
 
 }

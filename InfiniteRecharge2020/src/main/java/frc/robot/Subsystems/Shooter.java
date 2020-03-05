@@ -63,7 +63,7 @@ public class Shooter extends Subsystem {
 
     }
 
-    public void stop() {
+    public void stopMotors() {
         shooterMaster.set(TalonFXControlMode.PercentOutput, 0.0); //Change back to velocity after testing master/slave
     }
 

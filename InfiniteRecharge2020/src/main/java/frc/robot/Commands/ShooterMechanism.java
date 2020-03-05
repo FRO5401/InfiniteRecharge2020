@@ -15,8 +15,7 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
-  boolean readyShooter;
-  boolean cancelShooter;
+  boolean controlShooter;
 
   //For PID testing
   public int dPad;
@@ -37,8 +36,7 @@ public class ShooterMechanism extends Command {
   @Override
   public void execute() {
     Robot.shooter.reportValues();
-    readyShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-    cancelShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_B);
+    controlShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
@@ -48,11 +46,11 @@ public class ShooterMechanism extends Command {
       Robot.shooter.getPIDInput();
     }
 
-    if (cancelShooter) {
-      Robot.shooter.stop();
+    if(controlShooter == true && (Robot.shooter.getVelocity() > 500)) {
+      Robot.shooter.stopMotors();
     }
 
-    if(readyShooter) {
+    if(controlShooter == true && (Robot.shooter.getVelocity() < 500)) {
       Robot.shooter.runMotors();
     }
 
@@ -61,12 +59,12 @@ public class ShooterMechanism extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end () {
-    Robot.shooter.stop();
+    Robot.shooter.stopMotors();
   }
 
   @Override
   public void interrupted(){
-    Robot.shooter.stop();
+    Robot.shooter.stopMotors();
   }
 
   // Returns true when the command should end.
