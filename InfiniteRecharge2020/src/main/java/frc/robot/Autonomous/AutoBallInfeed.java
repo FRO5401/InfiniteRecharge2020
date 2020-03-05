@@ -51,34 +51,34 @@ public class AutoBallInfeed extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        currentTime = Timer.getMatchTime();
-		double timeElapsed = startTime - currentTime;
-        SmartDashboard.putNumber("Time elapsed", timeElapsed);
-        ballLocation = Robot.networktables.getBXValue();
+      currentTime = Timer.getMatchTime();
+		  double timeElapsed = startTime - currentTime;
+      SmartDashboard.putNumber("Time elapsed", timeElapsed);
+      ballLocation = Robot.networktables.getBXValue();
         
-        //Robot.infeed.runInfeed();
-        if(ballLocation == 0 && (timeElapsed) < 5){
-            Robot.drivebase.drive(0.4, -1 * 0.4);
-        }
+      //Robot.infeed.runInfeed();
+      if(ballLocation == 0 && (timeElapsed) < 5){
+          Robot.drivebase.drive(0.35, -1 * 0.35);
+      }
 
-		else if(ballLocation != 0 && Robot.networktables.getBallDistance() > 11){
-            if(ballLocation > 260 && ballLocation < 380){
+		  else if(ballLocation != 0 && Robot.networktables.getBallDistance() > 12){
+          if(ballLocation > 260 && ballLocation < 380){
               Robot.drivebase.drive(autoDriveSpeed, autoDriveSpeed);
               doneTraveling = false;
-            }
-            else if(ballLocation < 260){
+          }
+          else if(ballLocation < 260){
               Robot.drivebase.drive(autoDriveSpeed, 1.5 * autoDriveSpeed);
               doneTraveling = false;
-            }
-            else if(ballLocation > 380){
+          }
+          else if(ballLocation > 380){
               Robot.drivebase.drive(1.5 * autoDriveSpeed, autoDriveSpeed);
               doneTraveling = false;
-            }
-        }
-        else if (ballLocation != 0){
-            Robot.drivebase.stopMotors();
-            doneTraveling = true;
-        }
+          }
+      }
+      else if (ballLocation != 0){
+          Robot.drivebase.stopMotors();
+          doneTraveling = true;
+      }
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

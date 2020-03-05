@@ -74,13 +74,13 @@ public class XboxMove extends Command {
       if(visionInfeed == true){
         if(Robot.networktables.getBXValue() != 0 && Robot.networktables.getBallDistance() > 12){
           if(Robot.networktables.getBXValue() > 260 && Robot.networktables.getBXValue() < 380){
-            Robot.drivebase.drive(0.25, 0.25);
+            Robot.drivebase.drive(0.35, 0.35);
           }
           else if(Robot.networktables.getBXValue() < 260){
-            Robot.drivebase.drive(0.25, 0.35);
+            Robot.drivebase.drive(0.35, 0.45);
           }
           else if(Robot.networktables.getBXValue() > 380){
-            Robot.drivebase.drive(0.35, 0.25);
+            Robot.drivebase.drive(0.45, 0.35);
           }
         }
         else{
