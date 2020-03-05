@@ -72,14 +72,14 @@ public class DriveBase extends Subsystem {
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
       }
       else if (angle < 0){ //drifting left
-        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
         rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
@@ -95,9 +95,9 @@ public class DriveBase extends Subsystem {
     }
     else if (leftDriveDesired < 0 && rightDriveDesired < 0){ //driving backwards
       if (angle > 0){ //drifting right
-        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
+        leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
         rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
         rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
@@ -106,9 +106,9 @@ public class DriveBase extends Subsystem {
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
         leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
-        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
-        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.1);
+        rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
+        rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired * RobotMap.AUTO_SPEED_ADJUSTMENT * 1.08);
       } 
       else{
         leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);

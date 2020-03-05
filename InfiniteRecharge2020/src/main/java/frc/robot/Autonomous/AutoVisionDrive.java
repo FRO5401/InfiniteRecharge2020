@@ -21,8 +21,8 @@ public class AutoVisionDrive extends Command {
 	private double angle;
 	private double desiredDistance;
 	private double autoDriveSpeed;
-	private boolean doneTraveling;
 	private double distanceTraveled;
+	private boolean doneTraveling;
 
 	public AutoVisionDrive(double SpeedInput) {
 		// Use requires() here to declare subsystem dependencies
@@ -62,7 +62,7 @@ public class AutoVisionDrive extends Command {
 		distanceTraveled = Robot.drivebase.getEncoderDistance(2) * RobotMap.LOW_GEAR_RIGHT_DPP;
         //Robot.infeed.runMotors();
 
-		if ((distanceTraveled) <= (desiredDistance - 3)) {
+		if ((distanceTraveled) < (desiredDistance - 5)) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed, angle);
 			doneTraveling = false;
 		} 
