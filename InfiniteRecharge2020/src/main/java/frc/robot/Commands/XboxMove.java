@@ -51,98 +51,24 @@ public class XboxMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      /*** Read Inputs ***/
-        //Axes
-      turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
-      throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
-      reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
-      
-        //Buttons
-      rotate = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_L3);
-      brake = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-      precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
-      gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
-      gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
-       
-        //TODO: Remove these testing buttons for competition.
-      resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
-/*      speedConstant1 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
-      speedConstant2 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
-      speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
-        //TODO: Remove this testing method for competition. */
-      if(resetSensors){
-        Robot.drivebase.resetSensors();
-      }    
-      /*** Gear Shifting ***/
-        //Press for High Gear
-      if(gearShiftHigh){
-        Robot.drivebase.shiftLowToHigh();
-      }
-        //Press for Low Gear
-      else if(gearShiftLow){
-        Robot.drivebase.shiftHighToLow();
+
+      if(Robot.networktables.getBXValue() != 0){
+        if(Robot.networktables.getBXValue() > 260 && Robot.networktables.getBXValue() < 380){
+          Robot.drivebase.drive(0.1, 0.1);
+        }
+        else if(Robot.networktables.getBXValue() < 260){
+          Robot.drivebase.drive(0.1, 0.2);
+        }
+        else if(Robot.networktables.getBXValue() > 380){
+          Robot.drivebase.drive(0.2, 0.1);
+        }
       }
 
-      /*** Precision ***/
-        //Hold for Precision Speed
-      if(precision){
-        sensitivity = RobotMap.DRIVE_SENSITIVITY_PRECISION;
-      }
-        //Release for Regular Speed
       else{
-        sensitivity = RobotMap.DRIVE_SENSITIVITY_DEFAULT;
+        Robot.drivebase.stopMotors();
       }
-  
-      /*** Driving ***/
-        //Braking
-      if(brake){
-        //Robot.drivebase.stopMotors();
-        left = 0;
-        right = 0;
-      }
-        //Not Braking
-      else{
-          //Pirouetting (Turn in place). 
-        if(rotate){
-            //If the joystick is pushed passed the threshold. 
-          if(Math.abs(turn) > RobotMap.AXIS_THRESHOLD){
-              //Sets it to spin the desired direction.
-            left = RobotMap.SPIN_SENSITIVITY * turn;
-            right = RobotMap.SPIN_SENSITIVITY * (turn * -1);
-          }
-            //If its not past the threshold stop spinning
-          else if(Math.abs(turn) < RobotMap.AXIS_THRESHOLD){
-            left = 0;
-            right = 0;
-          }
-        }
-          //Not pirouetting (Not turning in place).
-        else{
-            //Turning right
-          if(turn > RobotMap.AXIS_THRESHOLD){
-              //Makes left slow down by a factor of how far the axis is pushed. 
-            left = (throttle - reverse) * sensitivity;
-            right = (throttle - reverse) * sensitivity * (1 - turn);
-          }
-            //Turning left
-          else if(turn < (-1 * RobotMap.AXIS_THRESHOLD)){
-              //Makes right speed up by a factor of how far the axis is pushed. 
-            left = (throttle - reverse) * sensitivity * (1 + turn);
-            right = (throttle - reverse) * sensitivity;
-          }
-            //Driving straight 
-          else{
-              //No joystick manipulation. 
-            left = (throttle - reverse) * sensitivity;
-            right = (throttle - reverse) * sensitivity;
-          }
-        }
-      }
-        //After speed manipulation, send to drivebase. 
-        Robot.drivebase.drive(left, right);
-    }
-  
-    // Make this return true when this Command no longer needs to run execute()
+    } 
+    
     @Override
     protected boolean isFinished() {
       return false;
