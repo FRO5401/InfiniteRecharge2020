@@ -36,12 +36,13 @@ public class ShooterMechanism extends Command {
   @Override
   public void execute() {
     Robot.shooter.reportValues();
-    controlShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
+    controlShooter  = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
 
     //For PID testing
+    /*
     if(dPad == 180){
       Robot.shooter.getPIDInput();
     }
@@ -52,7 +53,7 @@ public class ShooterMechanism extends Command {
 
     if(controlShooter == true && (Robot.shooter.getVelocity() < 500)) {
       Robot.shooter.runMotors();
-    }
+    }*/
 
   }
 

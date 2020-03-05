@@ -14,7 +14,7 @@ import frc.robot.RobotMap;
 public class InfeedControl extends Command {
   boolean infeedIn;
   //boolean infeedOut;
-  boolean changeDeployStatus;
+  //boolean changeDeployStatus;
   //boolean doneDeploying;
 
   public InfeedControl() {
@@ -33,7 +33,7 @@ public class InfeedControl extends Command {
   protected void execute() {
     infeedIn = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     //infeedOut = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-    changeDeployStatus = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
+    //changeDeployStatus = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
     //doneDeploying = false; //Needs to be false for initial deploy
 
     //Infeed Control
