@@ -125,9 +125,9 @@ public class DriveBase extends Subsystem {
   }
 
   public void drive(double leftDriveDesired, double rightDriveDesired) {
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
-    leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
-    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * 1.05);
+    leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * 1.05);
+    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * 1.05);
     rightDrive1.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive2.set(ControlMode.PercentOutput, -1 * rightDriveDesired);
     rightDrive3.set(ControlMode.PercentOutput, -1 * rightDriveDesired);

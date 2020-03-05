@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Shoot Drive Off", new ShootDriveOff());
     chooser.addOption("Shoot Infeed Trench", new ShootInfeedTrench());
     chooser.addOption("Ball Center Test", new BallCenterTest());
+    chooser.addOption("Infeed Ball Vision", new InfeedBall());
     SmartDashboard.putData("Auto choices", chooser);
 
     compressorsubsystem = new CompressorSubsystem();

@@ -23,7 +23,7 @@ public class XboxMove extends Command {
     boolean gearShiftHigh;
     boolean gearShiftLow;
     boolean resetSensors;
-    boolean resetVision;
+    boolean visionInfeed;
   
     double left;
     double right; 
@@ -55,13 +55,8 @@ public class XboxMove extends Command {
       gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
       gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
        
-      resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
-      resetVision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
-
-
-      if(resetVision){
-        Robot.networktables.resetValues();
-      }
+      resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
+      visionInfeed = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
 
       if(resetSensors){
         Robot.drivebase.resetSensors();
@@ -75,63 +70,83 @@ public class XboxMove extends Command {
         Robot.drivebase.shiftHighToLow();
       }
 
-      /*** Precision ***/
-        //Hold for Precision Speed
-      if(precision){
-        sensitivity = RobotMap.DRIVE_SENSITIVITY_PRECISION;
-      }
-        //Release for Regular Speed
-      else{
-        sensitivity = RobotMap.DRIVE_SENSITIVITY_DEFAULT;
-      }
-  
-      /*** Driving ***/
-        //Braking
-      if(brake){
-        //Robot.drivebase.stopMotors();
-        left = 0;
-        right = 0;
-      }
-        //Not Braking
-      else{
-          //Pirouetting (Turn in place). 
-        if(rotate){
-            //If the joystick is pushed passed the threshold. 
-          if(Math.abs(turn) > RobotMap.AXIS_THRESHOLD){
-              //Sets it to spin the desired direction.
-            left = RobotMap.SPIN_SENSITIVITY * turn;
-            right = RobotMap.SPIN_SENSITIVITY * (turn * -1);
+
+      if(visionInfeed == true){
+        if(Robot.networktables.getBXValue() != 0 && Robot.networktables.getBallDistance() > 12){
+          if(Robot.networktables.getBXValue() > 260 && Robot.networktables.getBXValue() < 380){
+            Robot.drivebase.drive(0.25, 0.25);
           }
-            //If its not past the threshold stop spinning
-          else if(Math.abs(turn) < RobotMap.AXIS_THRESHOLD){
-            left = 0;
-            right = 0;
+          else if(Robot.networktables.getBXValue() < 260){
+            Robot.drivebase.drive(0.25, 0.35);
+          }
+          else if(Robot.networktables.getBXValue() > 380){
+            Robot.drivebase.drive(0.35, 0.25);
           }
         }
-          //Not pirouetting (Not turning in place).
         else{
-            //Turning right
-          if(turn > RobotMap.AXIS_THRESHOLD){
-              //Makes left slow down by a factor of how far the axis is pushed. 
-            left = (throttle - reverse) * sensitivity;
-            right = (throttle - reverse) * sensitivity * (1 - turn);
+          Robot.drivebase.stopMotors();
+        }
+      } 
+
+      else{
+        /*** Precision ***/
+          //Hold for Precision Speed
+        if(precision){
+          sensitivity = RobotMap.DRIVE_SENSITIVITY_PRECISION;
+        }
+          //Release for Regular Speed
+        else{
+          sensitivity = RobotMap.DRIVE_SENSITIVITY_DEFAULT;
+        }
+  
+        /*** Driving ***/
+          //Braking
+        if(brake){
+          //Robot.drivebase.stopMotors();
+          left = 0;
+          right = 0;
+        }
+          //Not Braking
+        else{
+            //Pirouetting (Turn in place). 
+          if(rotate){
+              //If the joystick is pushed passed the threshold. 
+            if(Math.abs(turn) > RobotMap.AXIS_THRESHOLD){
+                //Sets it to spin the desired direction.
+              left = RobotMap.SPIN_SENSITIVITY * turn;
+              right = RobotMap.SPIN_SENSITIVITY * (turn * -1);
+            }
+              //If its not past the threshold stop spinning
+            else if(Math.abs(turn) < RobotMap.AXIS_THRESHOLD){
+              left = 0;
+              right = 0;
+            }
           }
-            //Turning left
-          else if(turn < (-1 * RobotMap.AXIS_THRESHOLD)){
-              //Makes right speed up by a factor of how far the axis is pushed. 
-            left = (throttle - reverse) * sensitivity * (1 + turn);
-            right = (throttle - reverse) * sensitivity;
-          }
-            //Driving straight 
+            //Not pirouetting (Not turning in place).
           else{
-              //No joystick manipulation. 
-            left = (throttle - reverse) * sensitivity;
-            right = (throttle - reverse) * sensitivity;
+              //Turning right
+            if(turn > RobotMap.AXIS_THRESHOLD){
+                //Makes left slow down by a factor of how far the axis is pushed. 
+              left = (throttle - reverse) * sensitivity;
+              right = (throttle - reverse) * sensitivity * (1 - turn);
+            }
+              //Turning left
+            else if(turn < (-1 * RobotMap.AXIS_THRESHOLD)){
+                //Makes right speed up by a factor of how far the axis is pushed. 
+              left = (throttle - reverse) * sensitivity * (1 + turn);
+              right = (throttle - reverse) * sensitivity;
+            }
+              //Driving straight 
+            else{
+                //No joystick manipulation. 
+              left = (throttle - reverse) * sensitivity;
+              right = (throttle - reverse) * sensitivity;
+            }
           }
         }
+          //After speed manipulation, send to drivebase. 
+          Robot.drivebase.drive(left, right);
       }
-        //After speed manipulation, send to drivebase. 
-        Robot.drivebase.drive(left, right);
     }
   
     // Make this return true when this Command no longer needs to run execute()

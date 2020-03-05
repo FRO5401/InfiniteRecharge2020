@@ -39,8 +39,8 @@ public class NetworkTables extends Subsystem {
     powerPortX = 0;
     powerPortY = 0;
     radius = 0;
-    leftBound = 200;
-    rightBound = 440;
+    leftBound = 220;
+    rightBound = 420;
   }
 
   public void updateValue() {
