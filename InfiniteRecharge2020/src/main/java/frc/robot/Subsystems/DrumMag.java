@@ -59,7 +59,7 @@ public class DrumMag extends Subsystem {
 
 //   homingSwitch = new DigitalInput(RobotMap.HOMING_LIMIT);
 
-//    genevaMotor = new VictorSPX(RobotMap.MAGAZINE_TALON_CHANNEL);
+    genevaMotor = new VictorSPX(RobotMap.MAGAZINE_TALON_CHANNEL);
 
     magMode = 1; // Initializes in shooter mode
 //    target = true; // Target must be true for shooter mode (looking for where ball is present)
@@ -86,7 +86,7 @@ public class DrumMag extends Subsystem {
 
   // Rotates 36 degrees (one geneva turn)
   public void rotate() {
-    genevaMotor.set(ControlMode.PercentOutput, 0.1); // Slow speed for testing
+    genevaMotor.set(ControlMode.PercentOutput, 0.4); // Slow speed for testing
 
 /*    if (getGenevaLimit() && (finishedRotating == false)) { 
       incrementPosition(); // Finishes moving, increments position

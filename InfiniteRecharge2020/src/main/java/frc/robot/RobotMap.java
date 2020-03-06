@@ -115,8 +115,8 @@ public class RobotMap {
   public static final int GEAR_SHIFTER = 0;
 
   //DrumMag
-  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 2;
-  public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
+  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 1;
+//  public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
   
   //Infeed
   public static final int INFEED_DEPLOY = 2;

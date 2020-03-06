@@ -88,19 +88,23 @@ public class DrumControl extends Command {
           Robot.drummag.stop();
         }
       } */
-      if (override) {
-        if(overrideAxis > RobotMap.AXIS_THRESHOLD){
+      if (override == true) {
+        if(overrideAxis >= RobotMap.AXIS_THRESHOLD){
           Robot.drummag.rotate();
+        }
+      }
+      else if (override == false || overrideAxis < RobotMap.AXIS_THRESHOLD){
+        Robot.drummag.stop();
+      }
 /*          if(genevaLimit == false){
             Robot.drummag.switchFinishedRotating();
           } 
         } */
-      }
+      
     }
 /*    else if(kickerLimit == false){
       Robot.drummag.stop();
     } */
-  }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {

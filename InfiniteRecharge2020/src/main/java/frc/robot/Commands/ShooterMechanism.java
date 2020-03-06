@@ -41,6 +41,12 @@ public class ShooterMechanism extends Command {
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
 
+    if(controlShooter){
+      Robot.shooter.runMotors();
+    }
+    else{
+      Robot.shooter.stopMotors();
+    }
     //For PID testing
     /*
     if(dPad == 180){
