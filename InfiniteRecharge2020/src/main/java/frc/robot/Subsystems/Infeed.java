@@ -55,9 +55,9 @@ public class Infeed extends Subsystem {
   }
   */
   public void runInfeed(){
-    infeedMotor1.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
-    infeedMotor2.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
-    infeedMotorFront.set(ControlMode.PercentOutput, RobotMap.INFEED_SPEED);
+    infeedMotor1.set(ControlMode.PercentOutput, 0.75);
+    infeedMotor2.set(ControlMode.PercentOutput, 0.75);
+    infeedMotorFront.set(ControlMode.PercentOutput, 0.75);
   }
 
   
