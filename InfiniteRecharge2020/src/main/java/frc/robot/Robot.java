@@ -107,8 +107,10 @@ public class Robot extends TimedRobot {
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
-
     }
+    
+    //Deploy infeed at start of match
+    Robot.infeed.deployInfeed();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
   }
 
@@ -118,15 +120,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-/*    switch (autoSelected) {
-    case DriveStraight:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;    
-    }     */
+
+    //Rotate Drummag constantly
+    Robot.drummag.rotateMagazine();
   }
 
   @Override
@@ -158,4 +154,5 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
 }

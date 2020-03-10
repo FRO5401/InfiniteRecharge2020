@@ -52,6 +52,10 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
+  //Magazine
+  public static final double KICKER_SPEED = 0.0; //TODO: Set speed constant
+  public static final double MAGAZINE_SPEED = 0.0; //TODO: Set speed constant
+
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;
@@ -88,11 +92,13 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Magazine
-  public static final int MAGAZINE_TALON_CHANNEL = 17;
+  public static final int MAGAZINE_MOTOR_CHANNEL = 17;
+  public static final int KICKER_MOTOR_CHANNEL = 0;
 
   //Infeed
-  public static final int INFEED_MOTOR_LEFT = 13;
-  public static final int INFEED_MOTOR_RIGHT = 15;
+//  public static final int INFEED_MOTOR_LEFT = 13;
+//  public static final int INFEED_MOTOR_RIGHT = 15;
+  public static final int INFEED_MOTOR = 0;
 
   //Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 19;
@@ -113,13 +119,9 @@ public class RobotMap {
 
   //DriveBase
   public static final int GEAR_SHIFTER = 0;
-
-  //DrumMag
-  public static final int MAGAZINE_CELL_EJECTOR_1_CHANNEL = 1;
-  //public static final int MAGAZINE_CELL_EJECTOR_2_CHANNEL = 0;
   
   //Infeed
-  public static final int INFEED_DEPLOY = 2;
+  public static final int INFEED_DEPLOY = 1;
 
   /*** Limits ***/
   public static final int MAGAZINE_STOP_1 = 7;
