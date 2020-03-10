@@ -34,9 +34,8 @@ public class Robot extends TimedRobot {
   public static NetworkTables networktables;
   public static DriveBase drivebase;
   public static Infeed infeed;
-  public static DrumMag drummag;
+  public static BeltChannel beltchannel;
   public static Shooter shooter;
-  public static Turret turret;
   public static OI oi;
 
   /**
@@ -57,10 +56,9 @@ public class Robot extends TimedRobot {
     compressorsubsystem = new CompressorSubsystem();
     networktables = new NetworkTables();
     drivebase = new DriveBase();
-    drummag = new DrumMag();
-    turret = new Turret();
-    shooter = new Shooter();
     infeed = new Infeed();
+    beltchannel = new BeltChannel();
+    shooter = new Shooter();
     timer = new Timer();
     
     oi = new OI();
