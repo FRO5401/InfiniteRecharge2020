@@ -24,13 +24,15 @@ public class Infeed extends Subsystem {
   private VictorSPX infeedMotor1;
   private VictorSPX infeedMotor2;
   private VictorSPX infeedMotorFront;
-  //private Solenoid deployInfeed;
+  private Solenoid infeedDeployer1, infeedDeployer2;
 
   public Infeed(){
     infeedMotor1 = new VictorSPX(RobotMap.INFEED_MOTOR_LEFT);
     infeedMotor2 = new VictorSPX(RobotMap.INFEED_MOTOR_RIGHT);
     infeedMotorFront = new VictorSPX(RobotMap.CLIMB_MOTOR_1);
-  }
+    infeedDeployer1 = new Solenoid(RobotMap.INFEED_DEPLOY_1);
+    infeedDeployer2 = new Solenoid(RobotMap.INFEED_DEPLOY_2);
+    }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -39,6 +41,16 @@ public class Infeed extends Subsystem {
     setDefaultCommand(new InfeedControl());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public void deployInfeed(){
+    infeedDeployer1.set(true);
+    infeedDeployer2.set(true);
+  }
+
+  public void retractInfeed(){
+    infeedDeployer1.set(false);
+    infeedDeployer2.set(false);
   }
 
   public void runInfeed(){

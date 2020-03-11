@@ -105,8 +105,8 @@ public class Robot extends TimedRobot {
     autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
-
     }
+    Robot.infeed.deployInfeed();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
   }
 
@@ -134,6 +134,7 @@ public class Robot extends TimedRobot {
       autoSelected.cancel();
     Robot.networktables.resetValues();
     }
+    Robot.infeed.deployInfeed();
   }
 
   /**

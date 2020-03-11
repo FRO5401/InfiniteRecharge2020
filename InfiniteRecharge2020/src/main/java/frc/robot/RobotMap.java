@@ -112,9 +112,8 @@ public class RobotMap {
   public static final int GEAR_SHIFTER = 0;
   
   //Infeed
-  public static final int INFEED_DEPLOY = 2;
-  
-  public static final int KICKER_SWITCH = 1;
+  public static final int INFEED_DEPLOY_1 = 0;
+  public static final int INFEED_DEPLOY_2 = 0;
 
   /*** Sensors ***/
   //Encoders
