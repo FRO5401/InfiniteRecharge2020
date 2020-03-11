@@ -126,9 +126,10 @@ public class NetworkTables extends Subsystem {
   {
     SmartDashboard.putNumber("Current Ball X", getBXValue());
     SmartDashboard.putNumber("Current Ball Y", getBYValue());
-    SmartDashboard.putNumber("Current Power Port X", getPPXValue());
-    SmartDashboard.putNumber("Current Power Port Y", getPPYValue());
     SmartDashboard.putNumber("Current Ball radius", getBallRadius());
     SmartDashboard.putNumber("Ball Distance", getBallDistance());
+    SmartDashboard.putNumber("Current Power Port X", getPPXValue());
+    SmartDashboard.putNumber("Current Power Port Y", getPPYValue());
+    SmartDashboard.putNumber("Current Power Port Distance", getPPDistance());
   }
 }
