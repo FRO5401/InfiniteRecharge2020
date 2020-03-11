@@ -30,7 +30,6 @@ public class Infeed extends Subsystem {
     infeedMotor1 = new VictorSPX(RobotMap.INFEED_MOTOR_LEFT);
     infeedMotor2 = new VictorSPX(RobotMap.INFEED_MOTOR_RIGHT);
     infeedMotorFront = new VictorSPX(RobotMap.CLIMB_MOTOR_1);
-    //deployInfeed = new Solenoid(RobotMap.INFEED_DEPLOY);
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -42,18 +41,6 @@ public class Infeed extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  //Deploy Infeed
-  /*
-  public void deployInfeed(boolean status){
-    deployInfeed.set(status);
-  }*/
-
-  /*
-  public boolean getDeployStatus(){
-    boolean status = deployInfeed.get();
-    return status;
-  }
-  */
   public void runInfeed(){
     infeedMotor1.set(ControlMode.PercentOutput, 0.75);
     infeedMotor2.set(ControlMode.PercentOutput, 0.75);

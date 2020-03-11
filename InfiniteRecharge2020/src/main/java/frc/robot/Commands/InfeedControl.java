@@ -14,8 +14,6 @@ import frc.robot.RobotMap;
 public class InfeedControl extends Command {
   boolean infeedIn;
   boolean infeedOut;
-  //boolean changeDeployStatus;
-  //boolean doneDeploying;
 
   public InfeedControl() {
     requires(Robot.infeed);
@@ -33,8 +31,6 @@ public class InfeedControl extends Command {
   protected void execute() {
     infeedIn = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     infeedOut = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-    //changeDeployStatus = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-    //doneDeploying = false; //Needs to be false for initial deploy
 
     //Infeed Control
     if(infeedIn){
@@ -47,22 +43,6 @@ public class InfeedControl extends Command {
     else{
       Robot.infeed.stopInfeed();
     }
-
-    //Deploy control
-    /*
-    if(changeDeployStatus && doneDeploying == false){
-      if(Robot.infeed.getDeployStatus() && doneDeploying == false){
-        Robot.infeed.deployInfeed(false);
-      }
-      else if(!Robot.infeed.getDeployStatus() && doneDeploying == false){
-        Robot.infeed.deployInfeed(true);
-      }
-      doneDeploying = true;
-    }
-
-    if(!changeDeployStatus){
-      doneDeploying = false;
-    }*/
   } 
 
   // Make this return true when this Command no longer needs to run execute()
@@ -75,7 +55,6 @@ public class InfeedControl extends Command {
   @Override
   protected void end() {
     Robot.infeed.stopInfeed();
-    //Robot.infeed.deployInfeed(false);
   }
 
   // Called when another command which requires one or more of the same
@@ -83,6 +62,5 @@ public class InfeedControl extends Command {
   @Override
   protected void interrupted() {
     Robot.infeed.stopInfeed();
-    //Robot.infeed.deployInfeed(false);
   }
 }
