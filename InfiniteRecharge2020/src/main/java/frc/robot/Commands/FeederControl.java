@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class BeltControl extends Command {
+public class FeederControl extends Command {
 
-    boolean controlBelt;
+    boolean controlFeeder;
 
-    public BeltControl() {
-        requires(Robot.beltchannel);
+    public FeederControl() {
+        requires(Robot.feedersystem);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -24,22 +24,22 @@ public class BeltControl extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.beltchannel.runBelt();
+        Robot.feedersystem.runFeeder();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        controlBelt = (Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B));
-        if(controlBelt == true){
-            Robot.beltchannel.runBelt();
+        controlFeeder = (Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B));
+        if(controlFeeder == true){
+            Robot.feedersystem.runFeeder();
         }
         else{
             if(Robot.shooter.getVelocity() > 5000){
-                Robot.beltchannel.runBelt(); 
+                Robot.feedersystem.runFeeder(); 
             }
             else{
-                Robot.beltchannel.stopBelt();
+                Robot.feedersystem.stopFeeder();
             }
         }
     } 
@@ -53,13 +53,13 @@ public class BeltControl extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.beltchannel.stopBelt();
+        Robot.feedersystem.stopFeeder();
   }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.beltchannel.stopBelt();
+        Robot.feedersystem.stopFeeder();
     }
 }

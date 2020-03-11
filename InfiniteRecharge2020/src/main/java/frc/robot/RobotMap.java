@@ -42,8 +42,8 @@ public class RobotMap {
   //Infeed
   public static final double INFEED_SPEED = 0.55;
 
-  //BeltChannel
-  public static final double BELT_SPEED = 0.75;
+  //Feeder
+  public static final double FEEDER_SPEED = 0.75;
 
   // XboxMove
   public static final double DRIVE_SENSITIVITY_PRECISION = 0.5;
@@ -89,9 +89,10 @@ public class RobotMap {
   public static final int INFEED_MOTOR_LEFT = 13;
   public static final int INFEED_MOTOR_RIGHT = 15;
 
-  //BeltChannel
-  public static final int BELT_MOTOR_LEFT = 0;
-  public static final int BELT_MOTOR_RIGHT = 0;
+  //BeltChannel & Feeder
+  public static final int BELT_MOTOR = 0;
+  public static final int FEEDER_MOTOR_1 = 0;
+  public static final int FEEDER_MOTOR_2 = 0;
 
   //Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 19;

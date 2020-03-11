@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
   public static NetworkTables networktables;
   public static DriveBase drivebase;
   public static Infeed infeed;
-  public static BeltChannel beltchannel;
+  public static FeederSystem feedersystem;
   public static Shooter shooter;
   public static OI oi;
 
@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
     networktables = new NetworkTables();
     drivebase = new DriveBase();
     infeed = new Infeed();
-    beltchannel = new BeltChannel();
+    feedersystem = new FeederSystem();
     shooter = new Shooter();
     timer = new Timer();
     

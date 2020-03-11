@@ -13,45 +13,48 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.Commands.BeltControl;
+import frc.robot.Commands.FeederControl;
 
 /**
  * Add your docs here.
  */
-public class BeltChannel extends Subsystem {
+public class FeederSystem extends Subsystem {
   //2 motors, 4 solenoid
   //MIGHT NOT BE VICTOR SP, check with design
-  private VictorSPX beltMotor1;
-  private VictorSPX beltMotor2;
+  private VictorSPX beltMotor, feederMotor1, feederMotor2;
 
-  public BeltChannel(){
-    beltMotor1 = new VictorSPX(RobotMap.BELT_MOTOR_LEFT);
-    beltMotor2 = new VictorSPX(RobotMap.BELT_MOTOR_RIGHT);
+  public FeederSystem(){
+    beltMotor = new VictorSPX(RobotMap.BELT_MOTOR);
+    feederMotor1 = new VictorSPX(RobotMap.FEEDER_MOTOR_1);
+    feederMotor2 = new VictorSPX(RobotMap.FEEDER_MOTOR_2);
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new BeltControl());
+    setDefaultCommand(new FeederControl());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public void runBelt(){
-    beltMotor1.set(ControlMode.PercentOutput, RobotMap.BELT_SPEED);
-    beltMotor2.set(ControlMode.PercentOutput, RobotMap.BELT_SPEED);
+  public void runFeeder(){
+    beltMotor.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
   }
 
   
-  public void reverseBelt(){
-    beltMotor1.set(ControlMode.PercentOutput, -1 * RobotMap.BELT_SPEED);
-    beltMotor2.set(ControlMode.PercentOutput, -1 * RobotMap.BELT_SPEED);
+  public void reverseFeeder(){
+    beltMotor.set(ControlMode.PercentOutput, -1 * RobotMap.FEEDER_SPEED);
+    feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
   }
 
-  public void stopBelt(){
-    beltMotor1.set(ControlMode.PercentOutput, 0);
-    beltMotor2.set(ControlMode.PercentOutput, 0);
+  public void stopFeeder(){
+    beltMotor.set(ControlMode.PercentOutput, 0);
+    feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
   }
 
 }
