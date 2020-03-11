@@ -41,13 +41,13 @@ public class FeederSystem extends Subsystem {
   public void runFeeder(){
     beltMotor.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
     feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
-    feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor2.set(ControlMode.PercentOutput, -RobotMap.FEEDER_SPEED);
   }
 
   
   public void reverseFeeder(){
     beltMotor.set(ControlMode.PercentOutput, -1 * RobotMap.FEEDER_SPEED);
-    feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor1.set(ControlMode.PercentOutput, -RobotMap.FEEDER_SPEED);
     feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
   }
 

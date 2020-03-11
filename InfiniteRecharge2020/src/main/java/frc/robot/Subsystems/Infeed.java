@@ -23,13 +23,11 @@ public class Infeed extends Subsystem {
   //MIGHT NOT BE VICTOR SP, check with design
   private VictorSPX infeedMotor1;
   private VictorSPX infeedMotor2;
-  private VictorSPX infeedMotorFront;
   private Solenoid infeedDeployer1, infeedDeployer2;
 
   public Infeed(){
     infeedMotor1 = new VictorSPX(RobotMap.INFEED_MOTOR_LEFT);
     infeedMotor2 = new VictorSPX(RobotMap.INFEED_MOTOR_RIGHT);
-    infeedMotorFront = new VictorSPX(RobotMap.CLIMB_MOTOR_1);
     infeedDeployer1 = new Solenoid(RobotMap.INFEED_DEPLOY_1);
     infeedDeployer2 = new Solenoid(RobotMap.INFEED_DEPLOY_2);
     }
@@ -56,21 +54,17 @@ public class Infeed extends Subsystem {
   public void runInfeed(){
     infeedMotor1.set(ControlMode.PercentOutput, 0.75);
     infeedMotor2.set(ControlMode.PercentOutput, 0.75);
-    infeedMotorFront.set(ControlMode.PercentOutput, 0.75);
   }
 
   
   public void reverseInfeed(){
     infeedMotor1.set(ControlMode.PercentOutput, -1 * RobotMap.INFEED_SPEED);
     infeedMotor2.set(ControlMode.PercentOutput, -1 * RobotMap.INFEED_SPEED);
-    infeedMotorFront.set(ControlMode.PercentOutput, -1 * RobotMap.INFEED_SPEED);
-
   }
 
   public void stopInfeed(){
     infeedMotor1.set(ControlMode.PercentOutput, 0);
     infeedMotor2.set(ControlMode.PercentOutput, 0);
-    infeedMotorFront.set(ControlMode.PercentOutput, 0);
   }
 
 }
