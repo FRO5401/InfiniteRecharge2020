@@ -53,8 +53,8 @@ public class FeederSystem extends Subsystem {
 
   public void stopFeeder(){
     beltMotor.set(ControlMode.PercentOutput, 0);
-    feederMotor1.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
-    feederMotor2.set(ControlMode.PercentOutput, RobotMap.FEEDER_SPEED);
+    feederMotor1.set(ControlMode.PercentOutput, 0);
+    feederMotor2.set(ControlMode.PercentOutput, 0);
   }
 
 }
