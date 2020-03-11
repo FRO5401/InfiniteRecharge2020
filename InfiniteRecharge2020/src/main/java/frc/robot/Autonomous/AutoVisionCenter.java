@@ -41,7 +41,6 @@ public class AutoVisionCenter extends Command {
 
 		startTime = Timer.getMatchTime();
 		
-		Robot.networktables.resetValues();
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
