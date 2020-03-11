@@ -21,19 +21,17 @@ public class AutoVisionCenter extends Command {
     //private double currentAngle;
 	private double autoDriveSpeed;
 	private boolean doneTraveling;
-	private double radius;
-	//private double ballLocation;
+	private double portLocation;
     
     private double startTime;
     private double currentTime;
     
-    private boolean isCentered;
+	private boolean isCentered;
 
 	public AutoVisionCenter(double SpeedInput) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);s
-
 		autoDriveSpeed = SpeedInput;
 	}
 
@@ -48,11 +46,6 @@ public class AutoVisionCenter extends Command {
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
 
-		/*
-		if(Robot.networktables.getBXValue() > 0){
-			ballLocation = Robot.networktables.getBXValue();
-		}*/
-
 		doneTraveling = false;
 		isCentered = false;
 	}
@@ -64,31 +57,29 @@ public class AutoVisionCenter extends Command {
 		double timeElapsed = startTime - currentTime;
         SmartDashboard.putNumber("Time elapsed", timeElapsed);
 
-		radius = Robot.networktables.getBallRadius();
-
 		if(isCentered == false){
-			isCentered = Robot.networktables.checkCentered();
-			//currentAngle = Robot.networktables.getBXValue();
+			isCentered = Robot.networktables.checkCenteredPort();
+
 		}
-		if(Robot.networktables.radius > 0){ //If ball is recognized drive towards it and infeed
-		    if(isCentered == true) { //Once recognized ball is straight ahead, drive towards it based off of received distance
+		if(portLocation > 0){ //If power port is recognized, turn to center drivebase
+		    if(isCentered == true) { 
 				Robot.drivebase.stopMotors();
 				doneTraveling = true;
             }
-			else { //Turn until the ball that is recognized is straight ahead
-				if(Robot.networktables.getBXValue() > Robot.networktables.leftBound){//turn right
+			else { //Turn until the port that is recognized is straight ahead
+				if(portLocation > Robot.networktables.leftBound){//turn right
 					Robot.drivebase.drive(autoDriveSpeed, -1 * autoDriveSpeed);
 					doneTraveling = false;
 				}
-				else if(Robot.networktables.getBXValue() < Robot.networktables.rightBound){//turn right
+				else if(portLocation < Robot.networktables.rightBound){//turn left
 					Robot.drivebase.drive(-1 * autoDriveSpeed, autoDriveSpeed);
 					doneTraveling = false;
 				}
             }
         }
-		else if(radius == 0){ //If no ball is recognized, scan area
+		else if(portLocation == 0){ //If no port is recognized, scan area
 			isCentered = false;
-			if(timeElapsed >= 3){//If no ball has been found after 3 seconds, go back to original angle and stop
+			if(timeElapsed >= 3){//If no port has been found after 3 seconds, go back to original angle and stop
 				if(Robot.drivebase.navxGyro.getAngle() > (Robot.drivebase.navxGyro.getAngle() % 366)){
 					Robot.drivebase.drive(-1 * autoDriveSpeed, autoDriveSpeed);
 				}
@@ -102,7 +93,7 @@ public class AutoVisionCenter extends Command {
 				}	
 			}
 			else if((timeElapsed) < 3){
-				Robot.drivebase.drive(-1 * 0.2, (0.2));
+				Robot.drivebase.drive(-1 * 0.3, (0.3));
 			}
 		}
 	}
