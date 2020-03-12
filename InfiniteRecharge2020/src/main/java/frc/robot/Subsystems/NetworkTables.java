@@ -18,7 +18,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class NetworkTables extends Subsystem {
   
   NetworkTable ballTable;
-  NetworkTable powerPortTable;
+  //NetworkTable powerPortTable;
   NetworkTableInstance inst;
   NetworkTableEntry ballXEntry, ballYEntry, ballDEntry, ballREntry;
   NetworkTableEntry powerPortXEntry, powerPortYEntry, powerPortDEntry;
@@ -47,14 +47,14 @@ public class NetworkTables extends Subsystem {
   public void updateValue() {
     inst = NetworkTableInstance.getDefault();
     ballTable = inst.getTable("BallTable");
-    powerPortTable = inst.getTable("PowerPort");
+    //powerPortTable = inst.getTable("PowerPort");
     ballXEntry = ballTable.getEntry("cX");
     ballYEntry = ballTable.getEntry("cY");
     ballDEntry = ballTable.getEntry("inches");
     ballREntry = ballTable.getEntry("radius");
-    powerPortXEntry = powerPortTable.getEntry("greencX");
-    powerPortYEntry = powerPortTable.getEntry("greencY");
-    powerPortDEntry = powerPortTable.getEntry("greeninches");
+    powerPortXEntry = ballTable.getEntry("greencX");
+    powerPortYEntry = ballTable.getEntry("greencY");
+    powerPortDEntry = ballTable.getEntry("greeninches");
 
     inst.startClientTeam(5401); // where TEAM=190, 294, etc, or use inst.
     inst.startDSClient(); // recommended if running on DS computer; this gets the robot
@@ -66,10 +66,11 @@ public class NetworkTables extends Subsystem {
     powerPortX = powerPortXEntry.getDouble(0.0);
     powerPortY = powerPortYEntry.getDouble(0.0);
     powerPortDistance = powerPortDEntry.getDouble(0.0);
-    System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
-    System.out.println("The Ball is " + inches + " away");
-    System.out.println("The radius is " + radius);
+    //System.out.println("The Ball coordinates are: " + "X: " + ballX + " Y: " + ballY);
+    //System.out.println("The Ball is " + inches + " away");
+    //System.out.println("The radius is " + radius);
     System.out.println("The Power Port coordinates are: " + "X: " + powerPortY + " Y: " + powerPortY);
+    System.out.println("The Power Port is " + powerPortDistance + " inches away");
   }
 
   public double getBXValue() {
