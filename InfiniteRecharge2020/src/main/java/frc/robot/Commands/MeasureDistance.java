@@ -31,15 +31,17 @@ public class MeasureDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    measure = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+    measure = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
 
-    if (measure)
+    System.out.println("There is no other way Jose");
+    if (measure == true)
     {
+        System.out.println("Maybe this is a way jose");
         Robot.lidar.start();
     }
     else
     {
-        Robot.lidar.stop();
+       
     }
   }
 
