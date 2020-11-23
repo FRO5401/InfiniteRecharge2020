@@ -68,4 +68,8 @@ public class Infeed extends Subsystem {
     }
   }
 
+  public void reportValues(){
+    SmartDashboard.putNumber("Infeed Status", getDeployStatus());
+  }
+
 }

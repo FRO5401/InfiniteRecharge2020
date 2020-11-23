@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   public static Infeed infeed;
   public static Shooter shooter;
   public static CompressorSubsystem compressorsubsystem;
+  public static Serializer serializer;
 
   public static Timer timer;
   public double matchTime;
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
     infeed = new Infeed();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
+    serializer = new Serializer();
     oi = new OI();
   }
 
@@ -71,6 +73,8 @@ public class Robot extends TimedRobot {
     //Robot.networktables.reportValues();
     //Robot.turret.reportTurretInfeedSensors();
     Robot.shooter.reportValues();
+    Robot.serializer.reportValues();
+    Robot.infeed.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
 
     //Robot.networktables.updateValue();
