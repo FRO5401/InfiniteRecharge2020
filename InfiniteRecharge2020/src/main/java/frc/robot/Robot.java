@@ -26,8 +26,7 @@ import frc.robot.Autonomous.*;
 public class Robot extends TimedRobot {
 
   public static DriveBase drivebase;
-  public static Turret turret;
-  public static NetworkTables networktables;
+  public static Infeed infeed;
   public static Shooter shooter;
   public static CompressorSubsystem compressorsubsystem;
 
@@ -51,9 +50,8 @@ public class Robot extends TimedRobot {
 
     matchTime = Timer.getMatchTime();
 
-    turret = new Turret();
-//  drivebase = new DriveBase();
-    networktables = new NetworkTables();
+    drivebase = new DriveBase();
+    infeed = new Infeed();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
     oi = new OI();
@@ -70,13 +68,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.networktables.reportValues();
-    Robot.turret.reportTurretInfeedSensors();
+    //Robot.networktables.reportValues();
+    //Robot.turret.reportTurretInfeedSensors();
     Robot.shooter.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
 
-    Robot.networktables.updateValue();
-    Robot.turret.turretVision();
+    //Robot.networktables.updateValue();
     //Robot.drivebase.visionMove();
 
     SmartDashboard.putNumber("Match Time (sec)", matchTime);

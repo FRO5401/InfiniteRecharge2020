@@ -41,9 +41,8 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // Turret
-  public static final double TURRET_TURN_SPEED = .35;
-  public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
+  //Infeed
+  public static final double INFEED_SPEED = 0.55;
 
   /*** Operator Interfaces ***/
   // Controllers
@@ -80,12 +79,9 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_2 = 4;
   public static final int DRIVE_MOTOR_LEFT_3 = 6;
 
-  // Turret
-  public static final int TURRET_TALON = 10;
-  public static final int T_STOP_LEFT = 90;
-  public static final int T_STOP_RIGHT = -90;
-  public static final double TURRET_SPEED_SENSITIVITY = 0.35;
-  public static final double TURRET_ANGLE_LIMIT = 90;
+  //Infeed
+  public static final int INFEED_MOTOR_1 = 13;
+  public static final int INFEED_MOTOR_2 = 15;
 
   // Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 7;
@@ -96,6 +92,9 @@ public class RobotMap {
   // Solenoids have just one constant.
   // PCM (Pneumatic Control Module)
   public static final int PCM_ID = 0;
+
+  //Infeed
+  public static final int INFEED_DEPLOY = 2;
 
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
