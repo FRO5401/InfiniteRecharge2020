@@ -87,8 +87,9 @@ public class RobotMap {
   public static final int SHOOTER_MASTER_CHANNEL = 7;
   public static final int SHOOTER_SLAVE_CHANNEL = 8;
 
-  //Serializer
+  //Serializer *fake ports btw lol*
   public static final int SERIALIZER_MOTOR = 0;
+  public static final int BELT_MOTOR = 1;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.

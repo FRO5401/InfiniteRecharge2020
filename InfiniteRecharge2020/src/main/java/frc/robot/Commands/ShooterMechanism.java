@@ -48,10 +48,14 @@ public class ShooterMechanism extends Command {
 
     if(controlShooter == true && (Robot.shooter.getVelocity() > 500)) {
       Robot.shooter.stopMotors();
+      Robot.serializer.runSerializer("STOP");
+      Robot.serializer.runBelt("STOP");
     }
 
     if(controlShooter == true && (Robot.shooter.getVelocity() < 500)) {
       Robot.shooter.runMotors();
+      Robot.serializer.runSerializer("IN");
+      Robot.serializer.runBelt("IN");
     }
 
   }
@@ -60,11 +64,15 @@ public class ShooterMechanism extends Command {
   @Override
   public void end () {
     Robot.shooter.stopMotors();
+    Robot.serializer.runSerializer("STOP");
+    Robot.serializer.runBelt("STOP");
   }
 
   @Override
   public void interrupted(){
     Robot.shooter.stopMotors();
+    Robot.serializer.runSerializer("STOP");
+    Robot.serializer.runBelt("STOP");
   }
 
   // Returns true when the command should end.

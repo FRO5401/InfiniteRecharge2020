@@ -20,7 +20,6 @@ public class Shooter extends Subsystem {
 
     // instanciate the objects
     TalonFX shooterMaster, shooterSlave;
-    Solenoid kicker;
     private double kF, kP, kI, kD;
     private double PID_MOTOR_SPEED = 0;
     private double MOTOR_SPEED = PID_MOTOR_SPEED;
@@ -86,10 +85,6 @@ public class Shooter extends Subsystem {
 
     public double getVelocity() {
         return shooterMaster.getSensorCollection().getIntegratedSensorVelocity();
-    }
-
-    public void kickBall(boolean status) {
-        kicker.set(status);
     }
 
     public void reportValues(){
