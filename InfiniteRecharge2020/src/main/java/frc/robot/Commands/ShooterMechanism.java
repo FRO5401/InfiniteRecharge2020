@@ -16,6 +16,8 @@ public class ShooterMechanism extends Command {
    * Creates a new ShooterMechanism.
    */
   boolean controlShooter = false;
+  boolean readyShooter;
+  boolean shooterRunning = false;
 
   //For PID testing
   public int dPad;
@@ -29,14 +31,18 @@ public class ShooterMechanism extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.shooter.startMotors();
+    //Maybe put a stop here later idk
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    //NOTE: We have to put code for expelling the balls from the shooter in case of a jam
+
     Robot.shooter.reportValues();
     controlShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_X);
+    readyShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_Y);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
@@ -44,6 +50,17 @@ public class ShooterMechanism extends Command {
     //For PID testing
     if(dPad == 180){
       Robot.shooter.getPIDInput();
+    }
+
+    if(readyShooter) {
+      shooterRunning = !shooterRunning;
+    }
+
+    if(shooterRunning) {
+      Robot.shooter.startMotors();
+    }
+    else {
+      Robot.shooter.stopMotors();
     }
 
     if(controlShooter == true && (Robot.shooter.getVelocity() > 500)) {

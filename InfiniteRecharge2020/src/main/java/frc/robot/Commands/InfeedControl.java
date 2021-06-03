@@ -39,15 +39,12 @@ public class InfeedControl extends Command {
     //Infeed Control
     if(infeedIn){
       Robot.infeed.runInfeed("IN");
-      Robot.serializer.runBelt("IN");
     }
     else if(infeedOut){
       Robot.infeed.runInfeed("OUT");
-      Robot.serializer.runBelt("OUT");
     }
     else{
       Robot.infeed.runInfeed("STOP");
-      Robot.serializer.runBelt("STOP");
     }
 
     //Deploy control
