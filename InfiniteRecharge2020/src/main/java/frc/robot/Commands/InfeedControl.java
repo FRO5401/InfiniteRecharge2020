@@ -73,7 +73,6 @@ public class InfeedControl extends Command {
   @Override
   protected void end() {
     Robot.infeed.runInfeed("STOP");
-    Robot.serializer.runBelt("STOP");
     Robot.infeed.deployInfeed(false);
   }
 
@@ -82,7 +81,6 @@ public class InfeedControl extends Command {
   @Override
   protected void interrupted() {
     Robot.infeed.runInfeed("STOP");
-    Robot.serializer.runBelt("STOP");
     Robot.infeed.deployInfeed(false);
   }
 }
