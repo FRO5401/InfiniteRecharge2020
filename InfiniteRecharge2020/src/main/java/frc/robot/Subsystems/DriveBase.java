@@ -8,11 +8,13 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 
@@ -30,6 +32,8 @@ public class DriveBase extends Subsystem {
   // Motors
   private TalonFX testPWM, falcon;
 
+  private int maxVelocity = -14500;
+  private double elapsedTime= 0;
   // Solenoids
   private Solenoid gearShifter;
 
@@ -60,8 +64,8 @@ public class DriveBase extends Subsystem {
 
   // Sets victors to desired speed giving from XboxMove.
   public void drive() {
-    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 1);
-    falcon.set(TalonFXControlMode.PercentOutput, 1);
+    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 0.7);
+    falcon.set(TalonFXControlMode.PercentOutput, 0.7);
   }
 
   public void stopMotors() {
@@ -107,4 +111,36 @@ public class DriveBase extends Subsystem {
   public void resetGyro() {
     navxGyro.reset();
   }
+
+  public void reportShooter() {
+    SmartDashboard.putNumber("max speed", maxVelocity * -1);
+    SmartDashboard.putNumber("Speed", -1*testPWM.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("recoverTime", elapsedTime);
+  }
+
+  public void maxVelocity() {
+    if(testPWM.getSelectedSensorVelocity() < maxVelocity){
+      maxVelocity = testPWM.getSelectedSensorVelocity();
+
+    }
+   
+
+
+  }
+  public void reportTimer(){
+    if(testPWM.getSelectedSensorVelocity() == maxVelocity){
+      int count = 1;
+      double initTime = Timer.getMatchTime(); 
+      if(count == 3 && testPWM.getSelectedSensorVelocity() == maxVelocity){
+         elapsedTime = initTime - Timer.getMatchTime();
+      }
+      count++;
+
+    }
+
+
+  }
+
+
 }
+

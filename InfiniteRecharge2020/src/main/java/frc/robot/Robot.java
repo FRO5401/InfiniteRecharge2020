@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,6 +29,9 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  public static Timer timer;
+  public double matchTime;
+
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
   public static OI oi;
@@ -44,8 +48,11 @@ public class Robot extends TimedRobot {
 
     compressorsubsystem = new CompressorSubsystem();
     drivebase = new DriveBase();
-    
+    timer = new Timer();
     oi = new OI();
+
+    timer.start();
+    
   }
 
   /**
@@ -59,6 +66,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    matchTime = Timer.getMatchTime();
+    SmartDashboard.putNumber("Match Time (sec)", matchTime);
+    Robot.drivebase.reportShooter();
+    Robot.drivebase.maxVelocity();
+
+
   }
 
   /**
@@ -106,6 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    
     //Robot.drivebase.drive(0.5, 0.5);
   }
 
