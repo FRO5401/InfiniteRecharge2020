@@ -93,7 +93,7 @@ public class XboxMove extends Command {
       if(shoot){
         Robot.drivebase.drive();
       }
-      else if(shoot == false){
+      else{
         Robot.drivebase.stopMotors();
       }
 

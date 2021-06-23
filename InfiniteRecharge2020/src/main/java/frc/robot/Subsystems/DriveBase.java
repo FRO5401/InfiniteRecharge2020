@@ -40,8 +40,8 @@ public class DriveBase extends Subsystem {
 
   public DriveBase() {
     // Instantiate Motors
-    testPWM = new TalonFX(7);
-    falcon = new TalonFX(8);
+    testPWM = new TalonFX(19);
+    falcon = new TalonFX(21);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -60,8 +60,8 @@ public class DriveBase extends Subsystem {
 
   // Sets victors to desired speed giving from XboxMove.
   public void drive() {
-    testPWM.set(TalonFXControlMode.PercentOutput, 1.0);
-    falcon.set(TalonFXControlMode.PercentOutput, -1 * 1.0);
+    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 1);
+    falcon.set(TalonFXControlMode.PercentOutput, 1);
   }
 
   public void stopMotors() {
