@@ -69,8 +69,8 @@ public class Robot extends TimedRobot {
     matchTime = Timer.getMatchTime();
     SmartDashboard.putNumber("Match Time (sec)", matchTime);
     Robot.drivebase.reportShooter();
-    Robot.drivebase.maxVelocity();
-
+    //Robot.drivebase.maxVelocity();
+    Robot.drivebase.reportTimer();
 
   }
 

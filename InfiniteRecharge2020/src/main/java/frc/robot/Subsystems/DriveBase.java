@@ -32,7 +32,9 @@ public class DriveBase extends Subsystem {
   // Motors
   private TalonFX testPWM, falcon;
 
-  private int maxVelocity = -14500;
+  private int maxVelocity = -14069;
+  private int count = 1;
+  private double initTime= 0;
   private double elapsedTime= 0;
   // Solenoids
   private Solenoid gearShifter;
@@ -64,8 +66,8 @@ public class DriveBase extends Subsystem {
 
   // Sets victors to desired speed giving from XboxMove.
   public void drive() {
-    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 0.7);
-    falcon.set(TalonFXControlMode.PercentOutput, 0.7);
+    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 1);
+    falcon.set(TalonFXControlMode.PercentOutput, 1);
   }
 
   public void stopMotors() {
@@ -116,9 +118,10 @@ public class DriveBase extends Subsystem {
     SmartDashboard.putNumber("max speed", maxVelocity * -1);
     SmartDashboard.putNumber("Speed", -1*testPWM.getSelectedSensorVelocity());
     SmartDashboard.putNumber("recoverTime", elapsedTime);
+    SmartDashboard.putNumber("count",count);
   }
 
-  public void maxVelocity() {
+ /* public void maxVelocity() {
     if(testPWM.getSelectedSensorVelocity() < maxVelocity){
       maxVelocity = testPWM.getSelectedSensorVelocity();
 
@@ -126,16 +129,21 @@ public class DriveBase extends Subsystem {
    
 
 
-  }
-  public void reportTimer(){
-    if(testPWM.getSelectedSensorVelocity() == maxVelocity){
-      int count = 1;
-      double initTime = Timer.getMatchTime(); 
-      if(count == 3 && testPWM.getSelectedSensorVelocity() == maxVelocity){
+  } 
+  */
+  public void reportTimer(){ 
+    if(testPWM.getSelectedSensorVelocity() <  maxVelocity + 10 && testPWM.getSelectedSensorVelocity() > maxVelocity - 10){
+      
+       
+      if((count % 3) == 0 && (testPWM.getSelectedSensorVelocity() <  maxVelocity + 10 && testPWM.getSelectedSensorVelocity() > maxVelocity - 10)){
          elapsedTime = initTime - Timer.getMatchTime();
+         count = 1;
+      }
+      else{
+        initTime = Timer.getMatchTime();
       }
       count++;
-
+      
     }
 
 
