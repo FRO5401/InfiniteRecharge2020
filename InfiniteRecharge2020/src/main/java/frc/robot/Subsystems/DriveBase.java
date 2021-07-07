@@ -95,8 +95,11 @@ public class DriveBase extends Subsystem {
     leftDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
     leftDrive1.configMotionCruiseVelocity(10000);
     leftDrive1.configMotionAcceleration(10000);
+    leftDrive1.setInverted(true);
     leftDrive2.follow(leftDrive1);
+    leftDrive2.setInverted(InvertType.FollowMaster);
     leftDrive3.follow(leftDrive1);
+    leftDrive3.setInverted(InvertType.FollowMaster);
     
     rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
     rightDrive1.setSensorPhase(true);
@@ -119,11 +122,8 @@ public class DriveBase extends Subsystem {
     rightDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
     rightDrive1.configMotionCruiseVelocity(10000);
     rightDrive1.configMotionAcceleration(10000);
-    rightDrive1.setInverted(true);
     rightDrive2.follow(rightDrive1);
-    rightDrive2.setInverted(InvertType.FollowMaster);
     rightDrive3.follow(rightDrive1);
-    rightDrive3.setInverted(InvertType.FollowMaster);
     
 
     leftDrive1.setNeutralMode(NeutralMode.Brake);
