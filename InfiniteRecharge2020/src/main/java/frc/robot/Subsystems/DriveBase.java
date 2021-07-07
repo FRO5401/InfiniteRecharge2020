@@ -65,9 +65,18 @@ public class DriveBase extends Subsystem {
 
 
   // Sets victors to desired speed giving from XboxMove.
+  //0.64 is ideal for current configuration
+  /*
+  SHOOTER SOURCES OF ERROR:
+  FLEX OF SHOOTER WHEN SHOOTING
+  WEAR OF BALL
+  BRAND OF BALL
+  STYLE OF FEED
+  TURRET MOVEMENT/SHAKE
+  */
   public void drive() {
-    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 1);
-    falcon.set(TalonFXControlMode.PercentOutput, 1);
+    testPWM.set(TalonFXControlMode.PercentOutput, -1 * 0.64);
+    falcon.set(TalonFXControlMode.PercentOutput, 0.64);
   }
 
   public void stopMotors() {
