@@ -216,7 +216,8 @@ public class DriveBase extends Subsystem {
     leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
     rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
 
-    Robot.turret.turretTalon.getSensorCollection().setQuadraturePosition(0, 10);
+      //ADD TURRET LATER
+    //Robot.turret.turretTalon.getSensorCollection().setQuadraturePosition(0, 10);
 
     navxGyro.reset();
   }

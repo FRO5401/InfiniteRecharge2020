@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.InfeedControl;
 
@@ -69,7 +70,7 @@ public class Infeed extends Subsystem {
   }
 
   public void reportValues(){
-    SmartDashboard.putNumber("Infeed Status", getDeployStatus());
+    SmartDashboard.putBoolean("Infeed Status", getDeployStatus());
   }
 
 }

@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   public static Shooter shooter;
   public static CompressorSubsystem compressorsubsystem;
   public static Serializer serializer;
+  public static NetworkTables networktables;
 
   public static Timer timer;
   public double matchTime;
@@ -51,11 +52,14 @@ public class Robot extends TimedRobot {
 
     matchTime = Timer.getMatchTime();
 
+
     drivebase = new DriveBase();
     infeed = new Infeed();
     compressorsubsystem = new CompressorSubsystem();
     shooter = new Shooter();
     serializer = new Serializer();
+    networktables = new NetworkTables();
+
     oi = new OI();
   }
 
