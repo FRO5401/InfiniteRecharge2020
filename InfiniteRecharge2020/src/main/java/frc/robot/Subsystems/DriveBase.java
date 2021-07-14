@@ -8,14 +8,21 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -29,12 +36,10 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class DriveBase extends Subsystem {
   // Motors
-  private TalonSRX leftDrive1;
-  private TalonSRX rightDrive1;
-  private VictorSPX leftDrive2;
-  private VictorSPX rightDrive2;
-  private VictorSPX leftDrive3;
-  private VictorSPX rightDrive3;
+  private SpeedControllerGroup leftDrives;
+  private SpeedControllerGroup rightDrives;
+  private DifferentialDrive ourDrive;
+  private DifferentialDriveOdometry odometry;
 
   //PID stuff
   private int loopIndex, slotIndex;
@@ -59,12 +64,9 @@ public class DriveBase extends Subsystem {
     slotIndex = 0;
 
     // Instantiate Motors
-    leftDrive1 = new TalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1);
-    rightDrive1 = new TalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1);
-    leftDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2);
-    rightDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2);
-    leftDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3);
-    rightDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3);
+    leftDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
+    rightDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
+    ourDrive = new DifferentialDrive(leftDrives, rightDrives);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -73,61 +75,7 @@ public class DriveBase extends Subsystem {
     navxGyro = new AHRS(I2C.Port.kMXP);
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
-
-    leftDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
-    leftDrive1.setSensorPhase(true);
-
-    leftDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-  
-      //Configuring the max & min percentage output. 
-    leftDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-      //Configuring PID values. 
-    leftDrive1.selectProfileSlot(slotIndex, loopIndex);
-    leftDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
-    leftDrive1.configMotionCruiseVelocity(10000);
-    leftDrive1.configMotionAcceleration(10000);
-    leftDrive1.setInverted(true);
-    leftDrive2.follow(leftDrive1);
-    leftDrive2.setInverted(InvertType.FollowMaster);
-    leftDrive3.follow(leftDrive1);
-    leftDrive3.setInverted(InvertType.FollowMaster);
     
-    rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
-    rightDrive1.setSensorPhase(true);
-
-    rightDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-  
-      //Configuring the max & min percentage output. 
-    rightDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-      //Configuring PID values. 
-    rightDrive1.selectProfileSlot(slotIndex, loopIndex);
-    rightDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
-    rightDrive1.configMotionCruiseVelocity(10000);
-    rightDrive1.configMotionAcceleration(10000);
-    rightDrive2.follow(rightDrive1);
-    rightDrive3.follow(rightDrive1);
-    
-
-    leftDrive1.setNeutralMode(NeutralMode.Brake);
-    rightDrive1.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -135,114 +83,117 @@ public class DriveBase extends Subsystem {
     setDefaultCommand(new XboxMove());
   }
 
-  // Sets victors to desired speed giving from XboxMove.
-  public void drive(double leftDriveDesired, double rightDriveDesired) {
-    // Left inverted in accordance to physical wiring.
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
-    rightDrive1.set(ControlMode.PercentOutput, (rightDriveDesired) * RobotMap.TELEOP_SPEED_ADJUSTMENT_RIGHT);
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
   }
 
-  // Sets SC's to 0.
-  public void stopMotors() {
-    leftDrive1.set(ControlMode.PercentOutput, 0);
-    rightDrive1.set(ControlMode.PercentOutput, 0);
+  /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
   }
 
-  //PID control during Teleop
-  public void driveToPosition(double distance) {
-    double leftDist = distance * 16384;
-    double rightDist = distance * 16384;
-    
-    // Left inverted in accordance to physical wiring.
-    leftDrive1.set(ControlMode.MotionMagic, leftDist);
-    leftDrive1.set(ControlMode.Position, leftDist);
-    rightDrive1.set(ControlMode.MotionMagic, rightDist);
-    rightDrive1.set(ControlMode.Position, rightDist);
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    //odometry.resetPosition(pose, navxGyro.getRotation2d());
   }
 
-  // Set shifter to low.
-  public void shiftHighToLow() {
-    gearShifter.set(true);
-    setDPPLowGear();
+  /**
+   * Drives the robot using arcade controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void arcadeDrive(double fwd, double rot) {
+    ourDrive.arcadeDrive(fwd, rot);
   }
 
-  // Set shifter to High.
-  public void shiftLowToHigh() {
-    gearShifter.set(false);
-    setDPPHighGear();
+  /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts  the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftDrives.setVoltage(leftVolts);
+    rightDrives.setVoltage(-rightVolts);
+    ourDrive.feed();
   }
 
-  // Sets DPP for low gear.
-  public void setDPPLowGear() {
-    leftEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_LEFT_DPP);
-    rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
-  }
-
-  // Sets DPP for high gear.
-  public void setDPPHighGear() {
-    leftEncoder.setDistancePerPulse(RobotMap.HIGH_GEAR_LEFT_DPP);
-    rightEncoder.setDistancePerPulse(RobotMap.HIGH_GEAR_RIGHT_DPP);
-  }
-
-  // For autonomous driving
-  public double getEncoderDistance(int encoderNumber) {
-    double leftDistAdj = leftEncoder.getDistance();
-    double rightDistAdj = rightEncoder.getDistance();
-    double avgDistance = (leftDistAdj + rightDistAdj) / 2;
-
-    if (encoderNumber == 1) {
-      return leftDistAdj;
-    } else if (encoderNumber == 2) {
-      return rightDistAdj;
-    } else {
-      return avgDistance;
-    }
-  }
-
-  // Gets Gyro Angle
-  public double getGyroAngle() {
-    return navxGyro.getAngle();
-  }
-
-  public double getGyroPitch() {
-    double pitch = navxGyro.getPitch();
-    return pitch;
-  }
-
-  // Reports all information from drivebase to SmartDashboard
-  public void reportDriveBaseSensors() {
-    // Misc.
-    SmartDashboard.putBoolean("NavX Connection", navxGyro.isConnected());
-    SmartDashboard.putBoolean("DriveBase Current Gear", gearShifter.get());
-    // Encoders
-    SmartDashboard.putNumber("Left Enc Raw", leftEncoder.get());
-    SmartDashboard.putNumber("Right Enc Raw", rightEncoder.get());
-    SmartDashboard.putNumber("Left Enc Adj", leftEncoder.getDistance());
-    SmartDashboard.putNumber("Right Enc Adj", rightEncoder.getDistance());
-    // NavX
-    SmartDashboard.putNumber("NaxX Angle", navxGyro.getAngle());
-    SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
-    SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
-    // Victors
-    SmartDashboard.putNumber("Left Talon1 Position", leftDrive1.getSelectedSensorPosition());
-    //SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
-    //SmartDashboard.putNumber("Left VSP3 Speed", leftDrive3.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Right Talon1 Position", rightDrive1.getSelectedSensorPosition());
-    //SmartDashboard.putNumber("Right VSP2 Speed", rightDrive2.getSelectedSensorVelocity());
-    //SmartDashboard.putNumber("Right VSP3 Speed", rightDrive3.getSelectedSensorVelocity());
-  }
-
-  // Resets the Encoders.
+  /**
+   * Resets the drive encoders to currently read a position of 0.
+   */
   public void resetEncoders() {
     leftEncoder.reset();
     rightEncoder.reset();
-
-    leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
-    rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
   }
 
-  // Resets the Gyro.
-  public void resetGyro() {
+  /**
+   * Gets the average distance of the two encoders.
+   *
+   * @return the average of the two encoder readings
+   */
+  public double getAverageEncoderDistance() {
+    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
+  }
+
+  /**
+   * Gets the left drive encoder.
+   *
+   * @return the left drive encoder
+   */
+  public Encoder getLeftEncoder() {
+    return leftEncoder;
+  }
+
+  /**
+   * Gets the right drive encoder.
+   *
+   * @return the right drive encoder
+   */
+  public Encoder getRightEncoder() {
+    return rightEncoder;
+  }
+
+  /**
+   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+   *
+   * @param maxOutput the maximum output to which the drive will be constrained
+   */
+  public void setMaxOutput(double maxOutput) {
+    ourDrive.setMaxOutput(maxOutput);
+  }
+
+  /**
+   * Zeroes the heading of the robot.
+   */
+  public void zeroHeading() {
     navxGyro.reset();
+  }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+    return -navxGyro.getYaw();
+  }
+
+  /**
+   * Returns the turn rate of the robot.
+   *
+   * @return The turn rate of the robot, in degrees per second
+   */
+  public double getTurnRate() {
+    return -navxGyro.getRate();
   }
 }
