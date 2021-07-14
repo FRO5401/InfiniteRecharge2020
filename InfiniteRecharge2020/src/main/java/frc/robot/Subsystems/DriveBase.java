@@ -74,54 +74,12 @@ public class DriveBase extends Subsystem {
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
 
-    leftDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
-    leftDrive1.setSensorPhase(true);
-
-    leftDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-  
-      //Configuring the max & min percentage output. 
-    leftDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-      //Configuring PID values. 
-    leftDrive1.selectProfileSlot(slotIndex, loopIndex);
-    leftDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    leftDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
-    leftDrive1.configMotionCruiseVelocity(10000);
-    leftDrive1.configMotionAcceleration(10000);
-    leftDrive1.setInverted(true);
-    leftDrive2.follow(leftDrive1);
+      //Configuring PID values
     leftDrive2.setInverted(InvertType.FollowMaster);
     leftDrive3.follow(leftDrive1);
     leftDrive3.setInverted(InvertType.FollowMaster);
     
-    rightDrive1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);//10 is a timeout that waits for successful conection to sensor
-    rightDrive1.setSensorPhase(true);
 
-    rightDrive1.configAllowableClosedloopError(slotIndex, RobotMap.DRIVEBASE_THRESHOLD_FOR_PID, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-    rightDrive1.setIntegralAccumulator(iaccum, loopIndex, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-  
-      //Configuring the max & min percentage output. 
-    rightDrive1.configNominalOutputForward(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configNominalOutputReverse(0, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputForward(0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.configPeakOutputReverse(-0.7, 	RobotMap.TIMEOUT_LIMIT_IN_Ms);
-
-      //Configuring PID values. 
-    rightDrive1.selectProfileSlot(slotIndex, loopIndex);
-    rightDrive1.config_kF(slotIndex, DRIVEBASE_kF, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kP(slotIndex, DRIVEBASE_kP, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kI(slotIndex, DRIVEBASE_kI, RobotMap.TIMEOUT_LIMIT_IN_Ms);
-    rightDrive1.config_kD(slotIndex, DRIVEBASE_kD, RobotMap.TIMEOUT_LIMIT_IN_Ms); 
-    rightDrive1.configMotionCruiseVelocity(10000);
-    rightDrive1.configMotionAcceleration(10000);
     rightDrive2.follow(rightDrive1);
     rightDrive3.follow(rightDrive1);
     
