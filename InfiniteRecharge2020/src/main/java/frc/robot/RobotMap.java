@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -46,15 +48,6 @@ public class RobotMap {
   public static final double DRIVE_SENSITIVITY_DEFAULT = 1;
   public static final double SPIN_SENSITIVITY = 0.8;
 
-  // CarriageInfeed
-  public static final double CARRIAGE_FEEDER_SPEED = .4;
-  public static final double CARRIAGE_ANGLE_PER_PULSE = 0;
-
-  // Elevator
-  public static final int TIMEOUT_LIMIT_IN_Ms = 10;
-  public static final int ELEVATOR_THRESHOLD_FOR_PID = 0;
-  public static final double ELEVATOR_SPEED_SENSITIVITY = .4;
-
   /*** Operator Interfaces ***/
   // Controllers
   public static final int XBOX_CONTROLLER_DRIVER = 0;
@@ -90,12 +83,6 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_2 = 3;
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
-  // CarriageInfeed
-  public static final int CARRIAGE_FEED_ROLLERS = 4;
-  public static final int CARRIAGE_TALON_CHANNEL = 2;
-  public static final int C_STOP_T = 7;
-
-
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
   // Solenoids have just one constant.
@@ -120,16 +107,22 @@ public class RobotMap {
   public static final int DRIVE_ENC_LEFT_B = 4;
   public static final int DRIVE_ENC_RIGHT_B = 2;
 
-  // Elevator
-  public static final int E_STOP_HIGH = 5;
-  public static final int E_STOP_LOW = 6;
-
-  // DOUBLE SOLENOIDS ELEVATOR
-  public static final int BOTTOM_ELEVATOR_OUT = 6;
-  public static final int BOTTOM_EVEVATOR_IN = 7;
-
   /*** Autonomous ***/
   public static final int ANGLE_THRESHOLD = 2;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
+
+  // Trajectory Constants
+  public static final double kTrackwidthMeters = 0.5325;
+  public static final double ksVolts = 1;
+  public static final double kvVoltSecondsPerMeter = 1;
+  public static final double kaVoltSecondsSquaredPerMeter = 1;
+  public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+  public static final double kMaxSpeedMetersPerSecond = 1;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+  public static final double kRamseteB = 1;
+  public static final double kRamseteZeta = 1;
+  public static final double kPDriveVel = 2;
+ 
+
 }

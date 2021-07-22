@@ -50,7 +50,7 @@ public class XboxMove extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-      Robot.drivebase.shiftHighToLow();
+      //Robot.drivebase.shiftHighToLow();
     }
   
     // Called repeatedly when this Command is scheduled to run
@@ -89,7 +89,7 @@ public class XboxMove extends Command {
         Robot.drivebase.resetEncoders();
       }
 
-      Robot.drivebase.driveToPosition(dist);
+      //Robot.drivebase.driveToPosition(dist);
       if((testPosition > RobotMap.AXIS_THRESHOLD) || (testPosition < (-1 * RobotMap.AXIS_THRESHOLD))){
         dist = testPosition;
         //Robot.drivebase.driveToPosition(testPosition);
@@ -104,14 +104,14 @@ public class XboxMove extends Command {
       /*** Gear Shifting ***/
         //Press for High Gear
       if(gearShiftHigh){
-        Robot.drivebase.shiftLowToHigh();
+        //Robot.drivebase.shiftLowToHigh();
       }
         //Press for Low Gear
       else if(gearShiftLow){
-        Robot.drivebase.shiftHighToLow();
+        //Robot.drivebase.shiftHighToLow();
       }
   
-      Robot.drivebase.drive(left, right);
+      //Robot.drivebase.drive(left, right);
 
 
       /*** Precision ***/
@@ -182,13 +182,13 @@ public class XboxMove extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-      Robot.drivebase.stopMotors();
+      //Robot.drivebase.stopMotors();
     }
   
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-      Robot.drivebase.stopMotors();
+      //Robot.drivebase.stopMotors();
     }
   }

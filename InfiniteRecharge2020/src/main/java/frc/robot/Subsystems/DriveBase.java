@@ -7,12 +7,11 @@
 
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
@@ -24,11 +23,6 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -60,9 +54,6 @@ public class DriveBase extends Subsystem {
 
   public DriveBase() {
 
-    loopIndex = 0;
-    slotIndex = 0;
-
     // Instantiate Motors
     leftDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
     rightDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
@@ -76,6 +67,11 @@ public class DriveBase extends Subsystem {
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
     
+    leftEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_LEFT_DPP);
+    rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
+
+    resetEncoders();
+    odometry = new DifferentialDriveOdometry(navxGyro.getRotation2d());
   }
 
   @Override
@@ -103,7 +99,7 @@ public class DriveBase extends Subsystem {
    */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    //odometry.resetPosition(pose, navxGyro.getRotation2d());
+    odometry.resetPosition(pose, navxGyro.getRotation2d());
   }
 
   /**
@@ -163,6 +159,10 @@ public class DriveBase extends Subsystem {
     return rightEncoder;
   }
 
+  public void driveBasePeriodic() {
+    odometry.update(navxGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+  }
+
   /**
    * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
    *
@@ -196,4 +196,7 @@ public class DriveBase extends Subsystem {
   public double getTurnRate() {
     return -navxGyro.getRate();
   }
+
+  
+  
 }

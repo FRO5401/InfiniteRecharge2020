@@ -7,13 +7,26 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import frc.robot.Subsystems.*;
+import frc.robot.Autonomous.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,8 +38,8 @@ import frc.robot.Subsystems.*;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private Command m_autoSelected;
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static CompressorSubsystem compressorsubsystem;
   public static DriveBase drivebase;
@@ -38,8 +51,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("Default Auto", new DriveStraight());
+    m_chooser.addOption("Trajectory Test", new DriveStraight()); //REPLACE LATER
     SmartDashboard.putData("Auto choices", m_chooser);
 
     compressorsubsystem = new CompressorSubsystem();
@@ -59,7 +72,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Robot.drivebase.reportDriveBaseSensors();
+    Robot.drivebase.driveBasePeriodic();
   }
 
   /**
@@ -77,7 +90,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    //m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
   }
 
@@ -86,6 +99,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+    /*
     switch (m_autoSelected) {
     case kCustomAuto:
       // Put custom auto code here
@@ -94,7 +109,7 @@ public class Robot extends TimedRobot {
     default:
       // Put default auto code here
       break;
-    }
+    }*/
   }
 
   @Override
@@ -117,4 +132,58 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+  
+  /*public Command getAutonomousCommand() {
+    // Create a voltage constraint to ensure we don't accelerate too fast
+    var autoVoltageConstraint =
+        new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(RobotMap.ksVolts,
+                                       RobotMap.kvVoltSecondsPerMeter,
+                                       RobotMap.kaVoltSecondsSquaredPerMeter),
+            RobotMap.kDriveKinematics,
+            10);
+
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(RobotMap.kMaxSpeedMetersPerSecond,RobotMap.kMaxAccelerationMetersPerSecondSquared).setKinematics(RobotMap.kDriveKinematics).addConstraint(autoVoltageConstraint);
+            // Add kinematics to ensure max speed is actually obeyed
+            // Apply the voltage constraint
+
+    // An example trajectory to follow.  All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(
+            new Translation2d(1, 1),
+            new Translation2d(2, -1)
+        ),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        // Pass config
+        config
+    );
+
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        exampleTrajectory,
+        drivebase::getPose,
+        new RamseteController(RobotMap.kRamseteB, RobotMap.kRamseteZeta),
+        new SimpleMotorFeedforward(RobotMap.ksVolts,
+        RobotMap.kvVoltSecondsPerMeter,
+        RobotMap.kaVoltSecondsSquaredPerMeter),
+        RobotMap.kDriveKinematics,
+        drivebase::getWheelSpeeds,
+        new PIDController(RobotMap.kPDriveVel, 0, 0),
+        new PIDController(RobotMap.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        drivebase::tankDriveVolts,
+        drivebase
+    );
+
+    // Reset odometry to the starting pose of the trajectory.
+    drivebase.resetOdometry(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> drivebase.tankDriveVolts(0, 0));
+  }*/
+
 }

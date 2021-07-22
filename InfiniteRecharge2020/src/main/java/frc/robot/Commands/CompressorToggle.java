@@ -2,7 +2,6 @@ package frc.robot.Commands;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
-
 /*
  * Command allows for toggling of Compressor
  * ON or OFF, it is called from OI.
