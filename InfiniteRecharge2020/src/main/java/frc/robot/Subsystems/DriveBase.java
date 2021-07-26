@@ -8,12 +8,11 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.RobotMap;
-import frc.robot.Commands.XboxMove;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -28,11 +27,13 @@ import com.kauailabs.navx.frc.AHRS;
 /**
  * Add your docs here.
  */
-public class DriveBase extends Subsystem {
+public class DriveBase extends SubsystemBase {
+  private AHRS navxGyro = new AHRS(I2C.Port.kMXP);
+
   // Motors
-  private SpeedControllerGroup leftDrives;
-  private SpeedControllerGroup rightDrives;
-  private DifferentialDrive ourDrive;
+  private SpeedControllerGroup leftDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
+  private SpeedControllerGroup rightDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
+  private DifferentialDrive ourDrive = new DifferentialDrive(leftDrives, rightDrives);
   private DifferentialDriveOdometry odometry;
 
   //PID stuff
@@ -45,39 +46,30 @@ public class DriveBase extends Subsystem {
   private int iaccum = 0;
 
   // Solenoids
-  private Solenoid gearShifter;
+  private Solenoid gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
 
   // Sensors
-  private Encoder leftEncoder;
-  private Encoder rightEncoder;
-  private AHRS navxGyro;
+  private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
+  private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
+  
 
   public DriveBase() {
 
-    // Instantiate Motors
-    leftDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
-    rightDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
-    ourDrive = new DifferentialDrive(leftDrives, rightDrives);
+    rightDrives.setInverted(true);
 
-    // Instantiate Solenoid.
-    gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
-
-    // Instantiate Sensors
-    navxGyro = new AHRS(I2C.Port.kMXP);
-    leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
-    rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
-    
     leftEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_LEFT_DPP);
     rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
 
     resetEncoders();
     odometry = new DifferentialDriveOdometry(navxGyro.getRotation2d());
+    
   }
 
   @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new XboxMove());
+  public void periodic() {
+    odometry.update(navxGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
   }
+
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
@@ -159,9 +151,7 @@ public class DriveBase extends Subsystem {
     return rightEncoder;
   }
 
-  public void driveBasePeriodic() {
-    odometry.update(navxGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
-  }
+
 
   /**
    * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
@@ -185,7 +175,7 @@ public class DriveBase extends Subsystem {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return -navxGyro.getYaw();
+    return -navxGyro.getRotation2d().getDegrees();
   }
 
   /**
