@@ -31,7 +31,7 @@ public class RobotContainer {
 
     //Trajectory Stuff for later
     /*
-    String trajectoryJSON = "paths/YourPath.wpilib.json";
+    String trajectoryJSON = "paths/DefaultPath.wpilib.json";
     Trajectory trajectory = new Trajectory();*/
 
     // The robot's subsystems
@@ -121,6 +121,7 @@ public class RobotContainer {
       drivebase.setDefaultCommand(
           // A split-stick arcade command, with forward/backward controlled by the left
           // hand, and turning controlled by the right.
+          //CORRECTED FOR CURRENT CONTROLS, MIGHT WORK ABOUT A 50% not gonna lie
           new RunCommand(
               () ->
                   drivebase.arcadeDrive(

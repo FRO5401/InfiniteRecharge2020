@@ -29,10 +29,6 @@ public class RobotMap {
   /*** Constants ***/
   // OI
   public static final double AXIS_THRESHOLD = 0.25;
-  public static final int ELEVATOR_BUTTON_SHIFT_HIGH = 1;
-  public static final int ELEVATOR_BUTTON_SHIFT_LOW = 2;
-  public static final int ELEVATOR_BUTTON_COLLAPSE = 3;
-  public static final int ELEVATOR_BUTTON_RISE = 4;
 
   // DriveBase
   public static final double TELEOP_SPEED_ADJUSTMENT_RIGHT = 0.99;
@@ -92,14 +88,6 @@ public class RobotMap {
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
 
-  // Elevator
-  public static final int ELEVATOR_GEAR_SHIFTER = 4;
-  public static final int ELEVATOR_COLLAPSE_TOP = 5;
-  public static final int ELEVATOR_COLLAPSE_BOTTOM = 1;
-
-  // Hatch Mechanism
-  public static final int HATCH_EXTENDER = 2;
-
   /*** Sensors ***/
   // Encoders
   public static final int DRIVE_ENC_LEFT_A = 3;
@@ -113,16 +101,16 @@ public class RobotMap {
   public static final double AUTO_TURN_PRECISION = 0.5;
 
   // Trajectory Constants
-  public static final double kTrackwidthMeters = 0.5325;
-  public static final double ksVolts = 0.22;
-  public static final double kvVoltSecondsPerMeter = 1.98;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+  public static final double kTrackwidthMeters = 0.6858;
+  public static final double ksVolts = 1.23;
+  public static final double kvVoltSecondsPerMeter = 0.11;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.0235;
   public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
   public static final double kMaxSpeedMetersPerSecond = 3;
   public static final double kMaxAccelerationMetersPerSecondSquared = 3;
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
-  public static final double kPDriveVel = 8;
+  public static final double kPDriveVel = 1.05;
  
 
 }

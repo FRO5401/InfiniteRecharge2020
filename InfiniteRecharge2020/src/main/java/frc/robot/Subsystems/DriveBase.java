@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -31,8 +33,8 @@ public class DriveBase extends SubsystemBase {
   private AHRS navxGyro = new AHRS(I2C.Port.kMXP);
 
   // Motors
-  private SpeedControllerGroup leftDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
-  private SpeedControllerGroup rightDrives = new SpeedControllerGroup(new PWMTalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new PWMVictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
+  private SpeedControllerGroup leftDrives = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1), new WPI_VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2), new WPI_VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3));
+  private SpeedControllerGroup rightDrives = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1), new WPI_VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2), new WPI_VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3));
   private DifferentialDrive ourDrive = new DifferentialDrive(leftDrives, rightDrives);
   private DifferentialDriveOdometry odometry;
 
