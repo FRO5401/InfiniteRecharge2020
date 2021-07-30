@@ -72,6 +72,15 @@ public class DriveBase extends SubsystemBase {
     odometry.update(navxGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
   }
 
+  public void shiftHighToLow() {
+    gearShifter.set(true);
+    setDPPLowGear();
+  }
+
+  public void setDPPLowGear() {
+    leftEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_LEFT_DPP);
+    rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
+  }
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
@@ -102,8 +111,8 @@ public class DriveBase extends SubsystemBase {
    * @param fwd the commanded forward movement
    * @param rot the commanded rotation
    */
-  public void arcadeDrive(double fwd, double rot) {
-    ourDrive.arcadeDrive(fwd, rot);
+  public void drive(double left, double right) {
+    ourDrive.tankDrive(left, -right);
   }
 
   /**

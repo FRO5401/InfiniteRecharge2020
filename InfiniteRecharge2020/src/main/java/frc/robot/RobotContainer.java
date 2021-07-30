@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Commands.XboxMove;
 import frc.robot.Subsystems.DriveBase;
 
 import java.io.IOException;
@@ -36,61 +37,11 @@ public class RobotContainer {
 
     // The robot's subsystems
     private final DriveBase drivebase = new DriveBase();
+    private final Controls controls = new Controls();
 
 
     /////////////////////////////OI//////////////////////////////////
   
-    // The driver's controller
-    public XboxController xboxDriver = new XboxController(RobotMap.XBOX_CONTROLLER_DRIVER);
-    public XboxController xboxOperator = new XboxController(RobotMap.XBOX_CONTROLLER_OPERATOR);
-  
-    //Buttons (Driver)
-    JoystickButton xboxA_Driver			  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_A);
-    JoystickButton xboxB_Driver			  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_B);
-    JoystickButton xboxX_Driver			  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_X);
-    JoystickButton xboxY_Driver			  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_Y);
-    JoystickButton xboxLeftBumper_Driver  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-    JoystickButton xboxRightBumper_Driver = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
-    JoystickButton xboxBack_Driver		  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_BACK);
-    JoystickButton xboxStart_Driver		  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_START);
-    JoystickButton xboxL3_Driver		  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_L3);
-    JoystickButton xboxR3_Driver		  = new JoystickButton(xboxDriver, RobotMap.XBOX_BUTTON_R3);
-    
-      //Buttons (Operator)
-    JoystickButton xboxA_Operator			= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_A);
-    JoystickButton xboxB_Operator			= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_B);
-    JoystickButton xboxX_Operator			= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_X);
-    JoystickButton xboxY_Operator			= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_Y);
-    JoystickButton xboxLeftBumper_Operator  = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-    JoystickButton xboxRightBumper_Operator = new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
-    JoystickButton xboxBack_Operator		= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_BACK);
-    JoystickButton xboxStart_Operator		= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_START);
-    JoystickButton xboxL3_Operator		  	= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_L3);
-    JoystickButton xboxR3_Operator		  	= new JoystickButton(xboxOperator, RobotMap.XBOX_BUTTON_R3);
-  
-    public double xboxAxis(Joystick xboxController, int xboxAxis){
-      return xboxController.getRawAxis(xboxAxis);
-    }
-  
-    public boolean xboxButton(Joystick xboxController, int xboxButton){
-      return xboxController.getRawButton(xboxButton);
-    }
-  
-    public int xboxAxisAsButton(Joystick xboxController, int xboxAxis){
-      if(xboxController.getRawAxis(xboxAxis) > RobotMap.AXIS_THRESHOLD){
-        return 1;
-      }
-      else if(xboxController.getRawAxis(xboxAxis) < (-1 * RobotMap.AXIS_THRESHOLD)){
-        return -1;
-      }
-      else{
-        return 0;
-      }
-    }
-  
-    public int xboxDPad(Joystick xboxController){
-      return xboxController.getPOV();
-    }
   
 
 
@@ -118,16 +69,8 @@ public class RobotContainer {
 
       // Configure default commands
       // Set the default drive command to split-stick arcade drive
-      drivebase.setDefaultCommand(
-          // A split-stick arcade command, with forward/backward controlled by the left
-          // hand, and turning controlled by the right.
-          //CORRECTED FOR CURRENT CONTROLS, MIGHT WORK ABOUT A 50% not gonna lie
-          new RunCommand(
-              () ->
-                  drivebase.arcadeDrive(
-                      xboxDriver.getTriggerAxis(GenericHID.Hand.kRight),
-                      xboxDriver.getX(GenericHID.Hand.kRight)),
-              drivebase));
+      drivebase.setDefaultCommand(new XboxMove(drivebase, controls));
+          //CORRECTED FOR CURRENT CONTROLS, MIGHT WORK ABOUT A 50% not gonna lie);
     }
   
     /**
@@ -138,9 +81,11 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
       // Drive at half speed when the right bumper is held
-      xboxRightBumper_Driver
+      controls.xboxRightBumper_Driver
       .whenPressed(() -> drivebase.setMaxOutput(0.5))
       .whenReleased(() -> drivebase.setMaxOutput(1));
+    
+      
     }
   
     /**
