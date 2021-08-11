@@ -58,6 +58,7 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() {
 
     rightDrives.setInverted(true);
+    leftDrives.setInverted(true);
 
     leftEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_LEFT_DPP);
     rightEncoder.setDistancePerPulse(RobotMap.LOW_GEAR_RIGHT_DPP);
@@ -112,7 +113,7 @@ public class DriveBase extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void drive(double left, double right) {
-    ourDrive.tankDrive(left, -right);
+    ourDrive.tankDrive(left, right);
   }
 
   /**

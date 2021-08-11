@@ -31,9 +31,9 @@ import java.util.List;
 public class RobotContainer {
 
     //Trajectory Stuff for later
-    /*
-    String trajectoryJSON = "paths/DefaultPath.wpilib.json";
-    Trajectory trajectory = new Trajectory();*/
+    
+    String trajectoryJSON = "paths/Unnamed_0.wpilib.json";
+    Trajectory exampleTrajectory = new Trajectory();
 
     // The robot's subsystems
     private final DriveBase drivebase = new DriveBase();
@@ -57,14 +57,15 @@ public class RobotContainer {
 
 
       //For later, when actually using pathweaver
-      /*
+      
       try {
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-        trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
        } catch (IOException ex) {
         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        System.out.println("LOLOLOLOLOLOLOOL");
       }
-      */
+      
 
 
       // Configure default commands
@@ -115,7 +116,7 @@ public class RobotContainer {
               .addConstraint(autoVoltageConstraint);
   
       // An example trajectory to follow.  All units in meters.
-      Trajectory exampleTrajectory =
+      /*Trajectory exampleTrajectory =
           TrajectoryGenerator.generateTrajectory(
               // Start at the origin facing the +X direction
               new Pose2d(0, 0, new Rotation2d(0)),
@@ -124,7 +125,7 @@ public class RobotContainer {
               // End 3 meters straight ahead of where we started, facing forward
               new Pose2d(3, 0, new Rotation2d(0)),
               // Pass config
-              config);
+              config);*/
   
       RamseteCommand ramseteCommand =
           new RamseteCommand(
