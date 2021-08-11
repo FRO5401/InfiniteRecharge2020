@@ -75,9 +75,8 @@ public class DriveBase extends Subsystem {
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
 
       //Configuring PID values
-    leftDrive2.setInverted(InvertType.FollowMaster);
+    leftDrive2.follow(leftDrive1);
     leftDrive3.follow(leftDrive1);
-    leftDrive3.setInverted(InvertType.FollowMaster);
     
 
     rightDrive2.follow(rightDrive1);
@@ -96,7 +95,7 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
+    leftDrive1.set(ControlMode.PercentOutput, -1* leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
     rightDrive1.set(ControlMode.PercentOutput, (rightDriveDesired) * RobotMap.TELEOP_SPEED_ADJUSTMENT_RIGHT);
   }
 
