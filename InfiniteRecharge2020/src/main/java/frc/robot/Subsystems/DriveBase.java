@@ -12,22 +12,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.Commands.XboxMove;
 
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
+
+import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * Add your docs here.
  */
 public class DriveBase extends Subsystem {
   // Motors
-  private VictorSP leftDrive1;
-  private VictorSP rightDrive1;
-  private VictorSP leftDrive2;
-  private VictorSP rightDrive2;
+  private TalonSRX leftDrive1;
+  private TalonSRX rightDrive1;
+  private VictorSPX leftDrive2;
+  private VictorSPX rightDrive2;
+  private VictorSPX leftDrive3;
+  private VictorSPX rightDrive3;
+
+  //PID stuff
+  private int loopIndex, slotIndex;
+  private double DRIVEBASE_kF = 0;
+  private double DRIVEBASE_kP = 0;
+  private double DRIVEBASE_kI = 0;
+  private double DRIVEBASE_kD = 0;
+
+  private int iaccum = 0;
 
   // Solenoids
   private Solenoid gearShifter;
@@ -38,11 +54,17 @@ public class DriveBase extends Subsystem {
   private AHRS navxGyro;
 
   public DriveBase() {
+
+    loopIndex = 0;
+    slotIndex = 0;
+
     // Instantiate Motors
-    leftDrive1 = new VictorSP(RobotMap.DRIVE_MOTOR_LEFT_1);
-    rightDrive1 = new VictorSP(RobotMap.DRIVE_MOTOR_RIGHT_1);
-    leftDrive2 = new VictorSP(RobotMap.DRIVE_MOTOR_LEFT_2);
-    rightDrive2 = new VictorSP(RobotMap.DRIVE_MOTOR_RIGHT_2);
+    leftDrive1 = new TalonSRX(RobotMap.DRIVE_MOTOR_LEFT_1);
+    rightDrive1 = new TalonSRX(RobotMap.DRIVE_MOTOR_RIGHT_1);
+    leftDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_2);
+    rightDrive2 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_2);
+    leftDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3);
+    rightDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -51,6 +73,18 @@ public class DriveBase extends Subsystem {
     navxGyro = new AHRS(I2C.Port.kMXP);
     leftEncoder = new Encoder(RobotMap.DRIVE_ENC_LEFT_A, RobotMap.DRIVE_ENC_LEFT_B, true, EncodingType.k4X);
     rightEncoder = new Encoder(RobotMap.DRIVE_ENC_RIGHT_A, RobotMap.DRIVE_ENC_RIGHT_B, false, EncodingType.k4X);
+
+      //Configuring PID values
+    leftDrive2.follow(leftDrive1);
+    leftDrive3.follow(leftDrive1);
+    
+
+    rightDrive2.follow(rightDrive1);
+    rightDrive3.follow(rightDrive1);
+    
+
+    leftDrive1.setNeutralMode(NeutralMode.Brake);
+    rightDrive1.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -61,18 +95,26 @@ public class DriveBase extends Subsystem {
   // Sets victors to desired speed giving from XboxMove.
   public void drive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
-    leftDrive1.set(leftDriveDesired);
-    leftDrive2.set(leftDriveDesired);
-    rightDrive1.set(-1 * rightDriveDesired);
-    rightDrive2.set(-1 * rightDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, -1* leftDriveDesired * RobotMap.TELEOP_SPEED_ADJUSTMENT_LEFT);
+    rightDrive1.set(ControlMode.PercentOutput, (rightDriveDesired) * RobotMap.TELEOP_SPEED_ADJUSTMENT_RIGHT);
   }
 
-  // Sets Victors to 0.
+  // Sets SC's to 0.
   public void stopMotors() {
-    leftDrive1.set(0);
-    leftDrive2.set(0);
-    rightDrive1.set(0);
-    rightDrive2.set(0);
+    leftDrive1.set(ControlMode.PercentOutput, 0);
+    rightDrive1.set(ControlMode.PercentOutput, 0);
+  }
+
+  //PID control during Teleop
+  public void driveToPosition(double distance) {
+    double leftDist = distance * 16384;
+    double rightDist = distance * 16384;
+    
+    // Left inverted in accordance to physical wiring.
+    leftDrive1.set(ControlMode.MotionMagic, leftDist);
+    leftDrive1.set(ControlMode.Position, leftDist);
+    rightDrive1.set(ControlMode.MotionMagic, rightDist);
+    rightDrive1.set(ControlMode.Position, rightDist);
   }
 
   // Set shifter to low.
@@ -114,7 +156,7 @@ public class DriveBase extends Subsystem {
     }
   }
 
-  // Gets Gyro Angle for Auto.
+  // Gets Gyro Angle
   public double getGyroAngle() {
     return navxGyro.getAngle();
   }
@@ -139,16 +181,21 @@ public class DriveBase extends Subsystem {
     SmartDashboard.putNumber("NavX Pitch", navxGyro.getPitch());
     SmartDashboard.putNumber("NavX Yaw", navxGyro.getYaw());
     // Victors
-    SmartDashboard.putNumber("Left VSP1 Speed", leftDrive1.getSpeed());
-    SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSpeed());
-    SmartDashboard.putNumber("Right VSP1", rightDrive1.getSpeed());
-    SmartDashboard.putNumber("Right VSP2", rightDrive2.getSpeed());
+    SmartDashboard.putNumber("Left Talon1 Position", leftDrive1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("Left VSP2 Speed", leftDrive2.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Left VSP3 Speed", leftDrive3.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right Talon1 Position", rightDrive1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("Right VSP2 Speed", rightDrive2.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Right VSP3 Speed", rightDrive3.getSelectedSensorVelocity());
   }
 
   // Resets the Encoders.
   public void resetEncoders() {
     leftEncoder.reset();
     rightEncoder.reset();
+
+    leftDrive1.getSensorCollection().setQuadraturePosition(0, 10);
+    rightDrive1.getSensorCollection().setQuadraturePosition(0, 10);
   }
 
   // Resets the Gyro.

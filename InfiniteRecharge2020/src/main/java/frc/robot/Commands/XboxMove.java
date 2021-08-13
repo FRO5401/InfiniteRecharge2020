@@ -7,39 +7,188 @@
 
 package frc.robot.Commands;
 
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.RobotMap;
 
 public class XboxMove extends Command {
-  /**
-   * Creates a new XboxMove.
+  
+  /*** Variables ***/
+    //Input Axes
+    double turn;
+    double throttle;
+    double reverse;
+  
+      //Input Buttons
+    boolean rotate; 
+    boolean brake;
+    boolean precision;
+    boolean gearShiftHigh;
+    boolean gearShiftLow;
+
+    boolean resetSensors;
+
+    boolean driveToPosition;
+  
+      /* //Testing Buttons (TODO: Remove for Comp)
+    boolean speedConstant1;
+    boolean speedConstant2;
+    boolean speedConstant3;
    */
-  public XboxMove() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+      //Instance Vars
+    double left;
+    double right; 
+    double sensitivity;
+    double dist;
 
-  // Called when the command is initially scheduled.
-  @Override
-  protected void initialize() {
-  }
+    double testPosition;
+  
+    public XboxMove() {
+      requires(Robot.drivebase);
+    }
+  
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+      Robot.drivebase.shiftHighToLow();
+    }
+  
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+      /*** Read Inputs ***/
+        //Axes
+      turn = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_X);
+      throttle = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
+      reverse = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
+      
+      testPosition = Robot.oi.xboxAxis(Robot.oi.xboxDriver, RobotMap.XBOX_AXIS_RIGHT_X);
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  protected void execute() {
-  }
+        //Buttons
+      rotate = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_L3);
+      brake = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
+      precision = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
+      gearShiftHigh = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_START);
+      gearShiftLow = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_BACK);
 
-  // Called once the command ends or is interrupted.
-  @Override
-  protected void end() {
-  }
+      resetSensors = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
+      driveToPosition = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_A);
+      
+        //TODO: Remove these testing buttons for competition.
+      /*
+      speedConstant1 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_X);
+      speedConstant3 = Robot.oi.xboxButton(Robot.oi.xboxDriver, RobotMap.XBOX_BUTTON_B);
+        //TODO: Remove this testing method for competition.
+      if(resetSensors){
+        Robot.drivebase.resetEncoders();
+        Robot.drivebase.resetGyro();
+      }    
+       */
 
-  @Override
-  protected void interrupted() {
+      if(resetSensors) {
+        Robot.drivebase.resetEncoders();
+      }
 
-  }
+      Robot.drivebase.driveToPosition(dist);
+      if((testPosition > RobotMap.AXIS_THRESHOLD) || (testPosition < (-1 * RobotMap.AXIS_THRESHOLD))){
+        dist = testPosition;
+        //Robot.drivebase.driveToPosition(testPosition);
+      }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+      if(driveToPosition){
+        //Robot.drivebase.driveToPosition(5);
+        dist = 5;
+        System.out.print("Driving to Position!");
+      }
+
+      /*** Gear Shifting ***/
+        //Press for High Gear
+      if(gearShiftHigh){
+        Robot.drivebase.shiftLowToHigh();
+      }
+        //Press for Low Gear
+      else if(gearShiftLow){
+        Robot.drivebase.shiftHighToLow();
+      }
+  
+      Robot.drivebase.drive(left, right);
+
+
+      /*** Precision ***/
+        //Hold for Precision Speed
+      if(precision){
+        sensitivity = RobotMap.DRIVE_SENSITIVITY_PRECISION;
+      }
+        //Release for Regular Speed
+      else{
+        sensitivity = RobotMap.DRIVE_SENSITIVITY_DEFAULT;
+      }
+  
+      /*** Driving ***/
+        //Braking
+      if(brake){
+        //Robot.drivebase.stopMotors();
+        left = 0;
+        right = 0;
+      }
+        //Not Braking
+      else{
+          //Pirouetting (Turn in place). 
+        if(rotate){
+            //If the joystick is pushed passed the threshold. 
+          if(Math.abs(turn) > RobotMap.AXIS_THRESHOLD){
+              //Sets it to spin the desired direction.
+            left = RobotMap.SPIN_SENSITIVITY * turn;
+            right = RobotMap.SPIN_SENSITIVITY * (turn * -1);
+          }
+            //If its not past the threshold stop spinning
+          else if(Math.abs(turn) < RobotMap.AXIS_THRESHOLD){
+            left = 0;
+            right = 0;
+          }
+        }
+          //Not pirouetting (Not turning in place).
+        else{
+            //Turning right
+          if(turn > RobotMap.AXIS_THRESHOLD){
+              //Makes left slow down by a factor of how far the axis is pushed. 
+            left = (throttle - reverse) * sensitivity;
+            right = (throttle - reverse) * sensitivity * (1 - turn);
+          }
+            //Turning left
+          else if(turn < (-1 * RobotMap.AXIS_THRESHOLD)){
+              //Makes right speed up by a factor of how far the axis is pushed. 
+            left = (throttle - reverse) * sensitivity * (1 + turn);
+            right = (throttle - reverse) * sensitivity;
+          }
+            //Driving straight 
+          else{
+              //No joystick manipulation. 
+            left = (throttle - reverse) * sensitivity;
+            right = (throttle - reverse) * sensitivity;
+          }
+        }
+      }
+        //After speed manipulation, send to drivebase. 
+//*****//Robot.drivebase.drive(left, right);
+    }
+  
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+      return false;
+    }
+  
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+      Robot.drivebase.stopMotors();
+    }
+  
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+      Robot.drivebase.stopMotors();
+    }
   }
-}
