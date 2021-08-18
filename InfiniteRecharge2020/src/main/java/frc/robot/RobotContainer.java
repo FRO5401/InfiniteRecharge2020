@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Autonomous.SetTrajectoryPath;
 import frc.robot.Commands.XboxMove;
 import frc.robot.Subsystems.DriveBase;
 
@@ -30,10 +31,6 @@ import java.util.List;
 
 public class RobotContainer {
 
-    //Trajectory Stuff for later
-    
-    String trajectoryJSON = "paths/Unnamed_0.wpilib.json";
-    Trajectory exampleTrajectory = new Trajectory();
 
     // The robot's subsystems
     private final DriveBase drivebase = new DriveBase();
@@ -54,17 +51,6 @@ public class RobotContainer {
     public RobotContainer() {
       // Configure the button bindings
       configureButtonBindings();
-
-
-      //For later, when actually using pathweaver
-      
-      try {
-        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-        exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-       } catch (IOException ex) {
-        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-        System.out.println("LOLOLOLOLOLOLOOL");
-      }
       
 
 
@@ -127,27 +113,9 @@ public class RobotContainer {
               // Pass config
               config);*/
   
-      RamseteCommand ramseteCommand =
-          new RamseteCommand(
-              exampleTrajectory,
-              drivebase::getPose,
-              new RamseteController(RobotMap.kRamseteB, RobotMap.kRamseteZeta),
-              new SimpleMotorFeedforward(
-                  RobotMap.ksVolts,
-                  RobotMap.kvVoltSecondsPerMeter,
-                  RobotMap.kaVoltSecondsSquaredPerMeter),
-              RobotMap.kDriveKinematics,
-              drivebase::getWheelSpeeds,
-              new PIDController(RobotMap.kPDriveVel, 0, 0),
-              new PIDController(RobotMap.kPDriveVel, 0, 0),
-              // RamseteCommand passes volts to the callback
-              drivebase::tankDriveVolts,
-              drivebase);
-  
-      // Reset odometry to the starting pose of the trajectory.
-      drivebase.resetOdometry(exampleTrajectory.getInitialPose());
+      
   
       // Run path following command, then stop at the end.
-      return ramseteCommand.andThen(() -> drivebase.tankDriveVolts(0, 0));
+      return new SetTrajectoryPath(drivebase, "paths/DriveStraight.wpilib.json");
     }
   }

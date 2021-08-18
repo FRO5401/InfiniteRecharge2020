@@ -96,7 +96,8 @@ public class RobotMap {
   public static final int DRIVE_ENC_RIGHT_B = 2;
 
   /*** Autonomous ***/
-  public static final int ANGLE_THRESHOLD = 2;
+  public static final double ANGLE_THRESHOLD = 6;
+  public static final double AUTO_SPEED_ADJUSTMENT = 1.4;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
 
@@ -106,8 +107,8 @@ public class RobotMap {
   public static final double kvVoltSecondsPerMeter = 0.11;
   public static final double kaVoltSecondsSquaredPerMeter = 0.0235;
   public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-  public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+  public static final double kMaxSpeedMetersPerSecond = 1.5;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
   public static final double kPDriveVel = 1.05;
