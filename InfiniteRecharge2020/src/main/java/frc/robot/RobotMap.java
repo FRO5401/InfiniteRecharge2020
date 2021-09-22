@@ -79,14 +79,28 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_2 = 3;
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
+  public static final int SERIALIZER_MOTOR = 0;
+  public static final int KICKER_MOTOR = 1;
+
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
   // Solenoids have just one constant.
   // PCM (Pneumatic Control Module)
   public static final int PCM_ID = 0;
 
+  //Infeed
+  public static final int INFEED_DEPLOY = 2;
+
   // DriveBase
   public static final int GEAR_SHIFTER = 0;
+
+  //Infeed
+  public static final int INFEED_MOTOR_1 = 13;
+  public static final int INFEED_MOTOR_2 = 15;
+
+  // Shooter
+  public static final int SHOOTER_MASTER_CHANNEL = 7;
+  public static final int SHOOTER_SLAVE_CHANNEL = 8;
 
   /*** Sensors ***/
   // Encoders

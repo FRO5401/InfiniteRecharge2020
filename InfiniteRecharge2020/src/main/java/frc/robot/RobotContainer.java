@@ -22,8 +22,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Autonomous.SetTrajectoryPath;
+import frc.robot.Commands.ShooterMechanism;
 import frc.robot.Commands.XboxMove;
+import frc.robot.Subsystems.CompressorSubsystem;
 import frc.robot.Subsystems.DriveBase;
+import frc.robot.Subsystems.Infeed;
+import frc.robot.Subsystems.Serializer;
+import frc.robot.Subsystems.Shooter;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,6 +40,10 @@ public class RobotContainer {
     // The robot's subsystems
     private final DriveBase drivebase = new DriveBase();
     private final Controls controls = new Controls();
+    private final Shooter shooter = new Shooter();
+    private final Serializer serializer = new Serializer();
+    private final Infeed infeed = new Infeed();
+    private final CompressorSubsystem compressor = new CompressorSubsystem();
 
 
     /////////////////////////////OI//////////////////////////////////
@@ -57,6 +66,7 @@ public class RobotContainer {
       // Configure default commands
       // Set the default drive command to split-stick arcade drive
       drivebase.setDefaultCommand(new XboxMove(drivebase, controls));
+      shooter.setDefaultCommand(new ShooterMechanism(shooter, controls, serializer));
           //CORRECTED FOR CURRENT CONTROLS, MIGHT WORK ABOUT A 50% not gonna lie);
     }
   
