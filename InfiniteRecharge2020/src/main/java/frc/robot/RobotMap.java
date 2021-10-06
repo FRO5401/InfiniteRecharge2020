@@ -90,6 +90,7 @@ public class RobotMap {
 
   //Infeed
   public static final int INFEED_DEPLOY = 2;
+  public static final double INFEED_SPEED = 0.55;
 
   // DriveBase
   public static final int GEAR_SHIFTER = 0;

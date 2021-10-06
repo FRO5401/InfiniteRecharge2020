@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Autonomous.SetTrajectoryPath;
+import frc.robot.Commands.CompressorToggle;
+import frc.robot.Commands.InfeedControl;
 import frc.robot.Commands.ShooterMechanism;
 import frc.robot.Commands.XboxMove;
 import frc.robot.Subsystems.CompressorSubsystem;
@@ -67,6 +69,8 @@ public class RobotContainer {
       // Set the default drive command to split-stick arcade drive
       drivebase.setDefaultCommand(new XboxMove(drivebase, controls));
       shooter.setDefaultCommand(new ShooterMechanism(shooter, controls, serializer));
+      infeed.setDefaultCommand(new InfeedControl(infeed, controls));
+      compressor.setDefaultCommand(new CompressorToggle(compressor, controls));
           //CORRECTED FOR CURRENT CONTROLS, MIGHT WORK ABOUT A 50% not gonna lie);
     }
   

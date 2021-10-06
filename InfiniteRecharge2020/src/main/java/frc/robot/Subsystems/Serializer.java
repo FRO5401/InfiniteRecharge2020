@@ -22,6 +22,11 @@ public class Serializer extends SubsystemBase {
         serializerMotor = new VictorSP(RobotMap.SERIALIZER_MOTOR); 
         kickerMotor = new VictorSP(RobotMap.KICKER_MOTOR); 
     }
+    
+    @Override
+    public void periodic() {
+        reportValues();
+    }
 
     public void runSerializer(String choice) {
         double serializerSpeed;
@@ -65,5 +70,7 @@ public class Serializer extends SubsystemBase {
         SmartDashboard.putNumber("Serializer Speed", getSerializerVelocity());
         SmartDashboard.putNumber("Kicker Speed", getKickerVelocity());
     }
+
+    
 
 }

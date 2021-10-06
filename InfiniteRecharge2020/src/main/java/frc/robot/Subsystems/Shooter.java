@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        
+        reportValues();
     }
 
     public double getTargetSpeed() {
@@ -97,4 +97,5 @@ public class Shooter extends SubsystemBase {
         startMotors();
     }
 
+    
 }

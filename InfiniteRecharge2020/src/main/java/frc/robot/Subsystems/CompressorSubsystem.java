@@ -1,5 +1,42 @@
 package frc.robot.Subsystems;
 
-public class CompressorSubsystem {
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
+
+public class CompressorSubsystem extends SubsystemBase{
     
+    private Compressor compressor;
+
+	public CompressorSubsystem() {
+		compressor = new Compressor(RobotMap.PCM_ID);	
+	}
+
+
+    @Override
+    public void periodic() {
+        reportCompressorStatus();
+    }
+
+    public void startCompressor() {
+    	compressor.setClosedLoopControl(true);
+    	compressor.start();
+    }
+    
+    public void stopCompressor() {
+		compressor.stop();
+    }
+
+    public void reportCompressorStatus(){
+    	SmartDashboard.putBoolean("Compressor Enabled", compressor.enabled());
+    	SmartDashboard.putBoolean("Compressor in Closed Looop", compressor.getClosedLoopControl());
+    	SmartDashboard.putNumber("Compressor Current Value", compressor.getCompressorCurrent());
+    	SmartDashboard.putBoolean("Compressor Pressure Switch On/Off", compressor.getPressureSwitchValue());
+    }
+    
+    public boolean isEnabled(){
+    	return compressor.enabled();
+    }
+
 }
