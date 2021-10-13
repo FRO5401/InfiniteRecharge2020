@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
     shooter = new Shooter();
     serializer = new Serializer();
     networktables = new NetworkTables();
-
+    turret = new Turret();
     oi = new OI();
   }
 
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
     Robot.serializer.reportValues();
     Robot.infeed.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
-
+    Robot.turret.reportTurretInfeedSensors();
     //Robot.networktables.updateValue();
     //Robot.drivebase.visionMove();
 

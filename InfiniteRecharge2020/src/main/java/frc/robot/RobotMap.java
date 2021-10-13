@@ -114,4 +114,14 @@ public class RobotMap {
   public static final int ANGLE_THRESHOLD = 2;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
+
+  /** Turret **/
+  public static final double TURRET_TURN_SPEED = .35;
+  public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
+
+  public static final int TURRET_TALON = 10;
+  public static final int T_STOP_LEFT = 90;
+  public static final int T_STOP_RIGHT = -90;
+  public static final double TURRET_SPEED_SENSITIVITY = 0.35;
+  public static final double TURRET_ANGLE_LIMIT = 90;
 }
