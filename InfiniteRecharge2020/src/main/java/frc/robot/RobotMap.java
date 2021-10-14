@@ -80,17 +80,17 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 13;
 
   //Infeed
-  public static final int INFEED_MOTOR_1 = 13;
-  public static final int INFEED_MOTOR_2 = 15;
+  public static final int INFEED_MOTOR_1 = 12;
+  public static final int INFEED_MOTOR_2 = 3;
 
   // Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 7;
   public static final int SHOOTER_SLAVE_CHANNEL = 8;
 
   //Serializer *fake ports btw lol*
-  public static final int SERIALIZER_MOTOR = 0;
-  public static final int KICKER_MOTOR = 1;
-  public static final int KICKER_MOTOR2 = 1;
+  public static final int SERIALIZER_MOTOR = 6;
+  public static final int KICKER_MOTOR = 8;
+  public static final int KICKER_MOTOR2 = 5;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
@@ -120,7 +120,7 @@ public class RobotMap {
   public static final double TURRET_TURN_SPEED = .35;
   public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
 
-  public static final int TURRET_TALON = 10;
+  public static final int TURRET_TALON = 7;
   public static final int T_STOP_LEFT = 90;
   public static final int T_STOP_RIGHT = -90;
   public static final double TURRET_SPEED_SENSITIVITY = 0.35;
