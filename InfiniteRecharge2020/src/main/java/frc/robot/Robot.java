@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   public static CompressorSubsystem compressorsubsystem;
   public static Serializer serializer;
   public static NetworkTables networktables;
+  public static Turret turret; 
 
   public static Timer timer;
   public double matchTime;

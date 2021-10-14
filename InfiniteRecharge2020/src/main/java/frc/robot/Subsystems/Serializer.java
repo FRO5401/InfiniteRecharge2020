@@ -21,12 +21,14 @@ public class Serializer extends Subsystem {
     // instanciate the objects
     VictorSP serializerMotor;
     VictorSP kickerMotor;
+    VictorSP kickerMotor2;
 
     // make a constructor and declare the variables
     public Serializer() {
 
         serializerMotor = new VictorSP(RobotMap.SERIALIZER_MOTOR); 
         kickerMotor = new VictorSP(RobotMap.KICKER_MOTOR); 
+        kickerMotor2 = new VictorSP(RobotMap.KICKER_MOTOR2);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class Serializer extends Subsystem {
         else {
             serializerSpeed = 0;
         }
-        serializerMotor.set(ControlMode.PercentOutput, serializerSpeed); //Change back to velocity after testing master/slave
+        serializerMotor.set(serializerSpeed); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 
@@ -65,7 +67,8 @@ public class Serializer extends Subsystem {
         else {
             kickerSpeed = 0;
         }
-        kickerMotor.set(ControlMode.PercentOutput, kickerSpeed); //Change back to velocity after testing master/slave
+        kickerMotor.set(kickerSpeed);
+        kickerMotor2.set(kickerSpeed); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 
@@ -73,9 +76,14 @@ public class Serializer extends Subsystem {
         return kickerMotor.getSpeed();
     }    
 
+    public double getKicker2Velocity() {
+        return kickerMotor2.getSpeed();
+    }
+
     public void reportValues(){
         SmartDashboard.putNumber("Serializer Speed", getSerializerVelocity());
         SmartDashboard.putNumber("Kicker Speed", getKickerVelocity());
+        SmartDashboard.putNumber("Kicker Speed2", getKicker2Velocity());
     }
 
 }
