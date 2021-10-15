@@ -71,17 +71,17 @@ public class RobotMap {
 
   /*** Motors ***/
   // DriveBase
-  public static final int DRIVE_MOTOR_RIGHT_1 = 0;
-  public static final int DRIVE_MOTOR_RIGHT_2 = 1;
-  public static final int DRIVE_MOTOR_RIGHT_3 = 2;
+  public static final int DRIVE_MOTOR_RIGHT_1 = 7;
+  public static final int DRIVE_MOTOR_RIGHT_2 = 9;
+  public static final int DRIVE_MOTOR_RIGHT_3 = 11;
 
-  public static final int DRIVE_MOTOR_LEFT_1 = 15;
-  public static final int DRIVE_MOTOR_LEFT_2 = 14;
-  public static final int DRIVE_MOTOR_LEFT_3 = 13;
+  public static final int DRIVE_MOTOR_LEFT_1 = 1;
+  public static final int DRIVE_MOTOR_LEFT_2 = 3;
+  public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Infeed
-  public static final int INFEED_MOTOR_1 = 12;
-  public static final int INFEED_MOTOR_2 = 3;
+  public static final int INFEED_MOTOR_1 = 13;
+  public static final int INFEED_MOTOR_2 = 15;
 
   // Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 7;
@@ -89,8 +89,8 @@ public class RobotMap {
 
   //Serializer *fake ports btw lol*
   public static final int SERIALIZER_MOTOR = 6;
-  public static final int KICKER_MOTOR = 8;
-  public static final int KICKER_MOTOR2 = 5;
+  public static final int KICKER_MOTOR = 27;
+  public static final int KICKER_MOTOR2 = 29;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
@@ -120,7 +120,7 @@ public class RobotMap {
   public static final double TURRET_TURN_SPEED = .35;
   public static final double TURRET_ANGLE_PER_PULSE = 5511.5889;
 
-  public static final int TURRET_TALON = 7;
+  public static final int TURRET_TALON = 23;
   public static final int T_STOP_LEFT = 90;
   public static final int T_STOP_RIGHT = -90;
   public static final double TURRET_SPEED_SENSITIVITY = 0.35;

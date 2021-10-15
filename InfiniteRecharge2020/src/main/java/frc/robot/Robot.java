@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
     drivebase = new DriveBase();
     infeed = new Infeed();
     compressorsubsystem = new CompressorSubsystem();
-    shooter = new Shooter();
+    //shooter = new Shooter();
     serializer = new Serializer();
     networktables = new NetworkTables();
     turret = new Turret();
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //Robot.networktables.reportValues();
     //Robot.turret.reportTurretInfeedSensors();
-    Robot.shooter.reportValues();
+    //Robot.shooter.reportValues();
     Robot.serializer.reportValues();
     Robot.infeed.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
@@ -124,7 +124,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
       Scheduler.getInstance().run();
       if(matchTime < 7 & matchTime > -1){
-        Robot.shooter.runMotors();
+        //Robot.shooter.runMotors();
       }
   }
 
