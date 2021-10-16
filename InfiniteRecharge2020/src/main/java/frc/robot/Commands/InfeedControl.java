@@ -31,7 +31,7 @@ public class InfeedControl extends Command {
   protected void execute() {
     infeedIn = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     infeedOut = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
-
+    
     //Infeed Control
     if(infeedIn){
       Robot.infeed.runInfeed("IN");

@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import frc.robot.RobotMap;
+import frc.robot.Commands.RunBelt;
 
 
 public class Serializer extends Subsystem {
@@ -35,7 +36,7 @@ public class Serializer extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new Kicker()); NO IDEA WHAT TO PUT HERE 
+        setDefaultCommand(new RunBelt());
 
     }
 
