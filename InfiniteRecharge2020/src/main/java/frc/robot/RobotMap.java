@@ -88,9 +88,9 @@ public class RobotMap {
   public static final int SHOOTER_SLAVE_CHANNEL = 21;
 
   //Serializer *fake ports btw lol*
-  public static final int SERIALIZER_MOTOR = 23;
-  public static final int KICKER_MOTOR = 27;
-  public static final int KICKER_MOTOR2 = 29;
+  public static final int SERIALIZER_MOTOR = 6;
+  public static final int KICKER_MOTOR = 17;
+  public static final int KICKER_MOTOR2 = 17;
 
   /*** Solenoids (Single and Double) ***/
   // DoubleSolenoids have an IN and an OUT constant.
