@@ -80,15 +80,15 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Infeed
-  public static final int INFEED_MOTOR_1 = 13;
-  public static final int INFEED_MOTOR_2 = 15;
+  public static final int INFEED_MOTOR_1 = 27;
+  public static final int INFEED_MOTOR_2 = 29;
 
   // Shooter
-  public static final int SHOOTER_MASTER_CHANNEL = 7;
-  public static final int SHOOTER_SLAVE_CHANNEL = 8;
+  public static final int SHOOTER_MASTER_CHANNEL = 19;
+  public static final int SHOOTER_SLAVE_CHANNEL = 21;
 
   //Serializer *fake ports btw lol*
-  public static final int SERIALIZER_MOTOR = 6;
+  public static final int SERIALIZER_MOTOR = 23;
   public static final int KICKER_MOTOR = 27;
   public static final int KICKER_MOTOR2 = 29;
 
