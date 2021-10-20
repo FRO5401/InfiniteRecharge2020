@@ -47,9 +47,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    chooser.setDefaultOption("Do Nothing", new DoNothing());
+    chooser.setDefaultOption("Do Nothing", new ShootMment());
     chooser.addOption("Drive Straight", new DriveStraight());
     SmartDashboard.putData("Auto choices", chooser);
+    autoSelected = new ShootMment();
 
     matchTime = Timer.getMatchTime();
 
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
     drivebase = new DriveBase();
     infeed = new Infeed();
     compressorsubsystem = new CompressorSubsystem();
-    //shooter = new Shooter();
+    shooter = new Shooter();
     serializer = new Serializer();
     networktables = new NetworkTables();
     turret = new Turret();
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //Robot.networktables.reportValues();
     //Robot.turret.reportTurretInfeedSensors();
-    //Robot.shooter.reportValues();
+    Robot.shooter.reportValues();
     Robot.serializer.reportValues();
     Robot.infeed.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
@@ -102,8 +103,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-//    Robot.drivebase.resetEncoders();
-    autoSelected = chooser.getSelected();
+
     if(autoSelected != null) {
       autoSelected.start();
     }

@@ -16,90 +16,95 @@ import frc.robot.RobotMap;
  * This command is also used as a "BaselineOnly" command
  */
 
-public class AutoShootBall extends Command {
+public class GhettoDriving extends Command {
 
-    private int ballCount;
-	private boolean magEmpty;
+	private double desiredDistance;
+	private double autoDriveSpeed;
+	private boolean doneTraveling;
+	private double distanceTraveled;
 	private double heading;
 
-	public AutoShootBall() {
+	public GhettoDriving() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
-
-        //ballCount = Robot.drummag.ballCount();
-        magEmpty = true;
+		doneTraveling = true;
+		distanceTraveled = 0;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 
-      
+		doneTraveling = false;
+		distanceTraveled = 0;
 
-		magEmpty = false;
-		
-		SmartDashboard.putNumber("heading", heading);
 
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-
+		Robot.drivebase.drive(0.5, 0.5);
+		try {
+			Thread.sleep(1000);
+		}
+		catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		Robot.drivebase.stopMotors();
+		Robot.drivebase.drive(-0.5, 0.5);
+		try {
+			Thread.sleep(250);
+		}
+		catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		Robot.drivebase.stopMotors();
 		Robot.shooter.runMotors();
-		Robot.serializer.runSerializer("IN");
+		try {
+			Thread.sleep(100);
+		}
+		catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 		Robot.serializer.runKicker("IN");
-
-	/*
-	
-
-        if(ballCount == 0){
-            magEmpty = true;
-        }
-        else if(ballCount > 0){
-            if(position = desiredPosition){
-                //Robot.drummag.punchBall(true);
-                if(currentBall == false){
-                    //Robot.drummag.punchBall(false);
-                }
-                else{
-                    //Robot.drummag.punchBall(false);
-                }
-                if(Robot.drummag.kickerLimit == true){
-                    //Robot.drummag.findDesiredPosition();
-                    //Robot.drummag.rotate();
-                else{
-
-                }
-                magEmpty = false;
-            }
-        }
-	*/
-	magEmpty = true;
+		try {
+			Thread.sleep(100);
+		}
+		catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		Robot.serializer.runSerializer("IN");
+		try {
+			Thread.sleep(4000);
+		}
+		catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		Robot.shooter.stopMotors();
+		Robot.serializer.runSerializer("STOP");
+		Robot.serializer.runKicker("STOP");
+		doneTraveling = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return magEmpty;
+		return doneTraveling;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-        Robot.shooter.stopMotors();
-		Robot.serializer.runKicker("STOP");
-		Robot.serializer.runSerializer("STOP");
+		Robot.drivebase.stopMotors();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.shooter.stopMotors();
-		Robot.serializer.runKicker("STOP");
-		Robot.serializer.runSerializer("STOP");
+		Robot.drivebase.stopMotors();
 	}
 
 }

@@ -10,12 +10,13 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.Subsystems.Shooter;
 
 public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
-  boolean controlShooter = false;
+  boolean controlShooter;
   boolean readyShooter;
   boolean shooterRunning = false;
 
@@ -41,8 +42,8 @@ public class ShooterMechanism extends Command {
     //NOTE: We have to put code for expelling the balls from the shooter in case of a jam
 
     Robot.shooter.reportValues();
-    controlShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_X);
-    readyShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator,RobotMap.XBOX_BUTTON_Y);
+    controlShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
+    readyShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
@@ -52,27 +53,21 @@ public class ShooterMechanism extends Command {
       Robot.shooter.getPIDInput();
     }
 
-    if(readyShooter) {
-      shooterRunning = !shooterRunning;
-    }
 
-    if(shooterRunning) {
-      Robot.shooter.startMotors();
+    if(readyShooter) {
+      Robot.shooter.runMotors();
     }
     else {
       Robot.shooter.stopMotors();
     }
 
-    if(controlShooter == true && (Robot.shooter.getVelocity() > 500)) {
-      Robot.shooter.stopMotors();
-      Robot.serializer.runSerializer("STOP");
-      Robot.serializer.runKicker("STOP");
-    }
-
-    if(controlShooter == true && (Robot.shooter.getVelocity() < 500)) {
-      Robot.shooter.runMotors();
+    if(controlShooter) {
       Robot.serializer.runSerializer("IN");
       Robot.serializer.runKicker("IN");
+    }
+    else {
+      Robot.serializer.runSerializer("STOP");
+      Robot.serializer.runKicker("STOP");
     }
 
   }

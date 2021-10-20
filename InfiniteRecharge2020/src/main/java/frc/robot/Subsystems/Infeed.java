@@ -21,12 +21,12 @@ import frc.robot.Commands.InfeedControl;
 public class Infeed extends Subsystem {
   //2 motors
   //MIGHT NOT BE VICTOR SP, check with design
-  private VictorSPX infeedMotor1;
-  private VictorSPX infeedMotor2;
+  private VictorSP infeedMotor1;
+  private VictorSP infeedMotor2;
 
   public Infeed(){
-    infeedMotor1 = new VictorSPX(RobotMap.INFEED_MOTOR_1);
-    infeedMotor2 = new VictorSPX(RobotMap.INFEED_MOTOR_2);
+    infeedMotor1 = new VictorSP(RobotMap.INFEED_MOTOR_1);
+    infeedMotor2 = new VictorSP(RobotMap.INFEED_MOTOR_2);
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
@@ -40,16 +40,16 @@ public class Infeed extends Subsystem {
   
   public void runInfeed(String direction){
     if(direction.equals("IN")){
-      infeedMotor1.set(ControlMode.PercentOutput,RobotMap.INFEED_SPEED);
-      infeedMotor2.set(ControlMode.PercentOutput,RobotMap.INFEED_SPEED);
+      infeedMotor1.set(RobotMap.INFEED_SPEED);
+      infeedMotor2.set(-1*RobotMap.INFEED_SPEED);
     }
     else if(direction.equals("OUT")){
-      infeedMotor1.set(ControlMode.PercentOutput,-1 * RobotMap.INFEED_SPEED);
-      infeedMotor2.set(ControlMode.PercentOutput,-1 * RobotMap.INFEED_SPEED);
+      infeedMotor1.set(-1 * RobotMap.INFEED_SPEED);
+      infeedMotor2.set(RobotMap.INFEED_SPEED);
     }
     else if(direction.equals("STOP")){
-      infeedMotor1.set(ControlMode.PercentOutput,0);
-      infeedMotor2.set(ControlMode.PercentOutput,0);
+      infeedMotor1.set(0);
+      infeedMotor2.set(0);
     }
     else{
       System.out.print("BRUH");

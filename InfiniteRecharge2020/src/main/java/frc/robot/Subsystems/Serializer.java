@@ -22,14 +22,14 @@ import frc.robot.Commands.RunBelt;
 public class Serializer extends Subsystem {
 
     // instanciate the objects
-    VictorSP serializerMotor;
+    VictorSPX serializerMotor;
     VictorSPX kickerMotor;
     VictorSPX kickerMotor2;
 
     // make a constructor and declare the variables
     public Serializer() {
 
-        serializerMotor = new VictorSP(RobotMap.SERIALIZER_MOTOR); 
+        serializerMotor = new VictorSPX(RobotMap.SERIALIZER_MOTOR); 
         kickerMotor = new VictorSPX(RobotMap.KICKER_MOTOR); 
         kickerMotor2 = new VictorSPX(RobotMap.KICKER_MOTOR2);
     }
@@ -48,15 +48,18 @@ public class Serializer extends Subsystem {
         else if (choice.equals("IN")) {
             serializerSpeed = 0.8;
         }
+        else if (choice.equals("STOP")){
+            serializerSpeed = 0;
+        }
         else {
             serializerSpeed = 0;
         }
-        serializerMotor.set(serializerSpeed); //Change back to velocity after testing master/slave
+        serializerMotor.set(ControlMode.PercentOutput, serializerSpeed); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 
     public double getSerializerVelocity() {
-        return serializerMotor.getSpeed();
+        return serializerMotor.getSelectedSensorVelocity();
     }
 
     public void runKicker(String choice) {
@@ -71,7 +74,7 @@ public class Serializer extends Subsystem {
             kickerSpeed = 0;
         }
         kickerMotor.set(ControlMode.PercentOutput,kickerSpeed);
-        kickerMotor2.set(ControlMode.PercentOutput,kickerSpeed); //Change back to velocity after testing master/slave
+        kickerMotor2.set(ControlMode.PercentOutput,-kickerSpeed); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 

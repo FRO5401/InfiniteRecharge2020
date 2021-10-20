@@ -42,7 +42,7 @@ public class RobotMap {
   public static final double SPIN_SENSITIVITY = 0.8;
 
   //Infeed
-  public static final double INFEED_SPEED = 0.55;
+  public static final double INFEED_SPEED = 0.95;
 
   /*** Operator Interfaces ***/
   // Controllers
@@ -80,16 +80,16 @@ public class RobotMap {
   public static final int DRIVE_MOTOR_LEFT_3 = 5;
 
   //Infeed
-  public static final int INFEED_MOTOR_1 = 27;
-  public static final int INFEED_MOTOR_2 = 29;
+  public static final int INFEED_MOTOR_1 = 0;
+  public static final int INFEED_MOTOR_2 = 1;
 
   // Shooter
   public static final int SHOOTER_MASTER_CHANNEL = 19;
   public static final int SHOOTER_SLAVE_CHANNEL = 21;
 
   //Serializer *fake ports btw lol*
-  public static final int SERIALIZER_MOTOR = 6;
-  public static final int KICKER_MOTOR = 17;
+  public static final int SERIALIZER_MOTOR = 27;
+  public static final int KICKER_MOTOR = 29;
   public static final int KICKER_MOTOR2 = 17;
 
   /*** Solenoids (Single and Double) ***/

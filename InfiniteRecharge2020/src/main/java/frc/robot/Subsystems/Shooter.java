@@ -68,14 +68,11 @@ public class Shooter extends Subsystem {
     }
 
     public void startMotors() {
-        shooterMaster.config_kF(0, kF, 1000);
-        shooterMaster.config_kP(0, kP, 1000);
-        shooterMaster.config_kI(0, kI, 1000);
-        shooterMaster.config_kD(0, kD, 1000);
+        shooterMaster.set(TalonFXControlMode.PercentOutput, -1*.80);
     }
 
     public void runMotors() {
-        shooterMaster.set(TalonFXControlMode.PercentOutput, .80); //Change back to velocity after testing master/slave
+        shooterMaster.set(TalonFXControlMode.PercentOutput, -1*.80); //Change back to velocity after testing master/slave
         //Make first velocity 1
     }
 

@@ -35,11 +35,14 @@ public class RunBelt extends Command {
 
     //NOTE: We have to put code for expelling the balls from the shooter in case of a jam
 
-    serializer = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_L3);
+    serializer = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
 
     if(serializer) {
         Robot.serializer.runSerializer("IN");
-      }
+    }
+    else {
+      Robot.serializer.runSerializer("STOP");
+    }
 
   }
 
