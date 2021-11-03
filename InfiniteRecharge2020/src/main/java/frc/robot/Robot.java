@@ -47,10 +47,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    chooser.setDefaultOption("Do Nothing", new ShootMment());
+    chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
     SmartDashboard.putData("Auto choices", chooser);
-    autoSelected = new ShootMment();
 
     matchTime = Timer.getMatchTime();
 
@@ -107,6 +106,7 @@ public class Robot extends TimedRobot {
     if(autoSelected != null) {
       autoSelected.start();
     }
+    autoSelected = chooser.getSelected();
   }
 
   /**

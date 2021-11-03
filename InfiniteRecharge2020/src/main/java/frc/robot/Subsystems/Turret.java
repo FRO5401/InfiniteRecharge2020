@@ -38,6 +38,7 @@ public class Turret extends Subsystem {
   private int TURRET_PID_THRESHOLD = (int) (1.0 * RobotMap.TURRET_ANGLE_PER_PULSE);
   private double targetLocation;
   private boolean turretPidEnabled;
+  private boolean visionEnabled;
   
 
   // Creates the actual robot parts
@@ -67,6 +68,29 @@ public class Turret extends Subsystem {
     turretTalon.config_kD(slotIndex, TURRET_kD, TIMEOUT_LIMIT_MS);
   }
 
+
+   // Enables vision
+   public void enableVision() {
+    visionEnabled = true;
+  }
+
+  // Disables vision
+  public void disableVision() {
+    visionEnabled = false;
+  }
+
+  // If vision is enable, the turret moves based off of the objects X coordinates
+  public void turretVision(){
+    if (visionEnabled == true) {
+      if(Robot.networktables.getPPXValue() > 200 && Robot.networktables.getPPXValue() < 500){
+        stopRotation();
+      } else if(Robot.networktables.getPPXValue() < 200){
+        moveTurret(-.5);
+      }else if(Robot.networktables.getPPXValue() > 500){
+        moveTurret(.5);
+      }
+    }  
+  }
 
   // Will end the rotation of the turret motor
   public void stopRotation() {

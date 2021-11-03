@@ -68,7 +68,10 @@ public class Shooter extends Subsystem {
     }
 
     public void startMotors() {
-        shooterMaster.set(TalonFXControlMode.PercentOutput, -1*.80);
+        shooterMaster.config_kF(0, kF, 1000);
+        shooterMaster.config_kP(0, kP, 1000);
+        shooterMaster.config_kI(0, kI, 1000);
+        shooterMaster.config_kD(0, kD, 1000);
     }
 
     public void runMotors() {

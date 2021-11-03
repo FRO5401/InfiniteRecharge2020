@@ -16,8 +16,8 @@ public class ShooterMechanism extends Command {
   /**
    * Creates a new ShooterMechanism.
    */
-  boolean controlShooter;
-  boolean readyShooter;
+  boolean kickerButton;
+  double shooterButton;
   boolean shooterRunning = false;
 
   //For PID testing
@@ -42,8 +42,8 @@ public class ShooterMechanism extends Command {
     //NOTE: We have to put code for expelling the balls from the shooter in case of a jam
 
     Robot.shooter.reportValues();
-    controlShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
-    readyShooter = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+    kickerButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
+    shooterButton = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
@@ -54,19 +54,17 @@ public class ShooterMechanism extends Command {
     }
 
 
-    if(readyShooter) {
+    if(shooterButton > RobotMap.AXIS_THRESHOLD) {
       Robot.shooter.runMotors();
     }
     else {
       Robot.shooter.stopMotors();
     }
 
-    if(controlShooter) {
-      Robot.serializer.runSerializer("IN");
+    if(kickerButton) {
       Robot.serializer.runKicker("IN");
     }
     else {
-      Robot.serializer.runSerializer("STOP");
       Robot.serializer.runKicker("STOP");
     }
 
@@ -76,14 +74,12 @@ public class ShooterMechanism extends Command {
   @Override
   public void end () {
     Robot.shooter.stopMotors();
-    Robot.serializer.runSerializer("STOP");
     Robot.serializer.runKicker("STOP");
   }
 
   @Override
   public void interrupted(){
     Robot.shooter.stopMotors();
-    Robot.serializer.runSerializer("STOP");
     Robot.serializer.runKicker("STOP");
   }
 
