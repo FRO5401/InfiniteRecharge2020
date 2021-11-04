@@ -24,6 +24,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -55,12 +56,13 @@ public class DriveBase extends Subsystem {
     leftDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3);
     rightDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3);
 
-    leftDrive1.setInverted(true);
+
     leftDrive2.follow(leftDrive1);
     leftDrive3.follow(leftDrive1);
     
     rightDrive2.follow(rightDrive1);
     rightDrive3.follow(rightDrive1);
+
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -76,26 +78,31 @@ public class DriveBase extends Subsystem {
     setDefaultCommand(new XboxMove());
   }
 
+  public void neutralModeBrake() {
+    leftDrive1.setNeutralMode(NeutralMode.Brake);
+    rightDrive1.setNeutralMode(NeutralMode.Brake);
+  }
+
   // Sets victors to desired speed giving from XboxMove.
   public void autoDrive(double leftDriveDesired, double rightDriveDesired) {
     // Left inverted in accordance to physical wiring.
     // Logic for fixing drift, will be different for comp bot
     if (leftDriveDesired > 0 && rightDriveDesired > 0) {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
     //  leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
       //rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
       //rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
     } else if (leftDriveDesired < 0 && rightDriveDesired < 0) {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
+      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
     //  rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
      // rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
     } else {
-      leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired);
       //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
       //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
@@ -128,7 +135,7 @@ public class DriveBase extends Subsystem {
   }
 
   public void drive(double leftDriveDesired, double rightDriveDesired) {
-    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired);
     //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
     //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
     rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
@@ -169,12 +176,14 @@ public class DriveBase extends Subsystem {
   // Set shifter to low.
   public void shiftHighToLow() {
     gearShifter.set(true);
+    neutralModeBrake();
     setDPPLowGear();
   }
 
   // Set shifter to High.
   public void shiftLowToHigh() {
     gearShifter.set(false);
+    neutralModeBrake();
     setDPPHighGear();
   }
 

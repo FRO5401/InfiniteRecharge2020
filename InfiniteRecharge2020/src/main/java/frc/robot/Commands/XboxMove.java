@@ -53,6 +53,7 @@ public class XboxMove extends Command {
   @Override
   protected void initialize() {
     Robot.drivebase.shiftHighToLow();
+    Robot.drivebase.neutralModeBrake();
   }
 
   // Called repeatedly when this Command is scheduled to run

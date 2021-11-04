@@ -38,14 +38,18 @@ public class Infeed extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
   
+  public void infeedJam() {
+
+  }
+
   public void runInfeed(String direction){
     if(direction.equals("IN")){
-      infeedMotor1.set(RobotMap.INFEED_SPEED);
-      infeedMotor2.set(-1*RobotMap.INFEED_SPEED);
+      infeedMotor1.set(-1 *RobotMap.INFEED_SPEED);
+      infeedMotor2.set(RobotMap.INFEED_SPEED);
     }
     else if(direction.equals("OUT")){
-      infeedMotor1.set(-1 * RobotMap.INFEED_SPEED);
-      infeedMotor2.set(RobotMap.INFEED_SPEED);
+      infeedMotor1.set(RobotMap.INFEED_SPEED);
+      infeedMotor2.set(-1 * RobotMap.INFEED_SPEED);
     }
     else if(direction.equals("STOP")){
       infeedMotor1.set(0);
@@ -54,6 +58,10 @@ public class Infeed extends Subsystem {
     else{
       System.out.print("BRUH");
     }
+  }
+
+  public double getVelocity() {
+    return infeedMotor1.getSpeed();
   }
 
   public void reportValues(){

@@ -43,7 +43,7 @@ public class ShooterMechanism extends Command {
 
     Robot.shooter.reportValues();
     kickerButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
-    shooterButton = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_LEFT_TRIGGER);
+    shooterButton = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
 
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);

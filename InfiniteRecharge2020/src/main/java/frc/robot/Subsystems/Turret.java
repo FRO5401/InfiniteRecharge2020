@@ -106,11 +106,11 @@ public class Turret extends Subsystem {
   public void moveTurret(double joystickSpeed) {
     if(getLimitLeft() == false && getLimitRight() == false){
       joystickSpeed *= RobotMap.TURRET_SPEED_SENSITIVITY;
-      turretTalon.set(ControlMode.PercentOutput, joystickSpeed);
+      turretTalon.set(ControlMode.PercentOutput, joystickSpeed * -1);
     }
     else if(getLimitRight() == true || getLimitLeft() == true){
       joystickSpeed *= RobotMap.TURRET_SPEED_SENSITIVITY;
-      turretTalon.set(ControlMode.PercentOutput, joystickSpeed * -1);
+      turretTalon.set(ControlMode.PercentOutput, joystickSpeed);
     }
     else{
       stopRotation();

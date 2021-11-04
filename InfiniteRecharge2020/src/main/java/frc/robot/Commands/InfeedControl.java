@@ -26,14 +26,42 @@ public class InfeedControl extends Command {
   protected void initialize() {
   }
 
+  //long previousTime = System.currentTimeMillis();
+  //long currentTime = System.currentTimeMillis();
+
+  boolean isInfeedJammed = false;
+  long timeOfLastJam = 0;
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
+    //currentTime = System.currentTimeMillis();
+
+   // System.out.print(currentTime - previousTime);
+    //LOOK AT THE JAM CODE BRIAN
     infeedIn = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_RIGHT_BUMPER);
     infeedOut = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_LEFT_BUMPER);
     
+    if (!isInfeedJammed) {
+      if (infeedIn && Robot.infeed.getVelocity() < 0.01) {
+        isInfeedJammed = true;
+        timeOfLastJam = System.currentTimeMillis();
+      }
+    } else {
+      if (System.currentTimeMillis() > timeOfLastJam + 200 && Robot.infeed.getVelocity() < 0.01)
+      {
+        System.out.println("JAMMED!");
+        Robot.infeed.runInfeed("STOP");
+      }
+      if (System.currentTimeMillis() > timeOfLastJam + 6000)
+      {
+        isInfeedJammed = false;
+      }
+    }
+
     //Infeed Control
-    if(infeedIn){
+    if(infeedIn && !isInfeedJammed){
       Robot.infeed.runInfeed("IN");
     }
     else if(infeedOut){
@@ -43,7 +71,8 @@ public class InfeedControl extends Command {
       Robot.infeed.runInfeed("STOP");
     }
 
-    
+    //previousTime = System.currentTimeMillis();
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

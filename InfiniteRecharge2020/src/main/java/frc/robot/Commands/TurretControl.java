@@ -20,9 +20,9 @@ public class TurretControl extends Command {
   // Creates the limits, turn functions, and buttons needed for the program.
   boolean limitRight, limitLeft;
   boolean resetButton;
-  boolean overrideToggle;
+  int overrideToggle;
   boolean controlVision;
-  double turretRotate;
+  boolean turretRotate;
   boolean resetPosition;
   double xVision;
   int dPad;
@@ -44,25 +44,25 @@ public class TurretControl extends Command {
   @Override
   protected void execute() {
 
-    overrideToggle = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_R3);
-    controlVision = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
-    resetPosition = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-    turretRotate = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_X);
+    overrideToggle = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
 
     if (resetPosition){
       Robot.turret.goToAngle(0.0);
     }
 
     // Checks to see if the ready button was pushed
-    else if (overrideToggle) {
+    else if (overrideToggle > 0) {
       //Disables vision if on
       System.out.println("override");
       //Robot.turret.disableVision();
 
       //Allows turret to move if Joystick axis is above treshold
-      if (turretRotate > RobotMap.AXIS_THRESHOLD || turretRotate < (-1 * RobotMap.AXIS_THRESHOLD)) {
-        Robot.turret.moveTurret(turretRotate);
+      if (overrideToggle == 90) {
+        Robot.turret.moveTurret(0.5);
       } 
+      else if (overrideToggle == 270){
+        Robot.turret.moveTurret(-0.5);
+      }
       else {
         Robot.turret.stopRotation();
       }
