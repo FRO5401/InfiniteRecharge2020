@@ -10,13 +10,13 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class DriveStraight extends CommandGroup {
+public class TurnRight extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public DriveStraight() {
+  public TurnRight() {
     System.out.println("Auto");
-    addSequential(new AutoDrive(75, 0.5));
+    addSequential(new AutoTurn(90, 0.5));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

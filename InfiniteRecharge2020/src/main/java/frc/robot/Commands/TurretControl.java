@@ -70,7 +70,7 @@ public class TurretControl extends Command {
 
     //If the turret isn't recieving commands, don't move!!
     else{
-      System.out.println("no override");
+     // System.out.println("no override");
       Robot.turret.stopRotation();
     }
 

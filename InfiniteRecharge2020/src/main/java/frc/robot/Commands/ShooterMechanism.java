@@ -17,6 +17,7 @@ public class ShooterMechanism extends Command {
    * Creates a new ShooterMechanism.
    */
   boolean kickerButton;
+  boolean reverseKicker;
   double shooterButton;
   boolean shooterRunning = false;
 
@@ -44,7 +45,7 @@ public class ShooterMechanism extends Command {
     Robot.shooter.reportValues();
     kickerButton = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_Y);
     shooterButton = Robot.oi.xboxAxis(Robot.oi.xboxOperator, RobotMap.XBOX_AXIS_RIGHT_TRIGGER);
-
+    reverseKicker = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_X);
     //For Pid testing
     dPad = Robot.oi.xboxDPad(Robot.oi.xboxOperator);
 
@@ -63,6 +64,9 @@ public class ShooterMechanism extends Command {
 
     if(kickerButton) {
       Robot.serializer.runKicker("IN");
+    }
+    else if (reverseKicker) {
+      Robot.serializer.runKicker("OUT");
     }
     else {
       Robot.serializer.runKicker("STOP");

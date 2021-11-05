@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     chooser.setDefaultOption("Do Nothing", new DoNothing());
     chooser.addOption("Drive Straight", new DriveStraight());
+    chooser.addOption("Turn Right", new TurnRight());
+    chooser.addOption("Test Regiment", new TestRegiment());
     SmartDashboard.putData("Auto choices", chooser);
 
     matchTime = Timer.getMatchTime();
@@ -62,6 +64,8 @@ public class Robot extends TimedRobot {
     networktables = new NetworkTables();
     turret = new Turret();
     oi = new OI();
+
+    Robot.drivebase.resetSensors();
   }
 
   /**
@@ -82,6 +86,7 @@ public class Robot extends TimedRobot {
     Robot.infeed.reportValues();
     Robot.compressorsubsystem.reportCompressorStatus();
     Robot.turret.reportTurretInfeedSensors();
+    Robot.drivebase.reportDriveBaseSensors();
     //Robot.networktables.updateValue();
     //Robot.drivebase.visionMove();
 
@@ -102,11 +107,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    System.out.println("Auto");
+    autoSelected = chooser.getSelected();
     if(autoSelected != null) {
       autoSelected.start();
+      System.out.println("Auto2");
     }
-    autoSelected = chooser.getSelected();
+    
   }
 
   /**

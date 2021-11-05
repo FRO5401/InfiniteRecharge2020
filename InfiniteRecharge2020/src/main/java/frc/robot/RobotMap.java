@@ -28,11 +28,11 @@ public class RobotMap {
   // OI
   public static final double AXIS_THRESHOLD = 0.25;
 
-  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 1.09;
-  public static final double SPEED_ADJUSTMENT_LEFT_BACKWARD = 1.09;
-  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648; // TODO: Make smaller until skew is gone
-  public static final double LOW_GEAR_RIGHT_DPP = 0.000618865317636; // Low gear dpp 2020
-  public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462;
+  public static final double SPEED_ADJUSTMENT_LEFT_FORWARD = 0.99;
+  public static final double SPEED_ADJUSTMENT_LEFT_BACKWARD = 0.99;
+  public static final double LOW_GEAR_LEFT_DPP = 0.000570664409648*1.12; // TODO: Make smaller until skew is gone
+  public static final double LOW_GEAR_RIGHT_DPP = 0.000618865317636*1.12; // Low gear dpp 2020
+  public static final double LOW_GEAR_AVERAGE_DPP = 0.000712464466462*1.12;
   public static final double HIGH_GEAR_LEFT_DPP = 0.000650533437419; // High gear skews left
   public static final double HIGH_GEAR_RIGHT_DPP = 0.000666062769755; // High gear dpp 2020
 
@@ -112,7 +112,7 @@ public class RobotMap {
   public static final int DRIVE_ENC_RIGHT_B = 2;
 
   /*** Autonomous ***/
-  public static final int ANGLE_THRESHOLD = 2;
+  public static final int ANGLE_THRESHOLD = 10;
   public static final double AUTO_TURN_SPEED = 0.8;
   public static final double AUTO_TURN_PRECISION = 0.5;
 

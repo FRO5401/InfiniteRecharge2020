@@ -88,26 +88,26 @@ public class DriveBase extends Subsystem {
     // Left inverted in accordance to physical wiring.
     // Logic for fixing drift, will be different for comp bot
     if (leftDriveDesired > 0 && rightDriveDesired > 0) {
-      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-    //  leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
-      //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      leftDrive1.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      leftDrive2.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
+      leftDrive3.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_FORWARD);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
-      //rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
-      //rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
     } else if (leftDriveDesired < 0 && rightDriveDesired < 0) {
-      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
-      //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
+      leftDrive1.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
+      leftDrive2.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
+      leftDrive3.set(ControlMode.PercentOutput, -leftDriveDesired * RobotMap.SPEED_ADJUSTMENT_LEFT_BACKWARD);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
-    //  rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
-     // rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
     } else {
-      leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired);
-      //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
-      //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+      leftDrive1.set(ControlMode.PercentOutput, -leftDriveDesired);
+      leftDrive2.set(ControlMode.PercentOutput, -leftDriveDesired);
+      leftDrive3.set(ControlMode.PercentOutput, -leftDriveDesired);
       rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
-    //  rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
-      //rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
+      rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
     }
   }
 

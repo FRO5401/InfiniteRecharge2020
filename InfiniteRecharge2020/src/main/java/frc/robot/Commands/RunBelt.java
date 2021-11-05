@@ -16,6 +16,7 @@ public class RunBelt extends Command {
    * Creates a new ShooterMechanism.
    */
   boolean serializer;
+  boolean reverseSerializer;
 
 
   public RunBelt() {
@@ -36,9 +37,13 @@ public class RunBelt extends Command {
     //NOTE: We have to put code for expelling the balls from the shooter in case of a jam
 
     serializer = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_B);
-
+    reverseSerializer = Robot.oi.xboxButton(Robot.oi.xboxOperator, RobotMap.XBOX_BUTTON_A);
+   
     if(serializer) {
         Robot.serializer.runSerializer("IN");
+    }
+    else if (reverseSerializer) {
+      Robot.serializer.runSerializer("OUT");
     }
     else {
       Robot.serializer.runSerializer("STOP");

@@ -39,7 +39,7 @@ public class AutoDrive extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-
+		System.out.println("Auto");
 		Robot.drivebase.resetSensors();
 		Robot.drivebase.setDPPHighGear();
 		Robot.drivebase.setDPPLowGear();
