@@ -16,10 +16,9 @@ public class TestRegiment extends CommandGroup {
    */
   public TestRegiment() {
     System.out.println("Auto");
-    addSequential(new AutoDrive(48, 0.5));
-    addSequential(new AutoTurn(90, 0.5));
-    addSequential(new AutoDrive(48, 0.5));
-    addSequential(new AutoTurn(-90, 0.5));
+    addSequential(new AutoDrive(60, 0.5));
+    //addSequential(new AutoShootBall(), 10.0);
+    //addSequenetiqal()
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

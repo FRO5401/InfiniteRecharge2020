@@ -56,13 +56,9 @@ public class DriveBase extends Subsystem {
     leftDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_LEFT_3);
     rightDrive3 = new VictorSPX(RobotMap.DRIVE_MOTOR_RIGHT_3);
 
-
-    leftDrive2.follow(leftDrive1);
-    leftDrive3.follow(leftDrive1);
-    
-    rightDrive2.follow(rightDrive1);
-    rightDrive3.follow(rightDrive1);
-
+    leftDrive1.setInverted(true);
+    leftDrive2.setInverted(true);
+    leftDrive3.setInverted(true);
 
     // Instantiate Solenoid.
     gearShifter = new Solenoid(RobotMap.GEAR_SHIFTER);
@@ -135,12 +131,12 @@ public class DriveBase extends Subsystem {
   }
 
   public void drive(double leftDriveDesired, double rightDriveDesired) {
-    leftDrive1.set(ControlMode.PercentOutput, -1*leftDriveDesired);
-    //leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
-    //leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive1.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive2.set(ControlMode.PercentOutput, leftDriveDesired);
+    leftDrive3.set(ControlMode.PercentOutput, leftDriveDesired);
     rightDrive1.set(ControlMode.PercentOutput, rightDriveDesired);
-    //rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
-  //  rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
+    rightDrive2.set(ControlMode.PercentOutput, rightDriveDesired);
+    rightDrive3.set(ControlMode.PercentOutput, rightDriveDesired);
   }
 
   public boolean checkCentered(){

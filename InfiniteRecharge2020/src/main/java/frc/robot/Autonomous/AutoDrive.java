@@ -58,6 +58,7 @@ public class AutoDrive extends Command {
 		if ((distanceTraveled) <= (desiredDistance) && desiredDistance >= 0) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 			doneTraveling = false;
+
 		} else if (distanceTraveled >= (desiredDistance) && desiredDistance < 0) {
 			Robot.drivebase.autoDrive(autoDriveSpeed, autoDriveSpeed);
 		} else {

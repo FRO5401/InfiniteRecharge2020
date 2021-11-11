@@ -7,6 +7,8 @@
 
 package frc.robot.Autonomous;
 
+import java.util.Timer;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -21,14 +23,15 @@ public class AutoShootBall extends Command {
     private int ballCount;
 	private boolean magEmpty;
 	private double heading;
-
+	private Timer timer;
+	
 	public AutoShootBall() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(Robot.drivebase);
 
         //ballCount = Robot.drummag.ballCount();
-        magEmpty = true;
+        magEmpty = false;
 	}
 
 	// Called just before this Command runs the first time
@@ -36,21 +39,22 @@ public class AutoShootBall extends Command {
 	protected void initialize() {
 
       
-
+		
 		magEmpty = false;
 		
 		SmartDashboard.putNumber("heading", heading);
-
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-
+		
 		Robot.shooter.runMotors();
 		Robot.serializer.runSerializer("IN");
 		Robot.serializer.runKicker("IN");
-
+		
+		System.out.println("shooting");
 	/*
 	
 
@@ -76,7 +80,8 @@ public class AutoShootBall extends Command {
             }
         }
 	*/
-	magEmpty = true;
+	
+	
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
